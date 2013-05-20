@@ -3,8 +3,8 @@
 #include    "..\..\BSP\include\GPCE063.h"
 
 // Software I2C driver, using same pins as hardware I2C, with hw i2c module disabled.
-// SCL  PB10
-// SDA  PB11
+// SCL  PB0
+// SDA  PB1
 #define SOFT_I2C
 
 #ifdef SOFT_I2C
@@ -14,9 +14,6 @@
 #define SCL_L (P_IOB_Buffer->bit_0) = 0x0
 
 #define SDA_read (P_IOB_Data->bit_1)
-#define SDA_input P_IOB_Dir->bit_1 = 0; P_IOB_Attrib->bit_1 = 1; P_IOB_Data->bit_1 = 0
-#define SDA_output P_IOB_Dir->bit_1 = 1; P_IOB_Attrib->bit_1 = 1; P_IOB_Data->bit_1 = 1
-
 #define SDA_H (P_IOB_Buffer->bit_1) = 0x1
 #define SDA_L (P_IOB_Buffer->bit_1) = 0x0
 
