@@ -8,31 +8,45 @@ ID=RES_TEXT_01_2_A16
 EXPORT=3
 # End Source File
 # Begin Source File
-SOURCE=voice\text_01_3.a16
+SOURCE=voice\NUM_1.a16
 USEPARAM=FALSE
 PARAM=
-ID=RES_TEXT_01_3_A16
+ID=RES_NUM_1_A16
 EXPORT=3
 # End Source File
 # Begin Source File
-SOURCE=voice\text_01_4.a16
+SOURCE=voice\NUM_2.a16
 USEPARAM=FALSE
 PARAM=
-ID=RES_TEXT_01_4_A16
+ID=RES_NUM_2_A16
 EXPORT=3
 # End Source File
 # Begin Source File
-SOURCE=voice\text_01_5.a16
+SOURCE=voice\NUM_3.a16
 USEPARAM=FALSE
 PARAM=
-ID=RES_TEXT_01_5_A16
+ID=RES_NUM_3_A16
 EXPORT=3
 # End Source File
 # Begin Source File
-SOURCE=voice\text_01_6.a16
+SOURCE=voice\NUM_4.a16
 USEPARAM=FALSE
 PARAM=
-ID=RES_TEXT_01_6_A16
+ID=RES_NUM_4_A16
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=voice\NUM_5.a16
+USEPARAM=FALSE
+PARAM=
+ID=RES_NUM_5_A16
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=voice\NUM_6.a16
+USEPARAM=FALSE
+PARAM=
+ID=RES_NUM_6_A16
 EXPORT=3
 # End Source File
 # End SubItem

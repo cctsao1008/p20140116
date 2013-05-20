@@ -14,7 +14,7 @@
 //**************************************************************************
 // Contant Defintion Area
 //**************************************************************************
-#define MaxSpeechNum		5		// Max. of speech in resource
+#define MaxSpeechNum		7		// Max. of speech in resource
 #define MaxVolumeNum		16		// Max. of volume settings
 
 #define Foreground			0
@@ -40,6 +40,8 @@ unsigned DAC_FIR_Type;
 unsigned PauseFlag;
 unsigned PlayCon;
 #endif
+unsigned SpeechIndex = 0;
+
 
 //#define heap_size  256
 
@@ -98,38 +100,54 @@ int main()
     return 0;
 }
 
+//#define LOOP_PLAY
+#define GKEY_PLAY
 void loop_test_01(void *pvParameters)
 {	
 	unsigned int delay = *(unsigned int*)pvParameters;
-	unsigned SpeechIndex = 0;
 
 	SACM_A1600_Initial();		// A1600 initial
 	
     while(1)
     {
+        #ifdef LOOP_PLAY
         // Start
         // SpeechIndex = 0, Say... welcome to tom's wheel
-        // SpeechIndex = 1, Say...  top
-        // SpeechIndex = 2, Say...  bottom
-        // SpeechIndex = 3, Say...  left
-        // SpeechIndex = 4, Say...  right
+        // SpeechIndex = 1, Say...  1
+        // SpeechIndex = 2, Say...  2
+        // SpeechIndex = 3, Say...  3
+        // SpeechIndex = 4, Say...  4
+        // SpeechIndex = 5, Say...  5
+        // SpeechIndex = 6, Say...  6
         // Go back to start
 
 	    vTaskDelay( delay / portTICK_RATE_MS );
-    	SACM_A1600_Play(SpeechIndex, DAC1 + DAC2, Ramp_Up + Ramp_Dn);		// play speech 0
+    	SACM_A1600_Play(SpeechIndex, DAC1 + DAC2, Ramp_Up + Ramp_Dn);
 
     	if(++SpeechIndex >= MaxSpeechNum)		// next speech
 		    SpeechIndex = 0;
+		#endif
+		
+		#ifdef GKEY_PLAY
+        vTaskDelay( delay / portTICK_RATE_MS );
+    	SACM_A1600_Play(SpeechIndex, DAC1 + DAC2, Ramp_Up + Ramp_Dn);
+		#endif
 
 		Reset_Watchdog(); 
 
     }
 }
 
+#define ACC_MAX  (0.8f/0.25f)*1000*4
+#define ACC_MIN -(0.8f/0.25f)*1000*4
+
 void loop_test_02(void *pvParameters)
 {	
 	unsigned int delay = *(unsigned int*)pvParameters;
-    uint8_t buf = 0;
+    uint8_t buf[2] = {0, 0};
+    int acc_x = 0, acc_y = 0, acc_z = 0;
+
+    asm("FIQ on");
     
 	i2cInit();
 	
@@ -138,36 +156,41 @@ void loop_test_02(void *pvParameters)
 	    vTaskDelay( delay / portTICK_RATE_MS );
 
 	    // To read back chip id from BMA180 ( 7bits address = 0x41 )
-	    i2cRead(0x41, 0x0, 1, &buf);
-	    Reset_Watchdog(); 
+	    i2cRead(0x41, 0x0, 1, (uint8_t*)&buf); // chip id - 0x03
+
+	    // Read X
+	    acc_x =0; buf[0] = 0; buf[1] = 0;
+	    i2cRead(0x41, 0x2, 2, (uint8_t*)&buf);
+	    acc_x = ((buf[1]<<8) | buf[0]) & 0xFFFC;
+	    Reset_Watchdog();
+
+	    if(acc_x > ACC_MAX)      // side 1
+            SpeechIndex = 1;
+	    else if(acc_x < ACC_MIN) // side 2
+            SpeechIndex = 2;
+        
+	    // Read Y
+	    acc_y =0; buf[0] = 0; buf[1] = 0;
+	    i2cRead(0x41, 0x4, 2, (uint8_t*)&buf);
+	    acc_y = ((buf[1]<<8) | buf[0]) & 0xFFFC;
+	    Reset_Watchdog();
+
+	    if(acc_x > ACC_MAX)      // side 3
+            SpeechIndex = 3;
+	    else if(acc_x < ACC_MIN) // side 4
+            SpeechIndex = 4;
+
+	    // Read Z
+	    acc_z =0; buf[0] = 0; buf[1] = 0;
+	    i2cRead(0x41, 0x6, 2, (uint8_t*)&buf);
+	    acc_z = ((buf[1]<<8) | buf[0]) & 0xFFFC;
+	    Reset_Watchdog();
+
+	    if(acc_x > ACC_MAX)      // side 5
+           SpeechIndex = 5;
+	    else if(acc_x < ACC_MIN) // side 6
+            SpeechIndex = 6;
     }
-}
-
-
-void Reset_Watchdog(void)
-{
-    P_Watchdog_Clear = C_Watchdog_Clear;
-}
-
-int BSP_INIT(void)
-{
-    init_heap((size_t)stack,configTOTAL_HEAP_SIZE);
-
-    #if 0
-    // Config System Clock
-    P_Int_Ctrl = 0x0000;
-    P_Int_Status = 0xFFFF;
-    P_System_Clock = 0x0098;
-
-    // Config IOB as Output Port
-    P_IOB_Data->data   = 0x0000;
-    P_IOB_Attrib->data = 0xFFFF;
-    P_IOB_Dir->data    = 0xFFFF;
-    #endif
-
-    System_Initial();			// System initial
-    
-    return 0;
 }
 
 void CDecoder(void *pvParameters)
@@ -252,5 +275,31 @@ void CDecoder(void *pvParameters)
 		
 		System_ServiceLoop();
 	} // end of while
+}
+
+void Reset_Watchdog(void)
+{
+    P_Watchdog_Clear = C_Watchdog_Clear;
+}
+
+int BSP_INIT(void)
+{
+    init_heap((size_t)stack,configTOTAL_HEAP_SIZE);
+
+    #if 0
+    // Config System Clock
+    P_Int_Ctrl = 0x0000;
+    P_Int_Status = 0xFFFF;
+    P_System_Clock = 0x0098;
+
+    // Config IOB as Output Port
+    P_IOB_Data->data   = 0x0000;
+    P_IOB_Attrib->data = 0xFFFF;
+    P_IOB_Dir->data    = 0xFFFF;
+    #endif
+
+    System_Initial();			// System initial
+    
+    return 0;
 }
 
