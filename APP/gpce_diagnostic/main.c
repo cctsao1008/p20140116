@@ -4,8 +4,8 @@
 #include "..\..\FreeRTOS\source\include\croutine.h"  
 #include "..\..\FreeRTOS\source\include\semphr.h"
 
-// GPCE063A
-#include "..\..\BSP\include\GPCE063.h"
+// GPCE2064
+#include "..\..\BSP\include\GPCE2064.h"
 #include "SACM.h"
 
 // I2C Driver
@@ -144,8 +144,8 @@ void loop_test_01(void *pvParameters)
 void loop_test_02(void *pvParameters)
 {	
 	unsigned int delay = *(unsigned int*)pvParameters;
-    uint8_t buf[2] = {0, 0};
-    int acc_x = 0, acc_y = 0, acc_z = 0;
+    //uint8_t buf[2] = {0, 0};
+    //int acc_x = 0, acc_y = 0, acc_z = 0;
 
     asm("FIQ on");
     
@@ -155,6 +155,7 @@ void loop_test_02(void *pvParameters)
     {
 	    vTaskDelay( delay / portTICK_RATE_MS );
 
+        #if 0
 	    // To read back chip id from BMA180 ( 7bits address = 0x41 )
 	    i2cRead(0x41, 0x0, 1, (uint8_t*)&buf); // chip id - 0x03
 
@@ -190,6 +191,7 @@ void loop_test_02(void *pvParameters)
            SpeechIndex = 5;
 	    else if(acc_x < ACC_MIN) // side 6
             SpeechIndex = 6;
+        #endif
     }
 }
 

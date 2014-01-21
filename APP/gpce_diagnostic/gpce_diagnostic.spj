@@ -1,20 +1,20 @@
 #Sunplus Debeloper Project File - Name = SunplusIDE
 #Sunplus Developer Generated Build File Format Version V1.00
 #**DO NOT EDIT**
-#TARTYPE (GPCE063A_064A)Application
+#TARTYPE (GPCE2P064A)Application
 CFG=Debug
 
-VER=3.0.5 
+VER=3.0.8 
 # Begin Project
-#Name Begin GPCE063A_064A-Debug
-# Begin SubItem "gpce063_diagnostic  files"
+#Name Begin GPCE2P064A-Debug
+# Begin SubItem "gpce_diagnostic  files"
 # Begin Group "Source Files"
 #PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
 EXPORT=3
 # Begin Source File
-SOURCE=gpce063_diagnostic.rc
+SOURCE=gpce_diagnostic.rc
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -125,7 +125,7 @@ EXPORT=3
 USEPARAM=FALSE
 PARAM=
 EXPORT=3
-# Begin Group "gpce063_diagnostic"
+# Begin Group "gpce_diagnostic"
 #PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
@@ -220,7 +220,7 @@ USEPARAM=FALSE
 PARAM=
 EXPORT=3
 # Begin Source File
-SOURCE=gpce063_diagnostic.h
+SOURCE=gpce_diagnostic.h
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -235,7 +235,7 @@ EXPORT=3
 # End Source File
 # End Group
 # Begin Group "External Dependencies"
-#PROP Default_Filter=;jpeg;jpe
+#PROP Default_Filter=jpe
 USEPARAM=FALSE
 PARAM=
 EXPORT=3
@@ -330,13 +330,6 @@ ID=
 EXPORT=3
 # End Source File
 # Begin Source File
-SOURCE=..\..\BSP\include\GPCE063.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
 SOURCE=..\ParTest\partest.h
 USEPARAM=FALSE
 PARAM=
@@ -358,13 +351,6 @@ ID=
 EXPORT=3
 # End Source File
 # Begin Source File
-SOURCE=..\..\BSP\include\GPCE063.inc
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
 SOURCE=..\..\FreeRTOS\source\portable\GCC\unsp_isa_v13\portmacro.h
 USEPARAM=FALSE
 PARAM=
@@ -373,13 +359,6 @@ EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=SACM.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=GPCE063.inc
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -420,18 +399,39 @@ PARAM=
 ID=
 EXPORT=3
 # End Source File
+# Begin Source File
+SOURCE=..\..\BSP\include\GPCE2064.inc
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\BSP\include\GPCE2064.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=GPCE2064.inc
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
 # End Group
 # End SubItem
-#Name End GPCE063A_064A-Debug
-#Name Begin GPCE063A_064A-Release
-# Begin SubItem "gpce063_diagnostic  files"
+#Name End GPCE2P064A-Debug
+#Name Begin GPCE2P064A-Release
+# Begin SubItem "gpce_diagnostic  files"
 # Begin Group "Source Files"
 #PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
 EXPORT=3
 # Begin Source File
-SOURCE=gpce063_diagnostic.rc
+SOURCE=gpce_diagnostic.rc
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -542,7 +542,7 @@ EXPORT=3
 USEPARAM=FALSE
 PARAM=
 EXPORT=3
-# Begin Group "gpce063_diagnostic"
+# Begin Group "gpce_diagnostic"
 #PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
@@ -637,7 +637,7 @@ USEPARAM=FALSE
 PARAM=
 EXPORT=3
 # Begin Source File
-SOURCE=gpce063_diagnostic.h
+SOURCE=gpce_diagnostic.h
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -652,7 +652,7 @@ EXPORT=3
 # End Source File
 # End Group
 # Begin Group "External Dependencies"
-#PROP Default_Filter=;jpeg;jpe
+#PROP Default_Filter=jpe
 USEPARAM=FALSE
 PARAM=
 EXPORT=3
@@ -747,13 +747,6 @@ ID=
 EXPORT=3
 # End Source File
 # Begin Source File
-SOURCE=..\..\BSP\include\GPCE063.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
 SOURCE=..\ParTest\partest.h
 USEPARAM=FALSE
 PARAM=
@@ -775,13 +768,6 @@ ID=
 EXPORT=3
 # End Source File
 # Begin Source File
-SOURCE=..\..\BSP\include\GPCE063.inc
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
 SOURCE=..\..\FreeRTOS\source\portable\GCC\unsp_isa_v13\portmacro.h
 USEPARAM=FALSE
 PARAM=
@@ -790,13 +776,6 @@ EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=SACM.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=GPCE063.inc
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -837,9 +816,30 @@ PARAM=
 ID=
 EXPORT=3
 # End Source File
+# Begin Source File
+SOURCE=..\..\BSP\include\GPCE2064.inc
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\BSP\include\GPCE2064.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=GPCE2064.inc
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
 # End Group
 # End SubItem
-#Name End GPCE063A_064A-Release
+#Name End GPCE2P064A-Release
 # End Project
 #Sunplus Debeloper Project File - Name = SunplusIDE
 #Sunplus Developer Generated Build File Format Version V1.00

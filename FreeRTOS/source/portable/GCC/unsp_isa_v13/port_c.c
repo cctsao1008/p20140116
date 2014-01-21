@@ -76,8 +76,8 @@
 #include "..\..\..\include\FreeRTOS.h"
 #include "..\..\..\include\task.h"
 
-// GPCE063A
-#include "..\..\..\..\..\BSP\include\GPCE063.h"
+// GPCE2064A
+#include "..\..\..\..\..\BSP\include\GPCE2064.h"
 
 /* Each task maintains its own interrupt status in the critical nesting variable. */
 #define portNO_CRITICAL_NESTING					( ( unsigned portBASE_TYPE ) 0 )
