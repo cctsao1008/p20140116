@@ -235,7 +235,7 @@ EXPORT=3
 # End Source File
 # End Group
 # Begin Group "External Dependencies"
-#PROP Default_Filter=jpe
+#PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
 EXPORT=3
@@ -251,7 +251,7 @@ EXPORT=3
 #PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
-EXPORT=3
+EXPORT=0
 # Begin Source File
 SOURCE=..\..\FreeRTOS\source\include\FreeRTOS.h
 USEPARAM=FALSE
@@ -295,13 +295,6 @@ ID=
 EXPORT=3
 # End Source File
 # Begin Source File
-SOURCE=..\..\FreeRTOS\source\include\timers.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
 SOURCE=..\..\FreeRTOS\source\include\list.h
 USEPARAM=FALSE
 PARAM=
@@ -310,13 +303,6 @@ EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\FreeRTOS\source\include\croutine.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=..\..\FreeRTOS\source\include\StackMacros.h
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -338,20 +324,6 @@ EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\debug_led\debug_led.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=..\include\FreeRTOSConfig.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=..\..\FreeRTOS\source\portable\GCC\unsp_isa_v13\portmacro.h
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -415,6 +387,41 @@ EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=GPCE2064.inc
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\include\FreeRTOSConfig.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\FreeRTOS\source\portable\GCC\unsp_isa_v13\portmacro.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\FreeRTOS\source\include\timers.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\FreeRTOS\source\include\StackMacros.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\BSP\include\stdint.h
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -652,7 +659,7 @@ EXPORT=3
 # End Source File
 # End Group
 # Begin Group "External Dependencies"
-#PROP Default_Filter=jpe
+#PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
 EXPORT=3
@@ -668,7 +675,7 @@ EXPORT=3
 #PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
-EXPORT=3
+EXPORT=0
 # Begin Source File
 SOURCE=..\..\FreeRTOS\source\include\FreeRTOS.h
 USEPARAM=FALSE
@@ -712,13 +719,6 @@ ID=
 EXPORT=3
 # End Source File
 # Begin Source File
-SOURCE=..\..\FreeRTOS\source\include\timers.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
 SOURCE=..\..\FreeRTOS\source\include\list.h
 USEPARAM=FALSE
 PARAM=
@@ -727,13 +727,6 @@ EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\FreeRTOS\source\include\croutine.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=..\..\FreeRTOS\source\include\StackMacros.h
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -755,20 +748,6 @@ EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\debug_led\debug_led.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=..\include\FreeRTOSConfig.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=..\..\FreeRTOS\source\portable\GCC\unsp_isa_v13\portmacro.h
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -832,6 +811,41 @@ EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=GPCE2064.inc
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\include\FreeRTOSConfig.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\FreeRTOS\source\portable\GCC\unsp_isa_v13\portmacro.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\FreeRTOS\source\include\timers.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\FreeRTOS\source\include\StackMacros.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\BSP\include\stdint.h
 USEPARAM=FALSE
 PARAM=
 ID=

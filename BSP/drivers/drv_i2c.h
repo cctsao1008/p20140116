@@ -1,11 +1,13 @@
 #ifndef DRV_I2C_H
 #define DRV_I2C_H
+
+#include <stdint.h>
 /* These types must be 8-bit integer */
-typedef char			int8_t;
-typedef unsigned char	uint8_t;
+//typedef char			int8_t;
+//typedef unsigned char	uint8_t;
 /* These types must be 16-bit integer */
-typedef short	        int16_t;
-typedef unsigned short	uint16_t;
+//typedef short	        int16_t;
+//typedef unsigned short	uint16_t;
 
 #define false           0
 #define true            1

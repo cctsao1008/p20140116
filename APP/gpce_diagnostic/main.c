@@ -1,11 +1,11 @@
 // FreeRTOS include files 
-#include "..\..\FreeRTOS\source\include\FreeRTOS.h" 
-#include "..\..\FreeRTOS\source\include\task.h" 
-#include "..\..\FreeRTOS\source\include\croutine.h"  
-#include "..\..\FreeRTOS\source\include\semphr.h"
+#include "FreeRTOS.h" 
+#include "task.h" 
+#include "croutine.h"  
+#include "semphr.h"
 
 // GPCE2064
-#include "..\..\BSP\include\GPCE2064.h"
+#include "GPCE2064.h"
 #include "SACM.h"
 
 // I2C Driver
@@ -57,7 +57,7 @@ portSTACK_TYPE stack[configTOTAL_HEAP_SIZE];
 
 int main()
 {
-    unsigned int delay_1 = 5000, delay_2 = 90;
+    unsigned int delay_1 = 5000, delay_2 = 4000;
     
     #if 0
     count = sizeof(portSTACK_TYPE)*configTOTAL_HEAP_SIZE;
@@ -82,9 +82,9 @@ int main()
     BSP_INIT();
 
     /* Create the tasks defined within this file. */
-    //xTaskCreate(CDecoder, (signed portCHAR *)"CDecoder", configMINIMAL_STACK_SIZE, NULL, 4, NULL );
-    xTaskCreate(loop_test_01, (signed portCHAR *)"loop_test_01", configMINIMAL_STACK_SIZE, (void*)&delay_1, 5, NULL );
-    xTaskCreate(loop_test_02, (signed portCHAR *)"loop_test_02", configMINIMAL_STACK_SIZE, (void*)&delay_2, 3, NULL );
+    //xTaskCreate(CDecoder, "CDecoder", configMINIMAL_STACK_SIZE, NULL, 4, NULL );
+    xTaskCreate(loop_test_01, "loop_test_01", configMINIMAL_STACK_SIZE, (void*)&delay_1, 5, NULL );
+    xTaskCreate(loop_test_02, "loop_test_02", configMINIMAL_STACK_SIZE, (void*)&delay_2, 3, NULL );
     
     /* In this port, to use preemptive scheduler define configUSE_PREEMPTION
 	as 1 in portmacro.h.  To use the cooperative scheduler define
@@ -149,7 +149,7 @@ void loop_test_02(void *pvParameters)
 
     asm("FIQ on");
     
-	i2cInit();
+	//i2cInit();
 	
     while(1)
     {

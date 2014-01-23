@@ -75,8 +75,8 @@
 #if 0
 #include <c8051f120.h>
 
-#include "..\..\FreeRTOS\source\include\FreeRTOS.h"
-#include "..\..\FreeRTOS\source\include\task.h"
+#include "FreeRTOS.h"
+#include "task.h"
 #include "partest.h"
 
 #define partstPUSH_PULL			( ( unsigned char ) 0xff )
