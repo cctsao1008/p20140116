@@ -12,7 +12,7 @@
 
 DSTATUS disk_initialize (void)
 {
-	DSTATUS stat;
+	DSTATUS stat = RES_ERROR;
 
 	// Put your code here
 
@@ -32,7 +32,7 @@ DRESULT disk_readp (
 	WORD count			/* Byte count (bit15:destination) */
 )
 {
-	DRESULT res;
+	DRESULT res = RES_ERROR;
 
 	// Put your code here
 
@@ -50,7 +50,7 @@ DRESULT disk_writep (
 	DWORD sc		/* Sector number (LBA) or Number of bytes to send */
 )
 {
-	DRESULT res;
+	DRESULT res = RES_ERROR;
 
 
 	if (!buff) {
