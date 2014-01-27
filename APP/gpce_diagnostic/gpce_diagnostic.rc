@@ -1,11 +1,4 @@
 # Begin Project
 # Begin SubItem "gpce063_diagnostic  Resources"
-# Begin Source File
-SOURCE=voice\NUM_1.a16
-USEPARAM=FALSE
-PARAM=
-ID=RES_NUM_1_A16
-EXPORT=3
-# End Source File
 # End SubItem
 # End Project

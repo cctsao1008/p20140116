@@ -45,46 +45,34 @@ unsigned SpeechIndex = 0;
 
 //#define heap_size  256
 
-void Reset_Watchdog(void);
-int BSP_INIT(void);
+void reset_watchdog(void);
+int bsp_init(void);
 
 void loop_test_01(void *pvParameters); // Play audio
 void loop_test_02(void *pvParameters); // I2C
-void CDecoder(void *pvParameters);
+void demo(void *pvParameters);
+
+void led_update(void *pvParameters);
+void key_scan(void *pvParameters);
+void audio_play(void *pvParameters);
+
 
 portTickType xTick = 0; 
 portSTACK_TYPE stack[configTOTAL_HEAP_SIZE];
 
 int main()
 {
-    unsigned int delay_1 = 5000, delay_2 = 4000;
-    
-    #if 0
-    count = sizeof(portSTACK_TYPE)*configTOTAL_HEAP_SIZE;
-    // char, unsigned char
-    count = sizeof(char);           // 1 word
-    count = sizeof(unsigned char);  // 1 word
-    // int, unsigned int
-    count = sizeof(int);            // 1 word
-    count = sizeof(unsigned int);   // 1 word
-    // short, unsigned short
-    count = sizeof(short);          // 1 word
-    count = sizeof(unsigned short); // 1 word
-    // long, unsigned long
-    count = sizeof(long);           // 2 words
-    count = sizeof(unsigned long);  // 2 words
-    // float
-    count = sizeof(float);          // 2 words
-    // double
-    count = sizeof(double);         // 2 words
-    #endif
+    //unsigned int delay_1 = 5000, delay_2 = 4000;
 
-    BSP_INIT();
+    bsp_init();
 
     /* Create the tasks defined within this file. */
     //xTaskCreate(CDecoder, "CDecoder", configMINIMAL_STACK_SIZE, NULL, 4, NULL );
-    xTaskCreate(loop_test_01, "loop_test_01", configMINIMAL_STACK_SIZE, (void*)&delay_1, 5, NULL );
-    xTaskCreate(loop_test_02, "loop_test_02", configMINIMAL_STACK_SIZE, (void*)&delay_2, 3, NULL );
+    //xTaskCreate(loop_test_01, "loop_test_01", configMINIMAL_STACK_SIZE, (void*)&delay_1, 5, NULL );
+    //xTaskCreate(loop_test_02, "loop_test_02", configMINIMAL_STACK_SIZE, (void*)&delay_2, 3, NULL );
+    xTaskCreate(led_update, "led_update", configMINIMAL_STACK_SIZE, NULL, 3, NULL );
+    xTaskCreate(key_scan, "key_scan", configMINIMAL_STACK_SIZE, NULL, 5, NULL );
+    xTaskCreate(audio_play, "audio_play", configMINIMAL_STACK_SIZE, NULL, 4, NULL );
     
     /* In this port, to use preemptive scheduler define configUSE_PREEMPTION
 	as 1 in portmacro.h.  To use the cooperative scheduler define
@@ -94,7 +82,7 @@ int main()
     // RunSchedular fail!!
     while(1)
     {
-    	Reset_Watchdog();  
+    	reset_watchdog();  
     }
     
     return 0;
@@ -133,7 +121,7 @@ void loop_test_01(void *pvParameters)
     	SACM_A1600_Play(SpeechIndex, DAC1 + DAC2, Ramp_Up + Ramp_Dn);
 		#endif
 
-		Reset_Watchdog(); 
+		reset_watchdog(); 
 
     }
 }
@@ -195,7 +183,44 @@ void loop_test_02(void *pvParameters)
     }
 }
 
-void CDecoder(void *pvParameters)
+void audio_play(void *pvParameters)
+{	
+	unsigned int delay = 100;
+
+    asm("FIQ on");
+	
+    while(1)
+    {
+	    vTaskDelay( delay / portTICK_RATE_MS );
+    }
+}
+
+void key_scan(void *pvParameters)
+{	
+	unsigned int delay = 100;
+
+    asm("FIQ on");
+	
+    while(1)
+    {
+	    vTaskDelay( delay / portTICK_RATE_MS );
+    }
+}
+
+void led_update(void *pvParameters)
+{	
+	unsigned int delay = 100;
+
+    asm("FIQ on");
+	
+    while(1)
+    {
+	    vTaskDelay( delay / portTICK_RATE_MS );
+    }
+}
+
+
+void demo(void *pvParameters)
 {
 	unsigned Key = 0;
 	unsigned SpeechIndex = 0;
@@ -279,12 +304,12 @@ void CDecoder(void *pvParameters)
 	} // end of while
 }
 
-void Reset_Watchdog(void)
+void reset_watchdog(void)
 {
     P_Watchdog_Clear = C_Watchdog_Clear;
 }
 
-int BSP_INIT(void)
+int bsp_init(void)
 {
     init_heap((size_t)stack,configTOTAL_HEAP_SIZE);
 
@@ -303,5 +328,11 @@ int BSP_INIT(void)
     System_Initial();			// System initial
     
     return 0;
+}
+
+void vApplicationIdleHook( void )
+{
+    reset_watchdog();
+    // Go to sleep mode here
 }
 

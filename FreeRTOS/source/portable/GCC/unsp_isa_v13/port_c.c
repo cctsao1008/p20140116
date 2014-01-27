@@ -212,11 +212,13 @@ static void prvSetupTimerInterrupt( void )
     portENABLE_INTERRUPTS();
 }
 
+#if 0
 void vApplicationIdleHook( void )
 {
     portENABLE_INTERRUPTS();
     P_Watchdog_Clear = C_Watchdog_Clear;
 }
+#endif
 
 void vApplicationTickHook( void )
 {
