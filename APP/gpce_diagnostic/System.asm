@@ -137,8 +137,8 @@ F_System_Initial:
 	R1 = 0x0000;
 //	[P_IOA_Dir] = R1;
 //	[P_IOA_Attrib] = R1;
-	[P_IOB_Dir] = R1;
-	[P_IOB_Attrib] = R1;
+//	[P_IOB_Dir] = R1;
+//	[P_IOB_Attrib] = R1;
 
 	retf;
 	.endp;

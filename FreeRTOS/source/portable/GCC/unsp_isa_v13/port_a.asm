@@ -1,4 +1,4 @@
-.include    ..\..\..\..\..\BSP\include\GPCE2064.inc
+.include    GPCE2064.inc
 //.DEFINE     _ASM_PORT
 
 .IFDEF      _ASM_PORT

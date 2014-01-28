@@ -68,7 +68,7 @@ int main()
 
     /* Create the tasks defined within this file. */
     //xTaskCreate(CDecoder, "CDecoder", configMINIMAL_STACK_SIZE, NULL, 4, NULL );
-    //xTaskCreate(loop_test_01, "loop_test_01", configMINIMAL_STACK_SIZE, (void*)&delay_1, 5, NULL );
+    //xTaskCreate(loop_test_01, "loop_test_01", configMINIMAL_STACK_SIZE, (void*)&delay_1, 6, NULL );
     //xTaskCreate(loop_test_02, "loop_test_02", configMINIMAL_STACK_SIZE, (void*)&delay_2, 3, NULL );
     xTaskCreate(led_update, "led_update", configMINIMAL_STACK_SIZE, NULL, 3, NULL );
     xTaskCreate(key_scan, "key_scan", configMINIMAL_STACK_SIZE, NULL, 5, NULL );
@@ -135,7 +135,7 @@ void loop_test_02(void *pvParameters)
     //uint8_t buf[2] = {0, 0};
     //int acc_x = 0, acc_y = 0, acc_z = 0;
 
-    asm("FIQ on");
+    asm("FIQ ON");
     
 	//i2cInit();
 	
@@ -185,9 +185,9 @@ void loop_test_02(void *pvParameters)
 
 void audio_play(void *pvParameters)
 {	
-	unsigned int delay = 100;
+	unsigned int delay = 1000;
 
-    asm("FIQ on");
+    asm("FIQ ON");
 	
     while(1)
     {
@@ -197,9 +197,9 @@ void audio_play(void *pvParameters)
 
 void key_scan(void *pvParameters)
 {	
-	unsigned int delay = 100;
+	unsigned int delay = 1000;
 
-    asm("FIQ on");
+    asm("FIQ ON");
 	
     while(1)
     {
@@ -209,9 +209,9 @@ void key_scan(void *pvParameters)
 
 void led_update(void *pvParameters)
 {	
-	unsigned int delay = 100;
+	unsigned int delay = 1000;
 
-    asm("FIQ on");
+    asm("FIQ ON");
 	
     while(1)
     {
@@ -332,7 +332,22 @@ int bsp_init(void)
 
 void vApplicationIdleHook( void )
 {
+    //portENABLE_INTERRUPTS(); // This is very very IMPORTANT !! for  Scheduler
     reset_watchdog();
-    // Go to sleep mode here
+    // preparing for enter sleep mode
+    // Config IOA as intput Port
+    //P_IOA_Data->data   = 0x0000;
+    //P_IOA_Attrib->data = 0x0000;
+    //P_IOA_Dir->data    = 0x0000;
+    asm("INT OFF");
+    //P_System_Clock &= ~C_Sleep_RTC_Status;
+    asm("IRQ ON");
+    P_IOA_Data->data = P_IOA_Data->data;
+    // Ready to enter  sleep mode
+    //P_System_Clock = 0x0087;
+    //P_System_Sleep = C_System_Sleep;
+    asm("NOP");
+
+    P_System_Clock = 0x0080;
 }
 
