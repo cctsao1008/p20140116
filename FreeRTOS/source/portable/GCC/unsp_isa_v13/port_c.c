@@ -222,7 +222,7 @@ void vApplicationIdleHook( void )
 
 void vApplicationTickHook( void )
 {
-    portENABLE_INTERRUPTS();
+    //portENABLE_INTERRUPTS();
     P_Watchdog_Clear = C_Watchdog_Clear;
 }
 

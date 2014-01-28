@@ -1,19 +1,17 @@
-// FreeRTOS include files 
+/*  FreeRTOS include files */
 #include "FreeRTOS.h" 
 #include "task.h" 
 #include "croutine.h"  
 #include "semphr.h"
 
-// GPCE2064
+/* GPCE2064 */
 #include "GPCE2064.h"
 #include "SACM.h"
 
-// I2C Driver
+/* I2C Driver */
 #include "..\..\BSP\drivers\Drv_i2c.h"
 
-//**************************************************************************
-// Contant Defintion Area
-//**************************************************************************
+/* Contant Defintion Are */
 #define MaxSpeechNum		7		// Max. of speech in resource
 #define MaxVolumeNum		16		// Max. of volume settings
 
@@ -22,16 +20,12 @@
 //#define ServiceType		Foreground
 #define ServiceType			Background
 
-//**************************************************************************
-// Function Call Publication Area
-//**************************************************************************
+/* Function Call Publication Area */
 //void SPI_Initial();
 void USER_A1600_SetStartAddr(int SpeechIndex);
 void USER_A1600_SetStartAddr_Con(int SpeechIndex);
 
-//**************************************************************************
-// Global Variable Defintion Area
-//**************************************************************************
+/* Global Variable Defintion Area */
 #if 0
 unsigned Key;
 unsigned SpeechIndex;
@@ -60,19 +54,27 @@ void audio_play(void *pvParameters);
 portTickType xTick = 0; 
 portSTACK_TYPE stack[configTOTAL_HEAP_SIZE];
 
+xSemaphoreHandle xSemaphore;
+
+xTaskHandle xHandle[3] = {NULL};
+enum tasks { led_task = 0, audio_task, key_task };
+
+
 int main()
 {
     //unsigned int delay_1 = 5000, delay_2 = 4000;
 
     bsp_init();
 
+    xSemaphore = xSemaphoreCreateBinary();
+
     /* Create the tasks defined within this file. */
     //xTaskCreate(CDecoder, "CDecoder", configMINIMAL_STACK_SIZE, NULL, 4, NULL );
     //xTaskCreate(loop_test_01, "loop_test_01", configMINIMAL_STACK_SIZE, (void*)&delay_1, 6, NULL );
     //xTaskCreate(loop_test_02, "loop_test_02", configMINIMAL_STACK_SIZE, (void*)&delay_2, 3, NULL );
-    xTaskCreate(led_update, "led_update", configMINIMAL_STACK_SIZE, NULL, 3, NULL );
-    xTaskCreate(key_scan, "key_scan", configMINIMAL_STACK_SIZE, NULL, 5, NULL );
-    xTaskCreate(audio_play, "audio_play", configMINIMAL_STACK_SIZE, NULL, 4, NULL );
+    xTaskCreate(led_update, "led_update", configMINIMAL_STACK_SIZE, NULL, 3, &xHandle[led_task] );
+    xTaskCreate(key_scan, "key_scan", configMINIMAL_STACK_SIZE, NULL, 5, &xHandle[key_task] );
+    xTaskCreate(audio_play, "audio_play", configMINIMAL_STACK_SIZE, NULL, 4, &xHandle[audio_task] );
     
     /* In this port, to use preemptive scheduler define configUSE_PREEMPTION
 	as 1 in portmacro.h.  To use the cooperative scheduler define
@@ -132,18 +134,18 @@ void loop_test_01(void *pvParameters)
 void loop_test_02(void *pvParameters)
 {	
 	unsigned int delay = *(unsigned int*)pvParameters;
-    //uint8_t buf[2] = {0, 0};
-    //int acc_x = 0, acc_y = 0, acc_z = 0;
+    uint8_t buf[2] = {0, 0};
+    int acc_x = 0, acc_y = 0, acc_z = 0;
 
     asm("FIQ ON");
     
-	//i2cInit();
+	i2cInit();
 	
     while(1)
     {
 	    vTaskDelay( delay / portTICK_RATE_MS );
 
-        #if 0
+        #if 1
 	    // To read back chip id from BMA180 ( 7bits address = 0x41 )
 	    i2cRead(0x41, 0x0, 1, (uint8_t*)&buf); // chip id - 0x03
 
@@ -151,7 +153,7 @@ void loop_test_02(void *pvParameters)
 	    acc_x =0; buf[0] = 0; buf[1] = 0;
 	    i2cRead(0x41, 0x2, 2, (uint8_t*)&buf);
 	    acc_x = ((buf[1]<<8) | buf[0]) & 0xFFFC;
-	    Reset_Watchdog();
+	    reset_watchdog();
 
 	    if(acc_x > ACC_MAX)      // side 1
             SpeechIndex = 1;
@@ -162,7 +164,7 @@ void loop_test_02(void *pvParameters)
 	    acc_y =0; buf[0] = 0; buf[1] = 0;
 	    i2cRead(0x41, 0x4, 2, (uint8_t*)&buf);
 	    acc_y = ((buf[1]<<8) | buf[0]) & 0xFFFC;
-	    Reset_Watchdog();
+	    reset_watchdog();
 
 	    if(acc_x > ACC_MAX)      // side 3
             SpeechIndex = 3;
@@ -173,7 +175,7 @@ void loop_test_02(void *pvParameters)
 	    acc_z =0; buf[0] = 0; buf[1] = 0;
 	    i2cRead(0x41, 0x6, 2, (uint8_t*)&buf);
 	    acc_z = ((buf[1]<<8) | buf[0]) & 0xFFFC;
-	    Reset_Watchdog();
+	    reset_watchdog();
 
 	    if(acc_x > ACC_MAX)      // side 5
            SpeechIndex = 5;
@@ -188,6 +190,9 @@ void audio_play(void *pvParameters)
 	unsigned int delay = 1000;
 
     asm("FIQ ON");
+
+    // To initialize SACM libary.
+    SACM_A1600_Initial();		// A1600 initial
 	
     while(1)
     {
@@ -197,13 +202,20 @@ void audio_play(void *pvParameters)
 
 void key_scan(void *pvParameters)
 {	
-	unsigned int delay = 1000;
+	//unsigned int delay = 1000;
 
     asm("FIQ ON");
+
+    // To initialize the input pins for key.
 	
     while(1)
     {
-	    vTaskDelay( delay / portTICK_RATE_MS );
+	    //vTaskDelay( delay / portTICK_RATE_MS );
+	    
+        // To scan key if audio playing or just weak-up by key changed
+
+        // else 
+	    vTaskSuspend( NULL );
     }
 }
 
@@ -212,7 +224,8 @@ void led_update(void *pvParameters)
 	unsigned int delay = 1000;
 
     asm("FIQ ON");
-	
+
+    // To initialize the output pins for LED.
     while(1)
     {
 	    vTaskDelay( delay / portTICK_RATE_MS );
@@ -349,5 +362,7 @@ void vApplicationIdleHook( void )
     asm("NOP");
 
     P_System_Clock = 0x0080;
+
+    vTaskResume( xHandle[key_task] ); // To resume key scan function.
 }
 

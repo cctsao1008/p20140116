@@ -231,7 +231,7 @@ EXPORT=3
 #PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
-EXPORT=3
+EXPORT=1836413803
 # Begin Source File
 SOURCE=..\ParTest\partest.h
 USEPARAM=FALSE
@@ -262,13 +262,6 @@ EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\BSP\drivers\drv_i2c.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=..\..\BSP\include\GPCE2064.inc
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -363,28 +356,35 @@ SOURCE=..\..\FreeRTOS\source\include\timers.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=1886745202
+EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\FreeRTOS\source\include\StackMacros.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=1346717004
+EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\BSP\include\GPCE2064.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=1768169579
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\BSP\include\GPCE2064.inc
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\FreeRTOS\source\include\semphr.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=1836413803
+EXPORT=0
 # End Source File
 # End Group
 # End SubItem
@@ -614,7 +614,7 @@ EXPORT=3
 #PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
-EXPORT=3
+EXPORT=1836413803
 # Begin Source File
 SOURCE=..\ParTest\partest.h
 USEPARAM=FALSE
@@ -645,13 +645,6 @@ EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\BSP\drivers\drv_i2c.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=..\..\BSP\include\GPCE2064.inc
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -746,28 +739,35 @@ SOURCE=..\..\FreeRTOS\source\include\timers.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=1886745202
+EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\FreeRTOS\source\include\StackMacros.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=1346717004
+EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\BSP\include\GPCE2064.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=1768169579
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\BSP\include\GPCE2064.inc
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\FreeRTOS\source\include\semphr.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=1836413803
+EXPORT=0
 # End Source File
 # End Group
 # End SubItem
