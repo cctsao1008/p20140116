@@ -1,1 +1,1 @@
-FreeRTOS to V7.4.2
+FreeRTOS  V8.0.0
