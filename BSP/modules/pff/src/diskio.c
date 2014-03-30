@@ -6,13 +6,14 @@
 
 
 
+#if 0
 /*-----------------------------------------------------------------------*/
 /* Initialize Disk Drive                                                 */
 /*-----------------------------------------------------------------------*/
 
 DSTATUS disk_initialize (void)
 {
-	DSTATUS stat = RES_ERROR;
+	DSTATUS stat;
 
 	// Put your code here
 
@@ -32,12 +33,13 @@ DRESULT disk_readp (
 	WORD count			/* Byte count (bit15:destination) */
 )
 {
-	DRESULT res = RES_ERROR;
+	DRESULT res;
 
 	// Put your code here
 
 	return res;
 }
+#endif
 
 
 
@@ -50,7 +52,7 @@ DRESULT disk_writep (
 	DWORD sc		/* Sector number (LBA) or Number of bytes to send */
 )
 {
-	DRESULT res = RES_ERROR;
+	DRESULT res;
 
 
 	if (!buff) {

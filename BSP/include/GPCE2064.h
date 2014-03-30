@@ -76,6 +76,16 @@ typedef union tagIOBITS {
 #define P_IOB_Attrib          ((volatile  IO_BITS) 0x2007)
 #define P_IO_Ctrl             (*(volatile unsigned int*) 0x2008)
 
+#define P_IOA_DA              ((volatile  IO_BITS) 0x2000)
+#define P_IOA_BU              ((volatile  IO_BITS) 0x2001)
+#define P_IOA_DI              ((volatile  IO_BITS) 0x2002)
+#define P_IOA_AT              ((volatile  IO_BITS) 0x2003)
+#define P_IOB_DA              ((volatile  IO_BITS) 0x2004)
+#define P_IOB_BU              ((volatile  IO_BITS) 0x2005)
+#define P_IOB_DI             ((volatile  IO_BITS) 0x2006)
+#define P_IOB_AT              ((volatile  IO_BITS) 0x2007)
+#define P_IO_CT               (*(volatile unsigned int*) 0x2008)
+
 //---------------------------------------------------
 #define P_TimerA_Data         (*(volatile unsigned int*) 0x2010)
 #define P_TimerA_CNTR         (*(volatile unsigned int*) 0x2011)

@@ -11,6 +11,9 @@
 /* I2C Driver */
 #include "..\..\BSP\drivers\Drv_i2c.h"
 
+#include "pff.h"
+
+
 /* Contant Defintion Are */
 #define MaxSpeechNum		7		// Max. of speech in resource
 #define MaxVolumeNum		16		// Max. of volume settings
@@ -19,6 +22,12 @@
 #define Background			1
 //#define ServiceType		Foreground
 #define ServiceType			Background
+
+#define USE_FLASH_WRITTER
+
+#define printf(str, ...)
+#define putchar(...)
+
 
 /* Function Call Publication Area */
 //void SPI_Initial();
@@ -42,14 +51,16 @@ unsigned SpeechIndex = 0;
 void reset_watchdog(void);
 int bsp_init(void);
 
+#if defined(USE_FLASH_WRITTER)
+void flash_writter(void *pvParameters);
+#else
 void loop_test_01(void *pvParameters); // Play audio
 void loop_test_02(void *pvParameters); // I2C
 void demo(void *pvParameters);
-
 void led_update(void *pvParameters);
 void key_scan(void *pvParameters);
 void audio_play(void *pvParameters);
-
+#endif
 
 portTickType xTick = 0; 
 portSTACK_TYPE stack[configTOTAL_HEAP_SIZE];
@@ -59,6 +70,11 @@ xSemaphoreHandle xSemaphore;
 xTaskHandle xHandle[3] = {NULL};
 enum tasks { led_task = 0, audio_task, key_task };
 
+#if defined(USE_FLASH_WRITTER)
+#define buff_size 64
+BYTE buff[buff_size];
+#endif
+
 
 int main()
 {
@@ -66,15 +82,18 @@ int main()
 
     bsp_init();
 
-    xSemaphore = xSemaphoreCreateBinary();
-
     /* Create the tasks defined within this file. */
+    #if defined(USE_FLASH_WRITTER)
+    xTaskCreate(flash_writter, "flash_writter", ( ( unsigned short ) 256 ), buff, 4, NULL );
+    #else
+    xSemaphore = xSemaphoreCreateBinary();
     //xTaskCreate(CDecoder, "CDecoder", configMINIMAL_STACK_SIZE, NULL, 4, NULL );
     //xTaskCreate(loop_test_01, "loop_test_01", configMINIMAL_STACK_SIZE, (void*)&delay_1, 6, NULL );
     //xTaskCreate(loop_test_02, "loop_test_02", configMINIMAL_STACK_SIZE, (void*)&delay_2, 3, NULL );
     xTaskCreate(led_update, "led_update", configMINIMAL_STACK_SIZE, NULL, 3, &xHandle[led_task] );
     xTaskCreate(key_scan, "key_scan", configMINIMAL_STACK_SIZE, NULL, 5, &xHandle[key_task] );
     xTaskCreate(audio_play, "audio_play", configMINIMAL_STACK_SIZE, NULL, 4, &xHandle[audio_task] );
+    #endif
     
     /* In this port, to use preemptive scheduler define configUSE_PREEMPTION
 	as 1 in portmacro.h.  To use the cooperative scheduler define
@@ -90,6 +109,102 @@ int main()
     return 0;
 }
 
+#if defined(USE_FLASH_WRITTER)
+void die (		/* Stop with dying message */
+	FRESULT rc	/* FatFs return value */
+)
+{
+	printf("Failed with rc=%u.\n", rc);
+	for (;;) ;
+}
+
+void flash_writter(void *pvParameters)
+{
+	unsigned int delay = 1000;
+
+    FATFS fatfs;			/* File system object */
+	DIR dir;				/* Directory object */
+	FILINFO fno;			/* File information object */
+	WORD bw, br, i;
+	BYTE rc;
+    BYTE* buff;
+
+    buff = pvParameters;
+
+    asm("FIQ ON");
+
+    printf("\nMount a volume.\n");
+    
+    rc = pf_mount(&fatfs);
+    if (rc) die(rc);
+
+    printf("\nOpen a test file (message.txt).\n");
+    
+    rc = pf_open("DATA.ROM");
+    if (rc) die(rc);
+
+    printf("\nType the file content.\n");
+
+    for (;;) {
+        rc = pf_read(buff, buff_size, &br);  /* Read a chunk of file */
+    
+        if (rc || !br) break;           /* Error or end of file */
+            for (i = 0; i < br; i++)      /* Type the data */
+                putchar(buff[i]);
+    }
+
+    if (rc) die(rc);
+    
+#if _USE_WRITE
+    printf("\nOpen a file to write (write.txt).\n");
+
+    rc = pf_open("WRITE.TXT");
+    if (rc) die(rc);
+    
+    printf("\nWrite a text data. (Hello world!)\n");
+
+    for (;;) {
+        rc = pf_write("Hello world!\r\n", 14, &bw);
+        if (rc || !bw) break;
+    }
+
+    if (rc) die(rc);
+    
+    printf("\nTerminate the file write process.\n");
+
+    rc = pf_write(0, 0, &bw);
+    if (rc) die(rc);
+#endif
+    
+#if _USE_DIR
+    printf("\nOpen root directory.\n");
+
+    rc = pf_opendir(&dir, "");
+    if (rc) die(rc);
+    
+    printf("\nDirectory listing...\n");
+
+    for (;;) {
+        rc = pf_readdir(&dir, &fno);    /* Read a directory item */
+        if (rc || !fno.fname[0]) break; /* Error or end of dir */
+    
+        if (fno.fattrib & AM_DIR)
+            printf("   <dir>  %s\n", fno.fname);
+        else
+            printf("%8lu  %s\n", fno.fsize, fno.fname);
+    }
+
+    if (rc) die(rc);
+#endif
+    
+    printf("\nTest completed.\n");
+
+    while(1)
+    {
+	    vTaskDelay( delay / portTICK_RATE_MS );
+    }
+}
+#else
 //#define LOOP_PLAY
 #define GKEY_PLAY
 void loop_test_01(void *pvParameters)
@@ -316,6 +431,7 @@ void demo(void *pvParameters)
 		System_ServiceLoop();
 	} // end of while
 }
+#endif
 
 void reset_watchdog(void)
 {
@@ -347,22 +463,17 @@ void vApplicationIdleHook( void )
 {
     //portENABLE_INTERRUPTS(); // This is very very IMPORTANT !! for  Scheduler
     reset_watchdog();
-    // preparing for enter sleep mode
-    // Config IOA as intput Port
-    //P_IOA_Data->data   = 0x0000;
-    //P_IOA_Attrib->data = 0x0000;
-    //P_IOA_Dir->data    = 0x0000;
     asm("INT OFF");
     //P_System_Clock &= ~C_Sleep_RTC_Status;
-    asm("IRQ ON");
-    P_IOA_Data->data = P_IOA_Data->data;
+    //asm("IRQ ON");
+    //P_IOA_Data->data = P_IOA_Data->data;
     // Ready to enter  sleep mode
     //P_System_Clock = 0x0087;
     //P_System_Sleep = C_System_Sleep;
     asm("NOP");
 
-    P_System_Clock = 0x0080;
+    //P_System_Clock = 0x0080;
 
-    vTaskResume( xHandle[key_task] ); // To resume key scan function.
+    //vTaskResume( xHandle[key_task] ); // To resume key scan function.
 }
 

@@ -133,14 +133,21 @@ SOURCE=..\..\BSP\modules\pff\src\diskio.c
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=727018
+EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\BSP\modules\pff\src\pff.c
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\BSP\modules\pff\src\mmcbb.c
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
 # End Source File
 # End Group
 # End Group
@@ -249,7 +256,7 @@ EXPORT=3
 #PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
-EXPORT=3
+EXPORT=52636680
 # Begin Source File
 SOURCE=..\ParTest\partest.h
 USEPARAM=FALSE
@@ -297,21 +304,21 @@ SOURCE=..\..\BSP\modules\pff\src\diskio.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\BSP\modules\pff\src\integer.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\BSP\modules\pff\src\pff.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\FreeRTOS\source\include\FreeRTOS.h
@@ -409,14 +416,14 @@ SOURCE=..\..\BSP\include\GPCE2064.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=3
+EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\BSP\include\GPCE2064.inc
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=7274513
+EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\FreeRTOS\source\include\semphr.h
@@ -555,14 +562,21 @@ SOURCE=..\..\BSP\modules\pff\src\diskio.c
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=727018
+EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\BSP\modules\pff\src\pff.c
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\BSP\modules\pff\src\mmcbb.c
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
 # End Source File
 # End Group
 # End Group
@@ -671,7 +685,7 @@ EXPORT=3
 #PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
-EXPORT=3
+EXPORT=52636680
 # Begin Source File
 SOURCE=..\ParTest\partest.h
 USEPARAM=FALSE
@@ -719,21 +733,21 @@ SOURCE=..\..\BSP\modules\pff\src\diskio.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\BSP\modules\pff\src\integer.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\BSP\modules\pff\src\pff.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\FreeRTOS\source\include\FreeRTOS.h
@@ -831,14 +845,14 @@ SOURCE=..\..\BSP\include\GPCE2064.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=3
+EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\BSP\include\GPCE2064.inc
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=7274513
+EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\FreeRTOS\source\include\semphr.h

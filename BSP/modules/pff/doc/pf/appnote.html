@@ -13,14 +13,13 @@
 <h1>Petit FatFs Module Application Note</h1>
 <hr>
 
-<div class="para">
-<h3>Considerations on porting to various platform</h3>
-<p>The Petit FatFs module is assuming following terms on portability.</p>
+<h3>Basic Considerations</h3>
+<p>The FatFs module is assuming following conditions on portability.</p>
 <ul>
 <li>ANSI C<br>
-The Petit FatFs module is a middleware that written in ANSI C. There is no platform dependence, so long as the compiler is in compliance with ANSI C.</li>
+The FatFs module is a middleware written in ANSI C (C89). There is no platform dependence, so long as the compiler is in compliance with ANSI C.</li>
 <li>Size of integer types<br>
-The Petit FatFs module assumes that size of char/short/long are 8/16/32-bit and int is 16 or 32 bit. These correspondence are defined in integer.h. This will not be a problem on most compilers. When any conflict with existing definitions is occured, you must resolve it with care.</li>
+The FatFs module assumes that size of char/short/long are 8/16/32 bit and int is 16 or 32 bit. These correspondence are defined in <tt>integer.h</tt>. This will not be a problem on most compilers. When any conflict with existing definitions is occured, you must resolve it with care.</li>
 </ul>
 </div>
 
