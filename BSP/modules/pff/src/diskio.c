@@ -48,7 +48,7 @@ DRESULT disk_readp (
 /*-----------------------------------------------------------------------*/
 
 DRESULT disk_writep (
-	BYTE* buff,		/* Pointer to the data to be written, NULL:Initiate/Finalize write operation */
+	const BYTE* buff,		/* Pointer to the data to be written, NULL:Initiate/Finalize write operation */
 	DWORD sc		/* Sector number (LBA) or Number of bytes to send */
 )
 {
