@@ -181,7 +181,7 @@ BaseType_t xPortStartScheduler( void )
 void vPortEndScheduler( void )
 {
     /* Not implemented for this port. */
-    P_Watchdog_Clear = C_Watchdog_Clear;
+    reset_watch_dog();
 }
 /*-----------------------------------------------------------*/
 
@@ -205,7 +205,7 @@ void vPortYield( void )
  */
 static void prvSetupTimerInterrupt( void )
 {
-    P_Watchdog_Clear = C_Watchdog_Clear;
+    reset_watch_dog();
     // Config Interrupt
     P_Int_Ctrl |= C_IRQ7_64Hz;
 
@@ -216,14 +216,14 @@ static void prvSetupTimerInterrupt( void )
 void vApplicationIdleHook( void )
 {
     portENABLE_INTERRUPTS();
-    P_Watchdog_Clear = C_Watchdog_Clear;
+    reset_watch_dog();
 }
 #endif
 
 void vApplicationTickHook( void )
 {
     //portENABLE_INTERRUPTS();
-    P_Watchdog_Clear = C_Watchdog_Clear;
+    reset_watch_dog();
 }
 
 void vPortEnterCritical( void )
@@ -256,7 +256,8 @@ void IRQ7(void) __attribute__ ((ISR));
 void IRQ7(void)
 {
 	P_Int_Status = C_IRQ7_64Hz;
-    P_Watchdog_Clear = C_Watchdog_Clear;
+    
+    reset_watch_dog();
     
     #if( configUSE_PREEMPTION == 1 )
     //vPortYield();
