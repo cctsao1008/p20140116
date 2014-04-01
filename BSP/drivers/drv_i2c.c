@@ -1,6 +1,5 @@
-#include "drv_i2c.h"
-// GPCE2064
 #include    "GPCE2064.h"
+#include    "drv_i2c.h"
 
 // Software I2C driver, using same pins as hardware I2C, with hw i2c module disabled.
 // SCL  PB0

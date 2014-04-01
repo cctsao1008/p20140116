@@ -110,7 +110,20 @@ USEPARAM=FALSE
 PARAM=
 EXPORT=3
 # Begin Source File
-SOURCE=..\..\BSP\drivers\drv_i2c_soft.c
+SOURCE=..\..\BSP\drivers\drv_i2c.c
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# End Group
+# Begin Group "spi"
+#PROP Default_Filter=
+USEPARAM=FALSE
+PARAM=
+EXPORT=3
+# Begin Source File
+SOURCE=..\..\BSP\drivers\drv_spi.c
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -256,7 +269,7 @@ EXPORT=3
 #PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
-EXPORT=52636680
+EXPORT=0
 # Begin Source File
 SOURCE=..\ParTest\partest.h
 USEPARAM=FALSE
@@ -315,6 +328,13 @@ EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\BSP\modules\pff\src\pff.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\BSP\drivers\drv_spi.h
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -539,7 +559,20 @@ USEPARAM=FALSE
 PARAM=
 EXPORT=3
 # Begin Source File
-SOURCE=..\..\BSP\drivers\drv_i2c_soft.c
+SOURCE=..\..\BSP\drivers\drv_i2c.c
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# End Group
+# Begin Group "spi"
+#PROP Default_Filter=
+USEPARAM=FALSE
+PARAM=
+EXPORT=3
+# Begin Source File
+SOURCE=..\..\BSP\drivers\drv_spi.c
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -685,7 +718,7 @@ EXPORT=3
 #PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
-EXPORT=52636680
+EXPORT=0
 # Begin Source File
 SOURCE=..\ParTest\partest.h
 USEPARAM=FALSE
@@ -744,6 +777,13 @@ EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\BSP\modules\pff\src\pff.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\BSP\drivers\drv_spi.h
 USEPARAM=FALSE
 PARAM=
 ID=
