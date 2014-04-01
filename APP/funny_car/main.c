@@ -9,7 +9,10 @@
 #include "SACM.h"
 
 /* I2C Driver */
-#include "..\..\BSP\drivers\Drv_i2c.h"
+#include "drv_i2c.h"
+
+/* SPI Driver */
+#include "drv_spi.h"
 
 #include "pff.h"
 
@@ -48,7 +51,6 @@ unsigned SpeechIndex = 0;
 
 //#define heap_size  256
 
-void reset_watchdog(void);
 int bsp_init(void);
 
 #if defined(USE_FLASH_WRITTER)
@@ -103,7 +105,7 @@ int main()
     // RunSchedular fail!!
     while(1)
     {
-    	reset_watchdog();  
+    	reset_watch_dog();
     }
     
     return 0;
@@ -115,7 +117,8 @@ void die (		/* Stop with dying message */
 )
 {
 	printf("Failed with rc=%u.\n", rc);
-	for (;;) ;
+	for (;;)
+        reset_watch_dog();
 }
 
 void flash_writter(void *pvParameters)
@@ -433,11 +436,6 @@ void demo(void *pvParameters)
 }
 #endif
 
-void reset_watchdog(void)
-{
-    P_Watchdog_Clear = C_Watchdog_Clear;
-}
-
 int bsp_init(void)
 {
     init_heap((size_t)stack,configTOTAL_HEAP_SIZE);
@@ -462,7 +460,7 @@ int bsp_init(void)
 void vApplicationIdleHook( void )
 {
     //portENABLE_INTERRUPTS(); // This is very very IMPORTANT !! for  Scheduler
-    reset_watchdog();
+    reset_watch_dog();
     asm("INT OFF");
     //P_System_Clock &= ~C_Sleep_RTC_Status;
     //asm("IRQ ON");
