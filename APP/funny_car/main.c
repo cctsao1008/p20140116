@@ -26,7 +26,7 @@
 //#define ServiceType		Foreground
 #define ServiceType			Background
 
-#define USE_FLASH_WRITTER
+//#define USE_FLASH_WRITER
 
 #define printf(str, ...)
 #define putchar(...)
@@ -53,7 +53,7 @@ unsigned SpeechIndex = 0;
 
 int bsp_init(void);
 
-#if defined(USE_FLASH_WRITTER)
+#if defined(USE_FLASH_WRITER)
 void flash_writter(void *pvParameters);
 #else
 void loop_test_01(void *pvParameters); // Play audio
@@ -72,7 +72,7 @@ xSemaphoreHandle xSemaphore;
 xTaskHandle xHandle[3] = {NULL};
 enum tasks { led_task = 0, audio_task, key_task };
 
-#if defined(USE_FLASH_WRITTER)
+#if defined(USE_FLASH_WRITER)
 #define buff_size 64
 BYTE buff[buff_size];
 #endif
@@ -85,7 +85,7 @@ int main()
     bsp_init();
 
     /* Create the tasks defined within this file. */
-    #if defined(USE_FLASH_WRITTER)
+    #if defined(USE_FLASH_WRITER)
     xTaskCreate(flash_writter, "flash_writter", ( ( unsigned short ) 256 ), buff, 4, NULL );
     #else
     xSemaphore = xSemaphoreCreateBinary();
@@ -111,7 +111,7 @@ int main()
     return 0;
 }
 
-#if defined(USE_FLASH_WRITTER)
+#if defined(USE_FLASH_WRITER)
 void die (		/* Stop with dying message */
 	FRESULT rc	/* FatFs return value */
 )
@@ -241,7 +241,7 @@ void loop_test_01(void *pvParameters)
     	SACM_A1600_Play(SpeechIndex, DAC1 + DAC2, Ramp_Up + Ramp_Dn);
 		#endif
 
-		reset_watchdog(); 
+		reset_watch_dog();
 
     }
 }
@@ -271,7 +271,7 @@ void loop_test_02(void *pvParameters)
 	    acc_x =0; buf[0] = 0; buf[1] = 0;
 	    i2cRead(0x41, 0x2, 2, (uint8_t*)&buf);
 	    acc_x = ((buf[1]<<8) | buf[0]) & 0xFFFC;
-	    reset_watchdog();
+	    reset_watch_dog();
 
 	    if(acc_x > ACC_MAX)      // side 1
             SpeechIndex = 1;
@@ -282,7 +282,7 @@ void loop_test_02(void *pvParameters)
 	    acc_y =0; buf[0] = 0; buf[1] = 0;
 	    i2cRead(0x41, 0x4, 2, (uint8_t*)&buf);
 	    acc_y = ((buf[1]<<8) | buf[0]) & 0xFFFC;
-	    reset_watchdog();
+	    reset_watch_dog();
 
 	    if(acc_x > ACC_MAX)      // side 3
             SpeechIndex = 3;
@@ -293,7 +293,7 @@ void loop_test_02(void *pvParameters)
 	    acc_z =0; buf[0] = 0; buf[1] = 0;
 	    i2cRead(0x41, 0x6, 2, (uint8_t*)&buf);
 	    acc_z = ((buf[1]<<8) | buf[0]) & 0xFFFC;
-	    reset_watchdog();
+	    reset_watch_dog();
 
 	    if(acc_x > ACC_MAX)      // side 5
            SpeechIndex = 5;
