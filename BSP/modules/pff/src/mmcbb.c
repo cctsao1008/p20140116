@@ -26,26 +26,14 @@
 /*-------------------------------------------------------------------------*/
 /* Platform dependent macros and functions needed to be modified           */
 /*-------------------------------------------------------------------------*/
-
-#if 0
-#include <hardware.h>			/* Include hardware specific declareation file here */
-
-#define	INIT_PORT()	init_port()	/* Initialize MMC control port (CS/CLK/DI:output, DO:input) */
-#define DLY_US(n)	dly_us(n)	/* Delay n microseconds */
-#define	FORWARD(d)	forward(d)	/* Data in-time processing function (depends on the project) */
-
-#define	CS_H()		bset(P0)	/* Set MMC CS "high" */
-#define CS_L()		bclr(P0)	/* Set MMC CS "low" */
-#define CK_H()		bset(P1)	/* Set MMC SCLK "high" */
-#define	CK_L()		bclr(P1)	/* Set MMC SCLK "low" */
-#define DI_H()		bset(P2)	/* Set MMC DI "high" */
-#define DI_L()		bclr(P2)	/* Set MMC DI "low" */
-#define DO			btest(P3)	/* Get MMC DO value (high:true, low:false) */
-#else
 #include    "GPCE2064.h" /* Include hardware specific declareation file here */
+#include    "drv_spi.h"
+
+//#define PFF_SPI
 
 #define portTICK_PERIOD_US			( ( TickType_t ) 1000000 / configTICK_RATE_HZ )
 
+#ifdef PFF_SPI
 void init_port(void)
 {
     // Config SPI port
@@ -66,6 +54,7 @@ void init_port(void)
     P_IOA_AT->bit_12 = 0x1;
     P_IOA_DI->bit_12 = 0x1;
 }
+#endif
 
 void forward(int d){}
 
@@ -87,20 +76,23 @@ void dly_us(unsigned long n)
     #endif
 }
 
+#ifdef PFF_SPI
 #define	INIT_PORT() init_port()  /* Initialize MMC control port (CS/CLK/DI:output, DO:input) */
 #define DLY_US(n)   dly_us(n)    /* Delay n microseconds */
 #define	FORWARD(d)  forward(d)   /* Data in-time processing function (depends on the project) */
 
-#define	CS_H()      (P_IOA_Buffer->bit_12) = 0x1  /* Set MMC CS "high" */
-#define CS_L()      (P_IOA_Buffer->bit_12) = 0x0  /* Set MMC CS "low" */
-#define CK_H()      (P_IOA_Buffer->bit_13) = 0x1  /* Set MMC SCLK "high" */
-#define	CK_L()      (P_IOA_Buffer->bit_13) = 0x0  /* Set MMC SCLK "low" */
-#define DI_H()      (P_IOA_Buffer->bit_14) = 0x1  /* Set MMC DI "high" */
-#define DI_L()      (P_IOA_Buffer->bit_14) = 0x0  /* Set MMC DI "low" */
-#define DO          (P_IOA_Data->bit_15)          /* Get MMC DO value (high:true, low:false) */
+#define	CS_H()      (P_IOA_BU->bit_12) = 0x1  /* Set MMC CS "high" */
+#define CS_L()      (P_IOA_BU->bit_12) = 0x0  /* Set MMC CS "low" */
+#define CK_H()      (P_IOA_BU->bit_13) = 0x1  /* Set MMC SCLK "high" */
+#define	CK_L()      (P_IOA_BU->bit_13) = 0x0  /* Set MMC SCLK "low" */
+#define DI_H()      (P_IOA_BU->bit_14) = 0x1  /* Set MMC DI "high" */
+#define DI_L()      (P_IOA_BU->bit_14) = 0x0  /* Set MMC DI "low" */
+#define DO          (P_IOA_DA->bit_15)        /* Get MMC DO value (high:true, low:false) */
+#else
+#define	INIT_PORT() spi_initialize()
+#define DLY_US(n)   dly_us(n)    /* Delay n microseconds */
+#define	FORWARD(d)  forward(d)   /* Data in-time processing function (depends on the project) */
 #endif
-
-
 
 /*--------------------------------------------------------------------------
 
@@ -136,7 +128,7 @@ BYTE CardType;			/* b0:MMC, b1:SDv1, b2:SDv2, b3:Block addressing */
 /*-----------------------------------------------------------------------*/
 /* Transmit a byte to the MMC (bitbanging)                               */
 /*-----------------------------------------------------------------------*/
-
+#ifdef PFF_SPI
 static
 void xmit_mmc (
 	BYTE d			/* Data to be sent */
@@ -159,18 +151,19 @@ void xmit_mmc (
 	if (d & 0x01) DI_H(); else DI_L();	/* bit0 */
 	CK_H(); CK_L();
 }
-
+#else
+#define xmit_mmc(d) spi_send(d)
+#endif
 
 
 /*-----------------------------------------------------------------------*/
 /* Receive a byte from the MMC (bitbanging)                              */
 /*-----------------------------------------------------------------------*/
-
+#ifdef PFF_SPI
 static
 BYTE rcvr_mmc (void)
 {
 	BYTE r;
-
 
 	DI_H();	/* Send 0xFF */
 
@@ -193,6 +186,9 @@ BYTE rcvr_mmc (void)
 
 	return r;
 }
+#else
+#define rcvr_mmc spi_receive
+#endif
 
 
 
@@ -228,9 +224,15 @@ void skip_mmc (
 static
 void release_spi (void)
 {
-    P_Watchdog_Clear = C_Watchdog_Clear;
-	CS_H();
-	rcvr_mmc();
+    reset_watch_dog();
+
+    #ifdef PFF_SPI
+    CS_H();
+    #else
+    spi_select(CS_SDCARD, 1);
+    #endif
+
+    rcvr_mmc();
 }
 
 
@@ -254,8 +256,13 @@ BYTE send_cmd (
 	}
 
 	/* Select the card */
+    #ifdef PFF_SPI
 	CS_H(); rcvr_mmc();
 	CS_L(); rcvr_mmc();
+    #else
+    spi_select(CS_SDCARD, 1); rcvr_mmc();
+    spi_select(CS_SDCARD, 0); rcvr_mmc();
+    #endif
 
 	/* Send a command packet */
 	xmit_mmc(cmd);					/* Start + Command index */
@@ -298,7 +305,12 @@ DSTATUS disk_initialize (void)
 
 	INIT_PORT();
 
+    #ifdef PFF_SPI
 	CS_H();
+    #else
+    spi_select(CS_SDCARD, 1);
+    #endif
+
 	skip_mmc(10);			/* Dummy clocks */
 
 	ty = 0;
