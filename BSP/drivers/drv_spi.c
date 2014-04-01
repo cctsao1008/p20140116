@@ -4,6 +4,16 @@
  */
 #include <stdint.h>
 #include "GPCE2064.h"
+/****************************************************************************
+ * bsp/drivers/drv_spi.c
+ *
+ *   Copyright (C) 2014  DRPM Development Team. All rights reserved.
+ *   Author: TSAO, CHIA-CHENG <chiacheng.tsao@gmail.com>
+ *
+ *  GENERAL DESCRIPTION
+ *      This module performs Serial Peripheral Interface (SPI) functionality.
+ *
+ ****************************************************************************/
 #include "drv_spi.h"
 
 void spi_initialize(void) {

@@ -1,5 +1,14 @@
-#include    "GPCE2064.h"
-#include    "drv_i2c.h"
+/****************************************************************************
+ * bsp/drivers/drv_i2c.c
+ *
+ *   Copyright (C) 2014  DRPM Development Team. All rights reserved.
+ *   Author: TSAO, CHIA-CHENG <chiacheng.tsao@gmail.com>
+ *
+ *  GENERAL DESCRIPTION
+ *      This module performs Inter-Integrated Circuit (I2C) functionality.
+ *
+ ****************************************************************************/
+#include "drv_i2c.h"
 
 // Software I2C driver, using same pins as hardware I2C, with hw i2c module disabled.
 // SCL  PB0

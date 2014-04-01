@@ -1,6 +1,18 @@
+/****************************************************************************
+ * bsp/drivers/drv_i2c.h
+ *
+ *   Copyright (C) 2014  DRPM Development Team. All rights reserved.
+ *   Author: TSAO, CHIA-CHENG <chiacheng.tsao@gmail.com>
+ *
+ *  GENERAL DESCRIPTION
+ *      This module performs Inter-Integrated Circuit (I2C) functionality.
+ *
+ ****************************************************************************/
+
 #ifndef DRV_I2C_H
 #define DRV_I2C_H
 
+#include "GPCE2064.h"
 #include <stdint.h>
 /* These types must be 8-bit integer */
 //typedef char			int8_t;
