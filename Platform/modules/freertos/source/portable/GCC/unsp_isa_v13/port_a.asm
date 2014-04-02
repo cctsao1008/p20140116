@@ -1,4 +1,4 @@
-.include    GPCE2064.inc
+.include    GPCE206x.inc
 //.DEFINE     _ASM_PORT
 
 .IFDEF      _ASM_PORT

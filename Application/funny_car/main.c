@@ -15,8 +15,8 @@
 #include "croutine.h"  
 #include "semphr.h"
 
-/* GPCE2064 */
-#include "GPCE2064.h"
+/* GPCE206x */
+#include "GPCE206x.h"
 #include "SACM.h"
 
 /* I2C Driver */
@@ -238,15 +238,17 @@ void loop_test_01(void *pvParameters)
     while(1)
     {
         #ifdef LOOP_PLAY
-        // Start
-        // SpeechIndex = 0, Say... welcome to tom's wheel
-        // SpeechIndex = 1, Say...  1
-        // SpeechIndex = 2, Say...  2
-        // SpeechIndex = 3, Say...  3
-        // SpeechIndex = 4, Say...  4
-        // SpeechIndex = 5, Say...  5
-        // SpeechIndex = 6, Say...  6
-        // Go back to start
+        /*
+                  Start
+                  SpeechIndex = 0, Say... welcome to tom's wheel
+                  SpeechIndex = 1, Say...  1
+                  SpeechIndex = 2, Say...  2
+                  SpeechIndex = 3, Say...  3
+                  SpeechIndex = 4, Say...  4
+                  SpeechIndex = 5, Say...  5
+                  SpeechIndex = 6, Say...  6
+                  Go back to start
+              */
 
 	    vTaskDelay( delay / portTICK_RATE_MS );
     	SACM_A1600_Play(SpeechIndex, DAC1 + DAC2, Ramp_Up + Ramp_Dn);

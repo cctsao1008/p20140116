@@ -81,8 +81,8 @@
  * Implementation of functions defined in portable.h for the unSP ISA V1.3 port.
  *----------------------------------------------------------*/
 
-// GPCE2064A
-#include "GPCE2064.h"
+/* GPCE206x */
+#include "GPCE206x.h"
 
 /* Each task maintains its own interrupt status in the critical nesting variable. */
 #define portINITIAL_CRITICAL_NESTING	    ( ( uint16_t ) 10 )

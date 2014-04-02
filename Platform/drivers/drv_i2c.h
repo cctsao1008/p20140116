@@ -4,15 +4,14 @@
  *   Copyright (C) 2014  DRPM Development Team. All rights reserved.
  *   Author: TSAO, CHIA-CHENG <chiacheng.tsao@gmail.com>
  *
- *  GENERAL DESCRIPTION
+ *   GENERAL DESCRIPTION
  *      This module performs Inter-Integrated Circuit (I2C) functionality.
  *
  ****************************************************************************/
-
 #ifndef DRV_I2C_H
 #define DRV_I2C_H
 
-#include "GPCE2064.h"
+#include "GPCE206x.h"
 #include "stdint.h"
 
 #define  false           0

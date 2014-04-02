@@ -4,7 +4,7 @@
  *   Copyright (C) 2014  DRPM Development Team. All rights reserved.
  *   Author: TSAO, CHIA-CHENG <chiacheng.tsao@gmail.com>
  *
- *  GENERAL DESCRIPTION
+ *   GENERAL DESCRIPTION
  *      This module performs Serial Peripheral Interface (SPI) functionality.
  *
  ****************************************************************************/
@@ -12,12 +12,11 @@
 #ifndef DRV_SPI_H_
 #define DRV_SPI_H_
 
-#include "GPCE2064.h"
+#include "GPCE206x.h"
 #include "stdint.h"
 
 #define USE_BIT_BANGING_SPI
 //#define USE_HW_CS_CTRL
-
 
 #define USE_SDCARD
 #define USE_SFLASH

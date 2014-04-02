@@ -1,18 +1,17 @@
 /****************************************************************************
- * bsp/drivers/drv_vusb.h
+ * bsp/drivers/drv_lcd.h
  *
  *   Copyright (C) 2014  DRPM Development Team. All rights reserved.
  *   Author: TSAO, CHIA-CHENG <chiacheng.tsao@gmail.com>
  *
  *   GENERAL DESCRIPTION
- *      V-USB is a software-only implementation of a low-speed USB device
- *      for micro-controllers
+ *      This is a driver for the 1.8" SPI display.
  *
  ****************************************************************************/
-#ifndef DRV_VUSB_H
-#define DRV_VUSB_H
+#ifndef DRV_LCD_H
+#define DRV_LCD_H
 #include "GPCE206x.h"
 #include "stdint.h"
 
-#endif DRV_VUSB_H
+#endif DRV_LCD_H
 

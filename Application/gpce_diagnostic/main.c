@@ -4,8 +4,8 @@
 #include "croutine.h"  
 #include "semphr.h"
 
-/* GPCE2064 */
-#include "GPCE2064.h"
+/* GPCE206x */
+#include "GPCE206x.h"
 #include "SACM.h"
 
 /* I2C Driver */

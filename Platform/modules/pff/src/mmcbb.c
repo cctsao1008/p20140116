@@ -24,8 +24,8 @@
 /*-------------------------------------------------------------------------*/
 /* Platform dependent macros and functions needed to be modified           */
 /*-------------------------------------------------------------------------*/
-#include    "GPCE2064.h" /* Include hardware specific declareation file here */
-#include    "drv_spi.h"
+#include "GPCE206x.h" /* Include hardware specific declareation file here */
+#include "drv_spi.h"
 
 //#define PFF_SPI
 
