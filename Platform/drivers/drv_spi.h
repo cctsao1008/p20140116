@@ -15,8 +15,13 @@
 #include "GPCE2064.h"
 #include "stdint.h"
 
+#define USE_BIT_BANGING_SPI
+//#define USE_HW_CS_CTRL
+
+
 #define USE_SDCARD
 #define USE_SFLASH
+
 
 
 /**
@@ -40,8 +45,8 @@
 #define DI_L()      (P_IOA_BU->bit_14) = 0x0  /* Set MMC DI "low" */
 #define DO          (P_IOA_DA->bit_15)          /* Get MMC DO value (high:true, low:false) */
 
-#define	CS_H()      (P_IOA_BU->bit_12) = 0x1  /* Set MMC CS "high" */
-#define CS_L()      (P_IOA_BU->bit_12) = 0x0  /* Set MMC CS "low" */
+//#define CS_H()      (P_IOA_BU->bit_12) = 0x1  /* Set MMC CS "high" */
+//#define CS_L()      (P_IOA_BU->bit_12) = 0x0  /* Set MMC CS "low" */
 
 #define CS_SDCARD     1
 #define CS_SDCARD_H() (P_IOA_BU->bit_12) = 0x1
@@ -54,9 +59,6 @@
 #define CS_TFTMOD     3
 #define CS_TFTMOD_H() (P_IOA_BU->bit_10) = 0x1
 #define CS_TFTMOD_L() (P_IOA_BU->bit_10) = 0x0
-
-
-
 
 /**
  * Flags for various the SPI MODEs
@@ -85,20 +87,25 @@
 #define MOSI_INIT() P_IOA_DA->bit_14 = 0x0; P_IOA_AT->bit_14 = 0x1; P_IOA_DI->bit_14 = 0x1
 #define SCLK_INIT() P_IOA_DA->bit_13 = 0x0; P_IOA_AT->bit_13 = 0x1; P_IOA_DI->bit_13 = 0x1
 
+#ifdef USE_HW_CS_CTRL
+#define CS_HWCTRL_INIT() P_IOX_CT->bit_10 = 0x01
+#endif
+
 #define CS_SDCARD_INIT() P_IOA_DA->bit_12 = 0x0; P_IOA_AT->bit_12 = 0x1; P_IOA_DI->bit_12 = 0x1
 #define CS_SFLASH_INIT() P_IOA_DA->bit_11 = 0x0; P_IOA_AT->bit_11 = 0x1; P_IOA_DI->bit_11 = 0x1
 #define CS_TFTMOD_INIT() P_IOA_DA->bit_10 = 0x0; P_IOA_AT->bit_10 = 0x1; P_IOA_DI->bit_10 = 0x1
 
 
 
-#define SELECT()    CS_L()      /* CS = L */
-#define	DESELECT()	CS_H()       /* CS = H */
+//#define SELECT() CS_L()      /* CS = L */
+//#define DESELECT() CS_H()      /* CS = H */
 
 
 void spi_initialize(void);
-void spi_send(const uint8_t d);
+void spi_xmit(const uint8_t d);
 void spi_select(uint8_t cs, uint8_t high);
-uint8_t spi_receive(void);
+void spi_skip_bytes (uint8_t n);
+uint8_t spi_rcvr(void);
 uint16_t spi_set_divisor(const uint16_t clkdivider);
 
 #endif /*DRV_SPI_H_*/

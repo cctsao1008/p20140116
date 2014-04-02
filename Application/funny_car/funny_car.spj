@@ -20,81 +20,7 @@ PARAM=
 ID=
 EXPORT=3
 # End Source File
-# Begin Group "FreeRTOS"
-#PROP Default_Filter=
-USEPARAM=FALSE
-PARAM=
-EXPORT=3
-# Begin Group "source"
-#PROP Default_Filter=
-USEPARAM=FALSE
-PARAM=
-EXPORT=3
-# Begin Source File
-SOURCE=..\..\FreeRTOS\source\croutine.c
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=..\..\FreeRTOS\source\list.c
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=..\..\FreeRTOS\source\queue.c
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=..\..\FreeRTOS\source\tasks.c
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=..\..\FreeRTOS\source\timers.c
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# End Group
-# Begin Group "portable"
-#PROP Default_Filter=
-USEPARAM=FALSE
-PARAM=
-EXPORT=3
-# Begin Source File
-SOURCE=..\..\FreeRTOS\source\portable\GCC\unsp_isa_v13\port_c.c
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=..\..\FreeRTOS\source\portable\GCC\unsp_isa_v13\port_a.asm
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=..\..\FreeRTOS\source\portable\MemMang\heap_3.c
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# End Group
-# End Group
-# Begin Group "BSP"
+# Begin Group "Platform"
 #PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
@@ -110,11 +36,11 @@ USEPARAM=FALSE
 PARAM=
 EXPORT=3
 # Begin Source File
-SOURCE=..\..\BSP\drivers\drv_i2c.c
+SOURCE=..\..\Platform\drivers\drv_i2c.c
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=3
+EXPORT=0
 # End Source File
 # End Group
 # Begin Group "spi"
@@ -123,7 +49,7 @@ USEPARAM=FALSE
 PARAM=
 EXPORT=3
 # Begin Source File
-SOURCE=..\..\BSP\drivers\drv_spi.c
+SOURCE=..\..\Platform\drivers\drv_spi.c
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -136,11 +62,11 @@ USEPARAM=FALSE
 PARAM=
 EXPORT=3
 # Begin Source File
-SOURCE=..\..\BSP\drivers\drv_mtd.c
+SOURCE=..\..\Platform\drivers\drv_mtd.c
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # End Group
 # End Group
@@ -155,21 +81,89 @@ USEPARAM=FALSE
 PARAM=
 EXPORT=3
 # Begin Source File
-SOURCE=..\..\BSP\modules\pff\src\diskio.c
+SOURCE=..\..\Platform\modules\pff\src\mmcbb.c
 USEPARAM=FALSE
 PARAM=
 ID=
 EXPORT=3
 # End Source File
 # Begin Source File
-SOURCE=..\..\BSP\modules\pff\src\pff.c
+SOURCE=..\..\Platform\modules\pff\src\pff.c
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# End Group
+# Begin Group "freertos"
+#PROP Default_Filter=
+USEPARAM=FALSE
+PARAM=
+EXPORT=3
+# Begin Group "portable"
+#PROP Default_Filter=
+USEPARAM=FALSE
+PARAM=
+EXPORT=0
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\portable\GCC\unsp_isa_v13\port_a.asm
 USEPARAM=FALSE
 PARAM=
 ID=
 EXPORT=3
 # End Source File
 # Begin Source File
-SOURCE=..\..\BSP\modules\pff\src\mmcbb.c
+SOURCE=..\..\Platform\modules\freertos\source\portable\GCC\unsp_isa_v13\port_c.c
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\portable\GCC\unsp_isa_v13\portmacro.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\portable\MemMang\heap_3.c
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# End Group
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\croutine.c
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\list.c
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\queue.c
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\tasks.c
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\timers.c
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -178,7 +172,7 @@ EXPORT=3
 # End Group
 # End Group
 # End Group
-# Begin Group "APP"
+# Begin Group "Application"
 #PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
@@ -312,13 +306,6 @@ ID=
 EXPORT=3
 # End Source File
 # Begin Source File
-SOURCE=..\..\BSP\drivers\drv_i2c.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
 SOURCE=GPCE2064.inc
 USEPARAM=FALSE
 PARAM=
@@ -326,147 +313,42 @@ ID=
 EXPORT=3
 # End Source File
 # Begin Source File
-SOURCE=..\..\BSP\modules\pff\src\diskio.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=..\..\BSP\modules\pff\src\integer.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=..\..\BSP\modules\pff\src\pff.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=..\..\BSP\drivers\drv_spi.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=..\..\FreeRTOS\source\include\FreeRTOS.h
+SOURCE=..\..\Platform\drivers\drv_i2c.h
 USEPARAM=FALSE
 PARAM=
 ID=
 EXPORT=0
 # End Source File
 # Begin Source File
-SOURCE=..\..\BSP\include\stdint.h
+SOURCE=..\..\Platform\drivers\drv_spi.h
 USEPARAM=FALSE
 PARAM=
 ID=
 EXPORT=0
 # End Source File
 # Begin Source File
-SOURCE=..\..\FreeRTOS\source\include\projdefs.h
+SOURCE=..\..\Platform\drivers\drv_mtd.h
 USEPARAM=FALSE
 PARAM=
 ID=
 EXPORT=0
 # End Source File
 # Begin Source File
-SOURCE=..\include\FreeRTOSConfig.h
+SOURCE=..\..\Platform\modules\pff\src\pff.h
 USEPARAM=FALSE
 PARAM=
 ID=
 EXPORT=0
 # End Source File
 # Begin Source File
-SOURCE=..\..\FreeRTOS\source\include\portable.h
+SOURCE=..\..\Platform\modules\pff\src\integer.h
 USEPARAM=FALSE
 PARAM=
 ID=
 EXPORT=0
 # End Source File
 # Begin Source File
-SOURCE=..\..\FreeRTOS\source\portable\GCC\unsp_isa_v13\portmacro.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\FreeRTOS\source\include\mpu_wrappers.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\FreeRTOS\source\include\task.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\FreeRTOS\source\include\list.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\FreeRTOS\source\include\croutine.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\FreeRTOS\source\include\queue.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\FreeRTOS\source\include\timers.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\FreeRTOS\source\include\StackMacros.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\BSP\include\GPCE2064.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\BSP\include\GPCE2064.inc
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\FreeRTOS\source\include\semphr.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\BSP\drivers\drv_mtd.h
+SOURCE=..\..\Platform\modules\pff\src\diskio.h
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -489,81 +371,7 @@ PARAM=
 ID=
 EXPORT=3
 # End Source File
-# Begin Group "FreeRTOS"
-#PROP Default_Filter=
-USEPARAM=FALSE
-PARAM=
-EXPORT=3
-# Begin Group "source"
-#PROP Default_Filter=
-USEPARAM=FALSE
-PARAM=
-EXPORT=3
-# Begin Source File
-SOURCE=..\..\FreeRTOS\source\croutine.c
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=..\..\FreeRTOS\source\list.c
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=..\..\FreeRTOS\source\queue.c
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=..\..\FreeRTOS\source\tasks.c
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=..\..\FreeRTOS\source\timers.c
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# End Group
-# Begin Group "portable"
-#PROP Default_Filter=
-USEPARAM=FALSE
-PARAM=
-EXPORT=3
-# Begin Source File
-SOURCE=..\..\FreeRTOS\source\portable\GCC\unsp_isa_v13\port_c.c
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=..\..\FreeRTOS\source\portable\GCC\unsp_isa_v13\port_a.asm
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=..\..\FreeRTOS\source\portable\MemMang\heap_3.c
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# End Group
-# End Group
-# Begin Group "BSP"
+# Begin Group "Platform"
 #PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
@@ -579,11 +387,11 @@ USEPARAM=FALSE
 PARAM=
 EXPORT=3
 # Begin Source File
-SOURCE=..\..\BSP\drivers\drv_i2c.c
+SOURCE=..\..\Platform\drivers\drv_i2c.c
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=3
+EXPORT=0
 # End Source File
 # End Group
 # Begin Group "spi"
@@ -592,7 +400,7 @@ USEPARAM=FALSE
 PARAM=
 EXPORT=3
 # Begin Source File
-SOURCE=..\..\BSP\drivers\drv_spi.c
+SOURCE=..\..\Platform\drivers\drv_spi.c
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -605,11 +413,11 @@ USEPARAM=FALSE
 PARAM=
 EXPORT=3
 # Begin Source File
-SOURCE=..\..\BSP\drivers\drv_mtd.c
+SOURCE=..\..\Platform\drivers\drv_mtd.c
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # End Group
 # End Group
@@ -624,21 +432,89 @@ USEPARAM=FALSE
 PARAM=
 EXPORT=3
 # Begin Source File
-SOURCE=..\..\BSP\modules\pff\src\diskio.c
+SOURCE=..\..\Platform\modules\pff\src\mmcbb.c
 USEPARAM=FALSE
 PARAM=
 ID=
 EXPORT=3
 # End Source File
 # Begin Source File
-SOURCE=..\..\BSP\modules\pff\src\pff.c
+SOURCE=..\..\Platform\modules\pff\src\pff.c
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# End Group
+# Begin Group "freertos"
+#PROP Default_Filter=
+USEPARAM=FALSE
+PARAM=
+EXPORT=3
+# Begin Group "portable"
+#PROP Default_Filter=
+USEPARAM=FALSE
+PARAM=
+EXPORT=0
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\portable\GCC\unsp_isa_v13\port_a.asm
 USEPARAM=FALSE
 PARAM=
 ID=
 EXPORT=3
 # End Source File
 # Begin Source File
-SOURCE=..\..\BSP\modules\pff\src\mmcbb.c
+SOURCE=..\..\Platform\modules\freertos\source\portable\GCC\unsp_isa_v13\port_c.c
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\portable\GCC\unsp_isa_v13\portmacro.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\portable\MemMang\heap_3.c
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# End Group
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\croutine.c
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\list.c
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\queue.c
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\tasks.c
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\timers.c
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -647,7 +523,7 @@ EXPORT=3
 # End Group
 # End Group
 # End Group
-# Begin Group "APP"
+# Begin Group "Application"
 #PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
@@ -781,13 +657,6 @@ ID=
 EXPORT=3
 # End Source File
 # Begin Source File
-SOURCE=..\..\BSP\drivers\drv_i2c.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
 SOURCE=GPCE2064.inc
 USEPARAM=FALSE
 PARAM=
@@ -795,147 +664,42 @@ ID=
 EXPORT=3
 # End Source File
 # Begin Source File
-SOURCE=..\..\BSP\modules\pff\src\diskio.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=..\..\BSP\modules\pff\src\integer.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=..\..\BSP\modules\pff\src\pff.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=..\..\BSP\drivers\drv_spi.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=..\..\FreeRTOS\source\include\FreeRTOS.h
+SOURCE=..\..\Platform\drivers\drv_i2c.h
 USEPARAM=FALSE
 PARAM=
 ID=
 EXPORT=0
 # End Source File
 # Begin Source File
-SOURCE=..\..\BSP\include\stdint.h
+SOURCE=..\..\Platform\drivers\drv_spi.h
 USEPARAM=FALSE
 PARAM=
 ID=
 EXPORT=0
 # End Source File
 # Begin Source File
-SOURCE=..\..\FreeRTOS\source\include\projdefs.h
+SOURCE=..\..\Platform\drivers\drv_mtd.h
 USEPARAM=FALSE
 PARAM=
 ID=
 EXPORT=0
 # End Source File
 # Begin Source File
-SOURCE=..\include\FreeRTOSConfig.h
+SOURCE=..\..\Platform\modules\pff\src\pff.h
 USEPARAM=FALSE
 PARAM=
 ID=
 EXPORT=0
 # End Source File
 # Begin Source File
-SOURCE=..\..\FreeRTOS\source\include\portable.h
+SOURCE=..\..\Platform\modules\pff\src\integer.h
 USEPARAM=FALSE
 PARAM=
 ID=
 EXPORT=0
 # End Source File
 # Begin Source File
-SOURCE=..\..\FreeRTOS\source\portable\GCC\unsp_isa_v13\portmacro.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\FreeRTOS\source\include\mpu_wrappers.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\FreeRTOS\source\include\task.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\FreeRTOS\source\include\list.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\FreeRTOS\source\include\croutine.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\FreeRTOS\source\include\queue.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\FreeRTOS\source\include\timers.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\FreeRTOS\source\include\StackMacros.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\BSP\include\GPCE2064.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\BSP\include\GPCE2064.inc
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\FreeRTOS\source\include\semphr.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\BSP\drivers\drv_mtd.h
+SOURCE=..\..\Platform\modules\pff\src\diskio.h
 USEPARAM=FALSE
 PARAM=
 ID=

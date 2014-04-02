@@ -28,6 +28,7 @@
 static void I2C_delay(void)
 {
     volatile int i = 7;
+
     while (i)
         i--;
 }
@@ -117,6 +118,7 @@ static void I2C_SendByte(uint8_t byte)
         I2C_delay();
     }
     SCL_L;
+    reset_watch_dog();
 }
 
 static uint8_t I2C_ReceiveByte(void)
@@ -136,6 +138,7 @@ static uint8_t I2C_ReceiveByte(void)
         }
     }
     SCL_L;
+    reset_watch_dog();
     return byte;
 }
 
@@ -152,7 +155,7 @@ uint8_t i2cWriteBuffer(uint8_t addr, uint8_t reg, uint8_t len, uint8_t * data)
     int i;
     if (!I2C_Start())
         return false;
-    I2C_SendByte(addr << 1 | I2C_Direction_Transmitter);
+    I2C_SendByte(addr << 1 | I2C_Direction_Xmit);
     if (!I2C_WaitAck()) {
         I2C_Stop();
         return false;
@@ -174,7 +177,7 @@ uint8_t i2cWrite(uint8_t addr, uint8_t reg, uint8_t data)
 {
     if (!I2C_Start())
         return false;
-    I2C_SendByte(addr << 1 | I2C_Direction_Transmitter);
+    I2C_SendByte(addr << 1 | I2C_Direction_Xmit);
     if (!I2C_WaitAck()) {
         I2C_Stop();
         return false;
@@ -191,7 +194,7 @@ uint8_t i2cRead(uint8_t addr, uint8_t reg, uint8_t len, uint8_t *buf)
 {
     if (!I2C_Start())
         return false;
-    I2C_SendByte(addr << 1 | I2C_Direction_Transmitter);
+    I2C_SendByte(addr << 1 | I2C_Direction_Xmit);
     if (!I2C_WaitAck()) {
         I2C_Stop();
         return false;
@@ -199,7 +202,7 @@ uint8_t i2cRead(uint8_t addr, uint8_t reg, uint8_t len, uint8_t *buf)
     I2C_SendByte(reg);
     I2C_WaitAck();
     I2C_Start();
-    I2C_SendByte(addr << 1 | I2C_Direction_Receiver);
+    I2C_SendByte(addr << 1 | I2C_Direction_Rcvr);
     I2C_WaitAck();
     while (len) {
         *buf = I2C_ReceiveByte();

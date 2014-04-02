@@ -1,9 +1,3 @@
-/**
- * File: drv_spi.c - SPI implementation
- *
- */
-#include <stdint.h>
-#include "GPCE2064.h"
 /****************************************************************************
  * bsp/drivers/drv_spi.c
  *
@@ -16,17 +10,25 @@
  ****************************************************************************/
 #include "drv_spi.h"
 
-void spi_initialize(void) {
+void spi_initialize(void)
+{
+    reset_watch_dog();
+#ifdef USE_BIT_BANGING_SPI
     MISO_INIT();
     MOSI_INIT();
     SCLK_INIT();
+#endif
 
     /* Chip Select Pins */
-
+#ifdef USE_HW_CS_CTRL
+    CS_HWCTRL_INIT();
+#else
     #ifdef USE_SDCARD
     //SD_CS : Micro SD Card Chip Select
     CS_SDCARD_INIT();
     #endif
+#endif
+
 
     #ifdef USE_SFLASH
     //F_CS : Serial Flash Chip Select
@@ -40,9 +42,12 @@ void spi_initialize(void) {
 }
 
 /**
- * spi_send() - send a byte and recv response
+ * spi_xmit() - send a byte and recv response
  */
-void spi_send(const uint8_t d) {
+void spi_xmit(const uint8_t d)
+{
+    reset_watch_dog();
+#ifdef USE_BIT_BANGING_SPI
 	if (d & 0x80) DI_H(); else DI_L();	/* bit7 */
 	CK_H(); CK_L();
 	if (d & 0x40) DI_H(); else DI_L();	/* bit6 */
@@ -59,15 +64,21 @@ void spi_send(const uint8_t d) {
 	CK_H(); CK_L();
 	if (d & 0x01) DI_H(); else DI_L();	/* bit0 */
 	CK_H(); CK_L();
+#else
+    // TODO : HW SPI MODE
+#endif
 }
 
 /**
- * spi_receive() - send dummy btye then recv response
+ * spi_rcvr() - send dummy btye then recv response
  */
 
-uint8_t spi_receive(void) {
+uint8_t spi_rcvr(void)
+{
 	uint8_t r;
 
+    reset_watch_dog();
+#ifdef USE_BIT_BANGING_SPI
 	DI_H();	/* Send 0xFF */
 
 	r = 0;   if (DO) r++;	/* bit7 */
@@ -86,14 +97,44 @@ uint8_t spi_receive(void) {
 	CK_H(); CK_L();
 	r <<= 1; if (DO) r++;	/* bit0 */
     CK_H(); CK_L();
+#else
+    // TODO : HW SPI MODE
+#endif
 
     return r;
 }
 
+void spi_skip_bytes (
+	uint8_t n		/* Number of bytes to skip */
+)
+{
+    reset_watch_dog();
+#ifdef USE_BIT_BANGING_SPI
+	DI_H();	/* Send 0xFF */
+
+	do {
+		CK_H(); CK_L();
+		CK_H(); CK_L();
+		CK_H(); CK_L();
+		CK_H(); CK_L();
+		CK_H(); CK_L();
+		CK_H(); CK_L();
+		CK_H(); CK_L();
+		CK_H(); CK_L();
+	} while (--n);
+#else
+    // TODO : HW SPI MODE
+#endif
+
+}
+
+
 void spi_select(uint8_t cs, uint8_t high)
 {
+    reset_watch_dog();
     switch(cs)
     {
+#ifndef USE_HW_CS_CTRL
         #ifdef USE_SDCARD
         case CS_SDCARD :
 
@@ -104,6 +145,7 @@ void spi_select(uint8_t cs, uint8_t high)
 
             break;
         #endif
+#endif
 
         #ifdef USE_SFLASH
         case CS_SFLASH :
@@ -144,7 +186,9 @@ void spi_select(uint8_t cs, uint8_t high)
  * returns the previous setting
  */
 
-uint16_t spi_set_divisor(const uint16_t clkdiv) {
+uint16_t spi_set_divisor(const uint16_t clkdiv)
+{
+    reset_watch_dog();
     return 0;
 }
 

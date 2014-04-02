@@ -1,15 +1,16 @@
 /****************************************************************************
- * bsp/drivers/drv_mtd.h
+ * bsp/drivers/drv_vusb.h
  *
  *   Copyright (C) 2014  DRPM Development Team. All rights reserved.
  *   Author: TSAO, CHIA-CHENG <chiacheng.tsao@gmail.com>
  *
  *  GENERAL DESCRIPTION
- *      This module performs Memory Technology Device (MTD) functionality.
+ *      V-USB is a software-only implementation of a low-speed USB device
+ *      for micro-controllers
  *
  ****************************************************************************/
-#ifndef DRV_MTD_H
-#define DRV_MTD_H
+#ifndef DRV_VUSB_H
+#define DRV_VUSB_H
 
 #include <stdint.h>
-#endif DRV_MTD_H
+#endif DRV_VUSB_H

@@ -4,8 +4,6 @@
 
 #include "diskio.h"
 
-
-
 #if 0
 /*-----------------------------------------------------------------------*/
 /* Initialize Disk Drive                                                 */
@@ -39,9 +37,6 @@ DRESULT disk_readp (
 
 	return res;
 }
-#endif
-
-
 
 /*-----------------------------------------------------------------------*/
 /* Write Partial Sector                                                  */
@@ -73,4 +68,5 @@ DRESULT disk_writep (
 
 	return res;
 }
+#endif
 

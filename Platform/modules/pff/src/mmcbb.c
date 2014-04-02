@@ -19,8 +19,6 @@
    You need to modify only a few macros to control GPIO ports.
 
 /-------------------------------------------------------------------------*/
-
-
 #include "diskio.h"
 
 /*-------------------------------------------------------------------------*/
@@ -92,6 +90,9 @@ void dly_us(unsigned long n)
 #define	INIT_PORT() spi_initialize()
 #define DLY_US(n)   dly_us(n)    /* Delay n microseconds */
 #define	FORWARD(d)  forward(d)   /* Data in-time processing function (depends on the project) */
+
+#define	CS_H() spi_select(CS_SDCARD, 1)
+#define CS_L() spi_select(CS_SDCARD, 0)
 #endif
 
 /*--------------------------------------------------------------------------
@@ -112,11 +113,11 @@ void dly_us(unsigned long n)
 #define CMD58	(0x40+58)	/* READ_OCR */
 
 /* Card type flags (CardType) */
-#define CT_MMC				0x01	/* MMC ver 3 */
-#define CT_SD1				0x02	/* SD ver 1 */
-#define CT_SD2				0x04	/* SD ver 2 */
+#define CT_MMC				0x01	        /* MMC ver 3 */
+#define CT_SD1				0x02	        /* SD ver 1 */
+#define CT_SD2				0x04	        /* SD ver 2 */
 #define CT_SDC				(CT_SD1|CT_SD2)	/* SD */
-#define CT_BLOCK			0x08	/* Block addressing */
+#define CT_BLOCK			0x08	        /* Block addressing */
 
 
 
@@ -152,7 +153,7 @@ void xmit_mmc (
 	CK_H(); CK_L();
 }
 #else
-#define xmit_mmc(d) spi_send(d)
+#define xmit_mmc(d) spi_xmit(d)
 #endif
 
 
@@ -187,7 +188,7 @@ BYTE rcvr_mmc (void)
 	return r;
 }
 #else
-#define rcvr_mmc spi_receive
+#define rcvr_mmc() spi_rcvr()
 #endif
 
 
@@ -195,7 +196,7 @@ BYTE rcvr_mmc (void)
 /*-----------------------------------------------------------------------*/
 /* Skip bytes on the MMC (bitbanging)                                    */
 /*-----------------------------------------------------------------------*/
-
+#ifdef PFF_SPI
 static
 void skip_mmc (
 	WORD n		/* Number of bytes to skip */
@@ -214,7 +215,9 @@ void skip_mmc (
 		CK_H(); CK_L();
 	} while (--n);
 }
-
+#else
+#define skip_mmc(n) spi_skip_bytes(n)
+#endif
 
 
 /*-----------------------------------------------------------------------*/
@@ -224,14 +227,7 @@ void skip_mmc (
 static
 void release_spi (void)
 {
-    reset_watch_dog();
-
-    #ifdef PFF_SPI
     CS_H();
-    #else
-    spi_select(CS_SDCARD, 1);
-    #endif
-
     rcvr_mmc();
 }
 
@@ -256,13 +252,8 @@ BYTE send_cmd (
 	}
 
 	/* Select the card */
-    #ifdef PFF_SPI
 	CS_H(); rcvr_mmc();
 	CS_L(); rcvr_mmc();
-    #else
-    spi_select(CS_SDCARD, 1); rcvr_mmc();
-    spi_select(CS_SDCARD, 0); rcvr_mmc();
-    #endif
 
 	/* Send a command packet */
 	xmit_mmc(cmd);					/* Start + Command index */
@@ -305,11 +296,7 @@ DSTATUS disk_initialize (void)
 
 	INIT_PORT();
 
-    #ifdef PFF_SPI
 	CS_H();
-    #else
-    spi_select(CS_SDCARD, 1);
-    #endif
 
 	skip_mmc(10);			/* Dummy clocks */
 
@@ -412,7 +399,6 @@ DRESULT disk_readp (
 /* Write partial sector                                                  */
 /*-----------------------------------------------------------------------*/
 #if _USE_WRITE
-
 DRESULT disk_writep (
 	const BYTE *buff,	/* Pointer to the bytes to be written (NULL:Initiate/Finalize sector write) */
 	DWORD sa			/* Number of bytes to send, Sector number (LBA) or zero */
@@ -455,3 +441,4 @@ DRESULT disk_writep (
 	return res;
 }
 #endif
+

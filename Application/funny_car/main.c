@@ -25,6 +25,9 @@
 /* SPI Driver */
 #include "drv_spi.h"
 
+/* MTD Driver */
+#include "drv_mtd.h"
+
 #include "pff.h"
 
 
@@ -174,7 +177,7 @@ void flash_writter(void *pvParameters)
 #if _USE_WRITE
     printf("\nOpen a file to write (write.txt).\n");
 
-    rc = pf_open("WRITE.TXT");
+    rc = pf_open("write.txt");
     if (rc) die(rc);
     
     printf("\nWrite a text data. (Hello world!)\n");
@@ -214,6 +217,9 @@ void flash_writter(void *pvParameters)
 #endif
     
     printf("\nTest completed.\n");
+
+    /* MTD Device Detect */
+    mtd_init();
 
     while(1)
     {
