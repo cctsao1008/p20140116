@@ -214,6 +214,19 @@ ID=
 EXPORT=3
 # End Source File
 # End Group
+# Begin Group "ParTest"
+#PROP Default_Filter=
+USEPARAM=FALSE
+PARAM=
+EXPORT=3
+# Begin Source File
+SOURCE=..\ParTest\ParTest.c
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# End Group
 # End Group
 # End Group
 # Begin Group "Head Files"
@@ -631,6 +644,19 @@ USEPARAM=FALSE
 PARAM=
 ID=
 EXPORT=3
+# End Source File
+# End Group
+# Begin Group "ParTest"
+#PROP Default_Filter=
+USEPARAM=FALSE
+PARAM=
+EXPORT=3
+# Begin Source File
+SOURCE=..\ParTest\ParTest.c
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
 # End Source File
 # End Group
 # End Group

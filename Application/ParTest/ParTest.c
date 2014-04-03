@@ -76,7 +76,6 @@ Changes from V2.0.0
 */
 
 #include "FreeRTOS.h"
-#include "partest.h"
 #include "task.h"
 
 /* GPCE Hardware Specification */
@@ -88,7 +87,7 @@ Changes from V2.0.0
 #define partstDEFAULT_PORT_ADDRESS      P_IOA_DA
 
 /*lint -e956 File scope parameters okay here. */
-static unsigned short usPortAddress = partstDEFAULT_PORT_ADDRESS;
+static volatile IO_BITS usPortAddress = partstDEFAULT_PORT_ADDRESS;
 static unsigned short ucCurrentOutputValue = partstALL_OUTPUTS_OFF;
 /*lint +e956 */
 
@@ -97,11 +96,11 @@ void portOUTPUT_WORD(unsigned short addr, unsigned short state)
     switch(addr)
     {
         case P_IOA_DA :
-            P_IOA_DA = state;
+            (volatile IO_BITS)(P_IOA_DA -> data) = state;
             break;
 
         case P_IOB_DA :
-            P_IOB_DA = state;
+            (volatile IO_BITS)(P_IOB_DA -> data) = state;
             break;
 
         default :
@@ -118,7 +117,7 @@ void vParTestInitialise( void )
 {
 	ucCurrentOutputValue = partstALL_OUTPUTS_OFF;
 
-	portOUTPUT_WORD( usPortAddress, partstALL_OUTPUTS_OFF );
+	portOUTPUT_WORD( (unsigned short)usPortAddress, partstALL_OUTPUTS_OFF );
 }
 /*-----------------------------------------------------------*/
 
@@ -143,7 +142,7 @@ unsigned short ucBit = ( unsigned short ) 1;
 			ucCurrentOutputValue |= ucBit;
 		}
 
-		portOUTPUT_WORD( usPortAddress, ucCurrentOutputValue );
+		portOUTPUT_WORD( (unsigned short)usPortAddress, ucCurrentOutputValue );
 	}
 	xTaskResumeAll();
 }
@@ -168,7 +167,7 @@ unsigned short ucBit;
 				ucCurrentOutputValue |= ucBit;
 			}
 
-			portOUTPUT_WORD( usPortAddress, ucCurrentOutputValue );
+			portOUTPUT_WORD( (unsigned short)usPortAddress, ucCurrentOutputValue );
 		}
 		xTaskResumeAll();			
 	}

@@ -1,6 +1,6 @@
 #####################################################################
 #																	 
-#	Created by u'nSP IDE V3.0.8		16:26:49	04/03/14
+#	Created by u'nSP IDE V3.0.8		17:49:12	04/03/14
 #
 #####################################################################
 
@@ -73,7 +73,8 @@ OBJFILES	= \
 	"$(OUTDIR)\System.obj" \
 	"$(OUTDIR)\SACM_A1600_User.obj" \
 	"$(OUTDIR)\isr_c.obj" \
-	"$(OUTDIR)\isr_a.obj" 
+	"$(OUTDIR)\isr_a.obj" \
+	"$(OUTDIR)\ParTest.obj" 
 
 "$(OUTDIR)\Resource.obj": "D:\funny_car\p20140116\Application\funny_car\Resource.asm" 
 	$(AS) $(ASFLAGS) $(INCLUDES) -o "$(OUTDIR)\Resource.obj" "D:\funny_car\p20140116\Application\funny_car\Resource.asm" 
@@ -202,6 +203,13 @@ OBJFILES	= \
 "$(OUTDIR)\isr_a.obj": "D:\funny_car\p20140116\Application\funny_car\isr_a.asm" ".\A1600.inc" "..\..\Platform\include\GPCE206x.inc" 
 	$(AS) $(ASFLAGS) $(INCLUDES) -o "$(OUTDIR)\isr_a.obj" "D:\funny_car\p20140116\Application\funny_car\isr_a.asm" 
 
+"$(OUTDIR)\ParTest.asm": "D:\funny_car\p20140116\Application\ParTest\ParTest.c" "..\..\Platform\modules\freertos\source\include\FreeRTOS.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\stddef.h" "..\..\Platform\include\stdint.h" "D:\funny_car\p20140116\Platform\modules\freertos\source\include\projdefs.h" "..\..\Application\include\FreeRTOSConfig.h" "D:\funny_car\p20140116\Platform\modules\freertos\source\include\portable.h" "..\..\Platform\modules\freertos\source\portable\GCC\unsp_isa_v13\portmacro.h" "D:\funny_car\p20140116\Platform\modules\freertos\source\include\mpu_wrappers.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\string.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\memory.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\stdlib.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\reent.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\sys\reent.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\_ansi.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\machine/_types.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\assert.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\limits.h" "..\..\Platform\modules\freertos\source\include\task.h" "D:\funny_car\p20140116\Platform\modules\freertos\source\include\list.h" "..\..\Platform\include\GPCE206x.h" 
+	set PATH="$(APPDIR)\toolchain\";%PATH% & \
+	$(CC) $(CFLAGS) -o "$(OUTDIR)/ParTest.asm" "D:/funny_car/p20140116/Application/ParTest/ParTest.c" 
+
+"$(OUTDIR)\ParTest.obj": "$(OUTDIR)\ParTest.asm"
+	$(AS) $(CASFLAGS) $(INCLUDES) -o "$(OUTDIR)\ParTest.obj" "$(OUTDIR)\ParTest.asm" 
+
 
 .SUFFIXES : .c .asm .obj .s37 .tsk .res
 
@@ -276,6 +284,9 @@ clean :
 	$(RM) "$(OUTDIR)\isr_c.asm" 
 	$(RM) "$(OUTDIR)\isr_a.obj" 
 	$(RM) "$(OUTDIR)\isr_a.lst" 
+	$(RM) "$(OUTDIR)\ParTest.obj" 
+	$(RM) "$(OUTDIR)\ParTest.lst" 
+	$(RM) "$(OUTDIR)\ParTest.asm" 
 	$(RM) "$(BINFILENOEXT).s37" "$(BINFILENOEXT).tsk" "$(BINFILENOEXT).hdb" $(SBMFILE) 
 
 .c.asm:
