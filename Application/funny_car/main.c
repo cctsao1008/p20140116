@@ -112,8 +112,8 @@ int main()
 
     /* Create the tasks defined within this file. */
     #if defined(USE_FLASH_WRITER)
-    lcd7735_puts("----- DRPM -----\n");
-    lcd7735_puts("Flash Writter...\n");
+    lcd7735_puts("----- DRPM -----");
+    lcd7735_puts("Flash Writter.  ");
     xTaskCreate(flash_writter, "flash_writter", ( ( unsigned short ) 256 ), buff, 4, NULL );
     #else
     xSemaphore = xSemaphoreCreateBinary();
@@ -145,6 +145,7 @@ void die (		/* Stop with dying message */
 )
 {
 	printf("Failed with rc=%u.\n", rc);
+	lcd7735_puts("SD OP Failed!\n");
 
     #if 0
 	for (;;)
