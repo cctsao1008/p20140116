@@ -263,10 +263,10 @@ int putchar (int c)
 void delay_ms(uint32_t ms)
 {    
     #if 1 // Use this will save 20 word in code.
-    uint32_t c = ms*50*200; // 49 ~= 1 us / ((1 / 49152000) * 10^6) us
+    uint32_t c = ms*50*10; // 49 ~= 1 us / ((1 / 49152000) * 10^6) us
 
     do{
-        asm("NOP");
+        //asm("NOP");
         reset_watch_dog();
     }while(--c);
     #else
@@ -597,6 +597,7 @@ void lcd7735_init(void) {
     LCD_SCK_INIT();
     LCD_SDA_INIT();
     LCD_A0_INIT();
+    LCD_RST_INIT();
 }
 
 void lcd7735_xmit(const uint8_t tb) {
@@ -611,34 +612,38 @@ void lcd7735_xmit(const uint8_t tb) {
 #else
     reset_watch_dog();
 	if (tb & 0x80) LCD_SDA_H(); else LCD_SDA_L();	/* bit7 */
-	LCD_SCK_H(); LCD_SCK_L();
+	LCD_SCK_L(); LCD_SCK_H();
 	if (tb & 0x40) LCD_SDA_H(); else LCD_SDA_L();	/* bit6 */
-	LCD_SCK_H(); LCD_SCK_L();
+	LCD_SCK_L(); LCD_SCK_H();
 	if (tb & 0x20) LCD_SDA_H(); else LCD_SDA_L();	/* bit5 */
-	LCD_SCK_H(); LCD_SCK_L();
+	LCD_SCK_L(); LCD_SCK_H();
 	if (tb & 0x10) LCD_SDA_H(); else LCD_SDA_L();	/* bit4 */
-	LCD_SCK_H(); LCD_SCK_L();
+	LCD_SCK_L(); LCD_SCK_H();
 	if (tb & 0x08) LCD_SDA_H(); else LCD_SDA_L();	/* bit3 */
-	LCD_SCK_H(); LCD_SCK_L();
+	LCD_SCK_L(); LCD_SCK_H();
 	if (tb & 0x04) LCD_SDA_H(); else LCD_SDA_L();	/* bit2 */
-	LCD_SCK_H(); LCD_SCK_L();
+	LCD_SCK_L(); LCD_SCK_H();
 	if (tb & 0x02) LCD_SDA_H(); else LCD_SDA_L();	/* bit1 */
-	LCD_SCK_H(); LCD_SCK_L();
+	LCD_SCK_L(); LCD_SCK_H();
 	if (tb & 0x01) LCD_SDA_H(); else LCD_SDA_L();	/* bit0 */
-	LCD_SCK_H(); LCD_SCK_L();
+	LCD_SCK_L(); LCD_SCK_H();
 #endif
 }
 
 // Send control command to controller
 void lcd7735_sendCmd(const uint8_t c) {
     LCD_A0_L();
+    //LCD_CS_L();
     lcd7735_xmit(c);
+    //LCD_CS_H();
 }
 
 // Send parameters o command to controller
 void lcd7735_sendData(const uint8_t d) {
     LCD_A0_H();
+    //LCD_CS_L();
     lcd7735_xmit(d);
+    //LCD_CS_H();
 }
 #endif
 

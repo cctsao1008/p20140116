@@ -224,7 +224,7 @@ SOURCE=..\ParTest\ParTest.c
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # End Group
 # End Group
@@ -370,7 +370,7 @@ SOURCE=..\..\Platform\modules\freertos\source\include\portable.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=79430916
+EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\mpu_wrappers.h
@@ -384,14 +384,14 @@ SOURCE=..\..\Platform\modules\freertos\source\include\task.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=723477539
+EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\list.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=79428936
+EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\croutine.h
@@ -412,7 +412,7 @@ SOURCE=..\..\Platform\modules\freertos\source\include\timers.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=723477752
+EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\StackMacros.h
@@ -433,7 +433,7 @@ SOURCE=..\..\Platform\modules\freertos\source\include\semphr.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=79428716
+EXPORT=0
 # End Source File
 # End Group
 # End SubItem
@@ -656,7 +656,7 @@ SOURCE=..\ParTest\ParTest.c
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # End Group
 # End Group
@@ -802,7 +802,7 @@ SOURCE=..\..\Platform\modules\freertos\source\include\portable.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=79430916
+EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\mpu_wrappers.h
@@ -816,14 +816,14 @@ SOURCE=..\..\Platform\modules\freertos\source\include\task.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=723477539
+EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\list.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=79428936
+EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\croutine.h
@@ -844,7 +844,7 @@ SOURCE=..\..\Platform\modules\freertos\source\include\timers.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=723477752
+EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\StackMacros.h
@@ -865,7 +865,7 @@ SOURCE=..\..\Platform\modules\freertos\source\include\semphr.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=79428716
+EXPORT=0
 # End Source File
 # End Group
 # End SubItem

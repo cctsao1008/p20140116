@@ -50,9 +50,6 @@
 /* Write file that provide from SD card to Serial Flash */
 #define USE_FLASH_WRITER
 
-/* Use LCD module */
-//#define USE_LCDMOD
-
 /* Debug message output */
 #define printf(str, ...)
 #define putchar(...)
@@ -89,6 +86,10 @@ void key_scan(void *pvParameters);
 void audio_play(void *pvParameters);
 #endif
 
+#ifdef CODE_1
+void test_ascii_screen(void);
+#endif
+
 portTickType xTick = 0; 
 portSTACK_TYPE stack[configTOTAL_HEAP_SIZE];
 
@@ -111,6 +112,8 @@ int main()
 
     /* Create the tasks defined within this file. */
     #if defined(USE_FLASH_WRITER)
+    lcd7735_puts("----- DRPM -----\n");
+    lcd7735_puts("Flash Writter...\n");
     xTaskCreate(flash_writter, "flash_writter", ( ( unsigned short ) 256 ), buff, 4, NULL );
     #else
     xSemaphore = xSemaphoreCreateBinary();
@@ -495,15 +498,12 @@ int bsp_init(void)
 
     System_Initial();			// System initial
 
-    #ifdef USE_LCDMOD
-
     #ifdef CODE_1
     lcd7735_init();
     lcd7735_initR(INITR_REDTAB);
     lcd7735_fillScreen(ST7735_BLACK);
-    lcd7735_init_screen((void *)&SmallFont[0],ST7735_GREEN,ST7735_BLACK,PORTRAIT);
-    #endif
-
+    lcd7735_init_screen((void *)&SmallFont[0],ST7735_WHITE,ST7735_BLACK,PORTRAIT);
+    //test_ascii_screen();
     #endif
     
     return 0;
@@ -545,6 +545,20 @@ void vApplicationStackOverflowHook(void)
     for(;;)
         reset_watch_dog();
 }
+#endif
+
+#ifdef CODE_1
+void test_ascii_screen(void) {
+	unsigned char x;
+	int i;
+
+    //lcd7735_init_screen((void *)&SmallFont[0],ST7735_WHITE,ST7735_BLACK,PORTRAIT);
+    x = 0x20;
+
+	for(i=0;i<95;i++) {
+		lcd7735_putc(x+i);
+	}
+}	
 #endif
 
 #ifdef CODE_2

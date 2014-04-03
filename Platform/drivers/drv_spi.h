@@ -19,8 +19,7 @@
 
 #define USE_SDCARD
 #define USE_SFLASH
-
-
+#define USE_LCDMOD
 
 /**
  * SMCLK divider arguments for spi_set_divisor

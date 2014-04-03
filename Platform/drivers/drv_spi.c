@@ -20,14 +20,14 @@ void spi_initialize(void)
 #endif
 
     /* Chip Select Pins */
-#ifdef USE_HW_CS_CTRL
-    CS_HWCTRL_INIT();
-#else
     #ifdef USE_SDCARD
-    //SD_CS : Micro SD Card Chip Select
-    CS_SDCARD_INIT();
+        #ifdef USE_HW_CS_CTRL
+        CS_HWCTRL_INIT();
+        #else    
+        //SD_CS : Micro SD Card Chip Select
+        CS_SDCARD_INIT();
+        #endif
     #endif
-#endif
 
 
     #ifdef USE_SFLASH
@@ -35,7 +35,7 @@ void spi_initialize(void)
     CS_SFLASH_INIT();
     #endif
 
-    #ifdef USE_TFTMOD
+    #ifdef USE_LCDMOD
     //CS : TFT Drive IC Chip Select
     CS_LCDMOD_INIT();
     #endif
