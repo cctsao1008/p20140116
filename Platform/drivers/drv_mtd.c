@@ -11,7 +11,7 @@
 #include "drv_mtd.h"
 #include "drv_spi.h"
 
-void mtd_init(void)
+uint8_t mtd_init(void)
 {
     uint8_t i = 0, jedec_id[3] = {0};
 
@@ -30,12 +30,17 @@ void mtd_init(void)
     {
         case MF_ID_WINBOND :
 
+            if(MTD_W25Q16_BV == jedec_id[2])
+                i = SIZE_2MB;
+
             break;
 
         default :
 
             break;
     }
+
+    return i;
     
 }
 

@@ -8,7 +8,6 @@
  *      This module performs Serial Peripheral Interface (SPI) functionality.
  *
  ****************************************************************************/
-
 #ifndef DRV_SPI_H_
 #define DRV_SPI_H_
 
@@ -55,9 +54,9 @@
 #define CS_SFLASH_H() (P_IOA_BU->bit_11) = 0x1
 #define CS_SFLASH_L() (P_IOA_BU->bit_11) = 0x0
 
-#define CS_TFTMOD     3
-#define CS_TFTMOD_H() (P_IOA_BU->bit_10) = 0x1
-#define CS_TFTMOD_L() (P_IOA_BU->bit_10) = 0x0
+#define CS_LCDMOD     3
+#define CS_LCDMOD_H() (P_IOA_BU->bit_10) = 0x1
+#define CS_LCDMOD_L() (P_IOA_BU->bit_10) = 0x0
 
 /**
  * Flags for various the SPI MODEs
@@ -92,7 +91,7 @@
 
 #define CS_SDCARD_INIT() P_IOA_DA->bit_12 = 0x0; P_IOA_AT->bit_12 = 0x1; P_IOA_DI->bit_12 = 0x1
 #define CS_SFLASH_INIT() P_IOA_DA->bit_11 = 0x0; P_IOA_AT->bit_11 = 0x1; P_IOA_DI->bit_11 = 0x1
-#define CS_TFTMOD_INIT() P_IOA_DA->bit_10 = 0x0; P_IOA_AT->bit_10 = 0x1; P_IOA_DI->bit_10 = 0x1
+#define CS_LCDMOD_INIT() P_IOA_DA->bit_10 = 0x0; P_IOA_AT->bit_10 = 0x1; P_IOA_DI->bit_10 = 0x1
 
 
 

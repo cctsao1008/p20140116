@@ -9,7 +9,7 @@
  *
  ****************************************************************************/
 
-/*  FreeRTOS include files */
+/* FreeRTOS head  files */
 #include "FreeRTOS.h" 
 #include "task.h" 
 #include "croutine.h"  
@@ -23,12 +23,19 @@
 #include "drv_i2c.h"
 
 /* SPI Driver */
-#include "drv_spi.h"
+//#include "drv_spi.h"
 
 /* MTD Driver */
 #include "drv_mtd.h"
 
+/* LCD Driver */
+#include "drv_lcd.h"
+
+
+/* Petit FAT File System Module head files */
 #include "pff.h"
+
+#include "stdio.h"
 
 
 /* Contant Defintion Are */
@@ -40,14 +47,18 @@
 //#define ServiceType		Foreground
 #define ServiceType			Background
 
+/* Write file that provide from SD card to Serial Flash */
 #define USE_FLASH_WRITER
 
+/* Use LCD module */
+//#define USE_LCDMOD
+
+/* Debug message output */
 #define printf(str, ...)
 #define putchar(...)
 
 
 /* Function Call Publication Area */
-//void SPI_Initial();
 void USER_A1600_SetStartAddr(int SpeechIndex);
 void USER_A1600_SetStartAddr_Con(int SpeechIndex);
 
@@ -106,8 +117,8 @@ int main()
     //xTaskCreate(CDecoder, "CDecoder", configMINIMAL_STACK_SIZE, NULL, 4, NULL );
     //xTaskCreate(loop_test_01, "loop_test_01", configMINIMAL_STACK_SIZE, (void*)&delay_1, 6, NULL );
     //xTaskCreate(loop_test_02, "loop_test_02", configMINIMAL_STACK_SIZE, (void*)&delay_2, 3, NULL );
-    xTaskCreate(led_update, "led_update", configMINIMAL_STACK_SIZE, NULL, 3, &xHandle[led_task] );
-    xTaskCreate(key_scan, "key_scan", configMINIMAL_STACK_SIZE, NULL, 5, &xHandle[key_task] );
+    xTaskCreate(led_update, "led_update", configMINIMAL_STACK_SIZE, NULL, 3, &xHandle[led_task]   );
+    xTaskCreate(key_scan  , "key_scan"  , configMINIMAL_STACK_SIZE, NULL, 5, &xHandle[key_task]   );
     xTaskCreate(audio_play, "audio_play", configMINIMAL_STACK_SIZE, NULL, 4, &xHandle[audio_task] );
     #endif
     
@@ -131,19 +142,24 @@ void die (		/* Stop with dying message */
 )
 {
 	printf("Failed with rc=%u.\n", rc);
+
+    #if 0
 	for (;;)
         reset_watch_dog();
+    #else
+    vTaskSuspend( NULL );
+    #endif
 }
 
 void flash_writter(void *pvParameters)
 {
-	unsigned int delay = 1000;
+	unsigned int sflash_size = 0, delay = 1000;
 
     FATFS fatfs;			/* File system object */
-    #if _USE_DIR
+#if _USE_DIR
 	DIR dir;				/* Directory object */
 	FILINFO fno;			/* File information object */
-	#endif
+#endif
 	WORD bw, br, i;
 	BYTE rc;
     BYTE* buff;
@@ -157,11 +173,12 @@ void flash_writter(void *pvParameters)
     rc = pf_mount(&fatfs);
     if (rc) die(rc);
 
-    printf("\nOpen a test file (message.txt).\n");
+    printf("\nOpen a file (flash.bin).\n");
     
-    rc = pf_open("DATA.ROM");
+    rc = pf_open("flash.bin");
     if (rc) die(rc);
 
+#if 0
     printf("\nType the file content.\n");
 
     for (;;) {
@@ -173,17 +190,26 @@ void flash_writter(void *pvParameters)
     }
 
     if (rc) die(rc);
-    
+#endif
+
+    /* MTD Device Detect */
+    sflash_size = mtd_init();
+
+    if(fatfs.fsize < (sflash_size * 1024 * 1024))
+    {
+        // TODO : Copy file from SD to Serial Flash
+    }
+   
 #if _USE_WRITE
     printf("\nOpen a file to write (write.txt).\n");
 
-    rc = pf_open("write.txt");
+    rc = pf_open("status.txt");
     if (rc) die(rc);
     
     printf("\nWrite a text data. (Hello world!)\n");
 
     for (;;) {
-        rc = pf_write("Hello world!\r\n", 14, &bw);
+        rc = pf_write("Done. \r\n", 14, &bw);
         if (rc || !bw) break;
     }
 
@@ -217,9 +243,6 @@ void flash_writter(void *pvParameters)
 #endif
     
     printf("\nTest completed.\n");
-
-    /* MTD Device Detect */
-    mtd_init();
 
     while(1)
     {
@@ -292,7 +315,6 @@ void loop_test_02(void *pvParameters)
 	    acc_x =0; buf[0] = 0; buf[1] = 0;
 	    i2cRead(0x41, 0x2, 2, (uint8_t*)&buf);
 	    acc_x = ((buf[1]<<8) | buf[0]) & 0xFFFC;
-	    reset_watch_dog();
 
 	    if(acc_x > ACC_MAX)      // side 1
             SpeechIndex = 1;
@@ -303,7 +325,6 @@ void loop_test_02(void *pvParameters)
 	    acc_y =0; buf[0] = 0; buf[1] = 0;
 	    i2cRead(0x41, 0x4, 2, (uint8_t*)&buf);
 	    acc_y = ((buf[1]<<8) | buf[0]) & 0xFFFC;
-	    reset_watch_dog();
 
 	    if(acc_x > ACC_MAX)      // side 3
             SpeechIndex = 3;
@@ -314,7 +335,6 @@ void loop_test_02(void *pvParameters)
 	    acc_z =0; buf[0] = 0; buf[1] = 0;
 	    i2cRead(0x41, 0x6, 2, (uint8_t*)&buf);
 	    acc_z = ((buf[1]<<8) | buf[0]) & 0xFFFC;
-	    reset_watch_dog();
 
 	    if(acc_x > ACC_MAX)      // side 5
            SpeechIndex = 5;
@@ -474,10 +494,24 @@ int bsp_init(void)
     #endif
 
     System_Initial();			// System initial
+
+    #ifdef USE_LCDMOD
+
+    #ifdef CODE_1
+    lcd7735_init();
+    lcd7735_initR(INITR_REDTAB);
+    lcd7735_fillScreen(ST7735_BLACK);
+    lcd7735_init_screen((void *)&SmallFont[0],ST7735_GREEN,ST7735_BLACK,PORTRAIT);
+    #endif
+
+    #endif
     
     return 0;
 }
 
+/* Hook Functions */
+
+#if ( configUSE_IDLE_HOOK > 0 )
 void vApplicationIdleHook( void )
 {
     //portENABLE_INTERRUPTS(); // This is very very IMPORTANT !! for  Scheduler
@@ -495,4 +529,81 @@ void vApplicationIdleHook( void )
 
     //vTaskResume( xHandle[key_task] ); // To resume key scan function.
 }
+#endif
+
+#if( configUSE_MALLOC_FAILED_HOOK > 0 )
+void vApplicationMallocFailedHook(void)
+{
+    for(;;)
+        reset_watch_dog();
+}
+#endif
+
+#if configCHECK_FOR_STACK_OVERFLOW > 0
+void vApplicationStackOverflowHook(void)
+{
+    for(;;)
+        reset_watch_dog();
+}
+#endif
+
+#ifdef CODE_2
+void myDelay(int16_t ms);
+
+int st7735_lcd_test(void){
+	// init the 1.8 lcd display
+	init();
+	while(1){
+		// COLORS AND 'T'
+		fillScreen(Color565(0,0,0));
+		fillRect(0,0,127,50,Color565(255,0,0));
+		setTextColor(Color565(255,255,255),Color565(255,00,00));
+		setCursor(55,20);
+		print("red");
+		fillRect(0,50,127,100,Color565(0,255,0));
+		setTextColor(Color565(255,255,255),Color565(0,255,00));
+		setCursor(50,70);
+		print("green");
+		fillRect(0,100,127,159,Color565(0,0,255));
+		setTextColor(Color565(255,255,255),Color565(0,00,255));
+		setCursor(55,120);
+		print("blue");
+
+		drawRect(5,5,118,150,Color565(255,255,255));
+
+		myDelay(5000);
+ 
+		fillScreen(Color565(0,0,0));
+
+		for (uint8_t y=0; y<160; y+=8)
+		{
+			drawLine(0, 0, 127, y, Color565(255,0,0));	
+			drawLine(0, 159, 127, y, Color565(0,255,0));
+			drawLine(127, 0, 0, y, Color565(0,0,255));
+			drawLine(127, 159, 0, y, Color565(255,255,255));
+		}
+		myDelay(5000);
+
+		// TEXT		
+		fillScreen(Color565(0,0,0));
+		setCursor(0,0);
+		setTextWrap(1);
+
+		setTextColor(Color565(255,255,255),Color565(0,0,255));
+		print("All available chars:\n\n");
+		setTextColor(Color565(200,200,255),Color565(50,50,50));
+		unsigned char i;
+		char ff[]="a";
+		for (i=32; i<128; i++) 
+		{
+			ff[0]=i;
+			print(ff);
+		}
+		myDelay(5000); 
+	}
+
+	return 0;
+}
+
+#endif
 

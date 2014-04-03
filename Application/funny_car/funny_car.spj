@@ -30,37 +30,20 @@ EXPORT=3
 USEPARAM=FALSE
 PARAM=
 EXPORT=3
-# Begin Group "i2c"
-#PROP Default_Filter=
-USEPARAM=FALSE
-PARAM=
-EXPORT=3
 # Begin Source File
 SOURCE=..\..\Platform\drivers\drv_i2c.c
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
-# End Source File
-# End Group
-# Begin Group "spi"
-#PROP Default_Filter=
-USEPARAM=FALSE
-PARAM=
 EXPORT=3
+# End Source File
 # Begin Source File
-SOURCE=..\..\Platform\drivers\drv_spi.c
+SOURCE=..\..\Platform\drivers\drv_lcd.c
 USEPARAM=FALSE
 PARAM=
 ID=
 EXPORT=3
 # End Source File
-# End Group
-# Begin Group "mtd"
-#PROP Default_Filter=
-USEPARAM=FALSE
-PARAM=
-EXPORT=3
 # Begin Source File
 SOURCE=..\..\Platform\drivers\drv_mtd.c
 USEPARAM=FALSE
@@ -68,7 +51,13 @@ PARAM=
 ID=
 EXPORT=3
 # End Source File
-# End Group
+# Begin Source File
+SOURCE=..\..\Platform\drivers\drv_spi.c
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
 # End Group
 # Begin Group "modules"
 #PROP Default_Filter=
@@ -104,7 +93,7 @@ EXPORT=3
 #PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
-EXPORT=0
+EXPORT=3
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\portable\GCC\unsp_isa_v13\port_a.asm
 USEPARAM=FALSE
@@ -131,7 +120,7 @@ SOURCE=..\..\Platform\modules\freertos\source\portable\MemMang\heap_3.c
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # End Group
 # Begin Source File
@@ -174,7 +163,7 @@ SOURCE=..\..\Platform\modules\freertos\source\event_groups.c
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # End Group
 # End Group
@@ -211,40 +200,14 @@ ID=
 EXPORT=3
 # End Source File
 # Begin Source File
-SOURCE=Isr_a.asm
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
 SOURCE=isr_c.c
 USEPARAM=FALSE
 PARAM=
 ID=
 EXPORT=3
 # End Source File
-# End Group
-# Begin Group "debug_led"
-#PROP Default_Filter=
-USEPARAM=FALSE
-PARAM=
-EXPORT=3
 # Begin Source File
-SOURCE=..\debug_led\debug_led.c
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# End Group
-# Begin Group "ParTest"
-#PROP Default_Filter=
-USEPARAM=FALSE
-PARAM=
-EXPORT=3
-# Begin Source File
-SOURCE=..\ParTest\ParTest.c
+SOURCE=isr_a.asm
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -285,20 +248,6 @@ USEPARAM=FALSE
 PARAM=
 EXPORT=0
 # Begin Source File
-SOURCE=..\ParTest\partest.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=..\debug_led\debug_led.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
 SOURCE=SACM.h
 USEPARAM=FALSE
 PARAM=
@@ -317,42 +266,161 @@ SOURCE=..\..\Platform\drivers\drv_i2c.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\drivers\drv_spi.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\drivers\drv_mtd.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\pff\src\pff.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\pff\src\integer.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\pff\src\diskio.h
 USEPARAM=FALSE
 PARAM=
 ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\drivers\drv_lcd.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\include\GPCE206x.h
+USEPARAM=FALSE
+PARAM=
+ID=
 EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\include\stdint.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\include\GPCE206x.inc
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\include\FreeRTOS.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\include\projdefs.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\include\FreeRTOSConfig.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\include\portable.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=79430916
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\include\mpu_wrappers.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\include\task.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=723477539
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\include\list.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=79428936
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\include\croutine.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\include\queue.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\include\timers.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=723477752
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\include\StackMacros.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\include\event_groups.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\include\semphr.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=79428716
 # End Source File
 # End Group
 # End SubItem
@@ -381,37 +449,20 @@ EXPORT=3
 USEPARAM=FALSE
 PARAM=
 EXPORT=3
-# Begin Group "i2c"
-#PROP Default_Filter=
-USEPARAM=FALSE
-PARAM=
-EXPORT=3
 # Begin Source File
 SOURCE=..\..\Platform\drivers\drv_i2c.c
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
-# End Source File
-# End Group
-# Begin Group "spi"
-#PROP Default_Filter=
-USEPARAM=FALSE
-PARAM=
 EXPORT=3
+# End Source File
 # Begin Source File
-SOURCE=..\..\Platform\drivers\drv_spi.c
+SOURCE=..\..\Platform\drivers\drv_lcd.c
 USEPARAM=FALSE
 PARAM=
 ID=
 EXPORT=3
 # End Source File
-# End Group
-# Begin Group "mtd"
-#PROP Default_Filter=
-USEPARAM=FALSE
-PARAM=
-EXPORT=3
 # Begin Source File
 SOURCE=..\..\Platform\drivers\drv_mtd.c
 USEPARAM=FALSE
@@ -419,7 +470,13 @@ PARAM=
 ID=
 EXPORT=3
 # End Source File
-# End Group
+# Begin Source File
+SOURCE=..\..\Platform\drivers\drv_spi.c
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
 # End Group
 # Begin Group "modules"
 #PROP Default_Filter=
@@ -455,7 +512,7 @@ EXPORT=3
 #PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
-EXPORT=0
+EXPORT=3
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\portable\GCC\unsp_isa_v13\port_a.asm
 USEPARAM=FALSE
@@ -482,7 +539,7 @@ SOURCE=..\..\Platform\modules\freertos\source\portable\MemMang\heap_3.c
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # End Group
 # Begin Source File
@@ -525,7 +582,7 @@ SOURCE=..\..\Platform\modules\freertos\source\event_groups.c
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # End Group
 # End Group
@@ -562,40 +619,14 @@ ID=
 EXPORT=3
 # End Source File
 # Begin Source File
-SOURCE=Isr_a.asm
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
 SOURCE=isr_c.c
 USEPARAM=FALSE
 PARAM=
 ID=
 EXPORT=3
 # End Source File
-# End Group
-# Begin Group "debug_led"
-#PROP Default_Filter=
-USEPARAM=FALSE
-PARAM=
-EXPORT=3
 # Begin Source File
-SOURCE=..\debug_led\debug_led.c
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# End Group
-# Begin Group "ParTest"
-#PROP Default_Filter=
-USEPARAM=FALSE
-PARAM=
-EXPORT=3
-# Begin Source File
-SOURCE=..\ParTest\ParTest.c
+SOURCE=isr_a.asm
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -636,20 +667,6 @@ USEPARAM=FALSE
 PARAM=
 EXPORT=0
 # Begin Source File
-SOURCE=..\ParTest\partest.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=..\debug_led\debug_led.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
 SOURCE=SACM.h
 USEPARAM=FALSE
 PARAM=
@@ -668,42 +685,161 @@ SOURCE=..\..\Platform\drivers\drv_i2c.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\drivers\drv_spi.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\drivers\drv_mtd.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\pff\src\pff.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\pff\src\integer.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\pff\src\diskio.h
 USEPARAM=FALSE
 PARAM=
 ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\drivers\drv_lcd.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\include\GPCE206x.h
+USEPARAM=FALSE
+PARAM=
+ID=
 EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\include\stdint.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\include\GPCE206x.inc
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\include\FreeRTOS.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\include\projdefs.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\include\FreeRTOSConfig.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\include\portable.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=79430916
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\include\mpu_wrappers.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\include\task.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=723477539
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\include\list.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=79428936
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\include\croutine.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\include\queue.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\include\timers.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=723477752
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\include\StackMacros.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\include\event_groups.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\include\semphr.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=79428716
 # End Source File
 # End Group
 # End SubItem

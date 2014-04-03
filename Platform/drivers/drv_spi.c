@@ -37,7 +37,7 @@ void spi_initialize(void)
 
     #ifdef USE_TFTMOD
     //CS : TFT Drive IC Chip Select
-    CS_TFTMOD_INIT();
+    CS_LCDMOD_INIT();
     #endif
 }
 
@@ -158,13 +158,13 @@ void spi_select(uint8_t cs, uint8_t high)
             break;
         #endif
 
-        #ifdef USE_TFTMOD
-        case CS_TFTMOD :
+        #ifdef USE_LCDMOD
+        case CS_LCDMOD :
 
             if(high)
-                CS_TFTMOD_H();
+                CS_LCDMOD_H();
             else
-                CS_TFTMOD_L();
+                CS_LCDMOD_L();
 
             break;
         #endif

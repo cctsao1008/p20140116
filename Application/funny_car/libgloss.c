@@ -31,12 +31,14 @@ void printf_end (void)
 	return;
 }
 
+#if 0
 /* printf in "CLib" will call putchar.
    user can implement this function -- send a char to UART? */
 int putchar (int c)
 {
 	return c;
 }
+#endif
 
 /* malloc in "LibMem" will call malloc_lock/malloc_unlock.
    if user's project has multitask, they should be implemented. */

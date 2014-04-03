@@ -15,8 +15,8 @@
 #include "stdint.h"
 
 /* JEDEC Device ID: Memory type and Capacity */
-#define MF_ID_WINBOND               (0xEF)   /* Winbond*/
-#define MTD_W25Q16_BV               (0x4015) /* Winbond W25Q16BV  */
+#define MF_ID_WINBOND               (0xEF)  /* Winbond*/
+#define MTD_W25Q16_BV               (0x15)  /* Winbond W25Q16BV  */
 
 /* Command List */
 #define CMD_WRSR                    (0x01)  /* Write Status Register */
@@ -33,7 +33,12 @@
 #define CMD_ERASE_full              (0xC7)  /* Chip Erase */
 #define CMD_ERASE_64K               (0xD8)  /* 64KB Block Erase */
 
+#define SIZE_2MB  2  // 16  Mbits
+#define SIZE_4MB  4  // 32  Mbits
+#define SIZE_8MB  8  // 64  Mbits
+#define SIZE_16MB 16 // 128 Mbits
+#define SIZE_32MB 32 // 256 Mbits
 
-void mtd_init(void);
+uint8_t mtd_init(void);
 
 #endif DRV_MTD_H
