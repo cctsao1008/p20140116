@@ -154,6 +154,7 @@ void lcd7735_init(void);
 void lcd7735_initR(uint8_t options);
 void lcd7735_init_screen(void *font,uint16_t fg, uint16_t bg, uint8_t orientation);
 void lcd7735_fillScreen(uint16_t color);
+void lcd7735_cursor_set(uint16_t row, uint16_t col);
 void lcd7735_putc(char c);
 void lcd7735_puts(char *s);
 #endif
