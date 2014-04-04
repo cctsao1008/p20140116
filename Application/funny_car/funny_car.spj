@@ -166,6 +166,19 @@ ID=
 EXPORT=3
 # End Source File
 # End Group
+# Begin Group "hash"
+#PROP Default_Filter=
+USEPARAM=FALSE
+PARAM=
+EXPORT=3
+# Begin Source File
+SOURCE=..\..\Platform\modules\hash\crc.c
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# End Group
 # End Group
 # End Group
 # Begin Group "Application"
@@ -423,6 +436,13 @@ EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\event_groups.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\hash\crc.h
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -598,6 +618,19 @@ ID=
 EXPORT=3
 # End Source File
 # End Group
+# Begin Group "hash"
+#PROP Default_Filter=
+USEPARAM=FALSE
+PARAM=
+EXPORT=3
+# Begin Source File
+SOURCE=..\..\Platform\modules\hash\crc.c
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# End Group
 # End Group
 # End Group
 # Begin Group "Application"
@@ -855,6 +888,13 @@ EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\event_groups.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\hash\crc.h
 USEPARAM=FALSE
 PARAM=
 ID=

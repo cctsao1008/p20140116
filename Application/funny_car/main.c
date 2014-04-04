@@ -35,6 +35,7 @@
 /* Petit FAT File System Module head files */
 #include "pff.h"
 
+#include "crc.h"
 #include "stdio.h"
 
 
@@ -103,10 +104,22 @@ enum tasks { led_task = 0, audio_task, key_task };
 BYTE buff[buff_size];
 #endif
 
+#define TEST_CRC16
 
 int main()
 {
     //unsigned int delay_1 = 5000, delay_2 = 4000;
+
+    #ifdef TEST_CRC16
+    /* Please check the result on "http://www.lammertbies.nl/comm/info/crc-calculation.html" and compare it */
+    uint16_t crc = 0, i = 0; 
+    uint8_t data[7] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07};
+    
+    for(i = 0 ; i < sizeof(data) ; i++)
+    {
+        crc = crc16_update(crc, data[i]);
+    }
+    #endif
 
     bsp_init();
 
