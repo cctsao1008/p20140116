@@ -176,6 +176,19 @@ SOURCE=..\..\Platform\modules\hash\crc.c
 USEPARAM=FALSE
 PARAM=
 ID=
+EXPORT=3
+# End Source File
+# End Group
+# Begin Group "sfat"
+#PROP Default_Filter=
+USEPARAM=FALSE
+PARAM=
+EXPORT=3
+# Begin Source File
+SOURCE=..\..\Platform\modules\sfat\sfat.c
+USEPARAM=FALSE
+PARAM=
+ID=
 EXPORT=0
 # End Source File
 # End Group
@@ -337,6 +350,20 @@ ID=
 EXPORT=3
 # End Source File
 # Begin Source File
+SOURCE=..\..\Platform\modules\hash\crc.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\sfat\sfat.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
 SOURCE=..\..\Platform\include\GPCE206x.h
 USEPARAM=FALSE
 PARAM=
@@ -436,13 +463,6 @@ EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\event_groups.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\hash\crc.h
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -628,6 +648,19 @@ SOURCE=..\..\Platform\modules\hash\crc.c
 USEPARAM=FALSE
 PARAM=
 ID=
+EXPORT=3
+# End Source File
+# End Group
+# Begin Group "sfat"
+#PROP Default_Filter=
+USEPARAM=FALSE
+PARAM=
+EXPORT=3
+# Begin Source File
+SOURCE=..\..\Platform\modules\sfat\sfat.c
+USEPARAM=FALSE
+PARAM=
+ID=
 EXPORT=0
 # End Source File
 # End Group
@@ -789,6 +822,20 @@ ID=
 EXPORT=3
 # End Source File
 # Begin Source File
+SOURCE=..\..\Platform\modules\hash\crc.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\sfat\sfat.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
 SOURCE=..\..\Platform\include\GPCE206x.h
 USEPARAM=FALSE
 PARAM=
@@ -888,13 +935,6 @@ EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\event_groups.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\hash\crc.h
 USEPARAM=FALSE
 PARAM=
 ID=

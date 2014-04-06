@@ -1,6 +1,6 @@
 #####################################################################
 #																	 
-#	Created by u'nSP IDE V3.0.8		19:36:17	04/04/14
+#	Created by u'nSP IDE V3.0.8		15:37:17	04/06/14
 #
 #####################################################################
 
@@ -70,6 +70,7 @@ OBJFILES	= \
 	"$(OUTDIR)\timers.obj" \
 	"$(OUTDIR)\event_groups.obj" \
 	"$(OUTDIR)\crc.obj" \
+	"$(OUTDIR)\sfat.obj" \
 	"$(OUTDIR)\main.obj" \
 	"$(OUTDIR)\System.obj" \
 	"$(OUTDIR)\SACM_A1600_User.obj" \
@@ -181,12 +182,19 @@ OBJFILES	= \
 "$(OUTDIR)\event_groups.obj": "$(OUTDIR)\event_groups.asm"
 	$(AS) $(CASFLAGS) $(INCLUDES) -o "$(OUTDIR)\event_groups.obj" "$(OUTDIR)\event_groups.asm" 
 
-"$(OUTDIR)\crc.asm": "D:\funny_car\p20140116\Platform\modules\hash\crc.c" "D:\funny_car\p20140116\Platform\modules\hash\crc.h" "..\..\Platform\include\stdint.h" 
+"$(OUTDIR)\crc.asm": "D:\funny_car\p20140116\Platform\modules\hash\crc.c" "D:\funny_car\p20140116\Platform\modules\hash\crc.h" "..\..\Platform\include\GPCE206x.h" "..\..\Platform\include\stdint.h" 
 	set PATH="$(APPDIR)\toolchain\";%PATH% & \
 	$(CC) $(CFLAGS) -o "$(OUTDIR)/crc.asm" "D:/funny_car/p20140116/Platform/modules/hash/crc.c" 
 
 "$(OUTDIR)\crc.obj": "$(OUTDIR)\crc.asm"
 	$(AS) $(CASFLAGS) $(INCLUDES) -o "$(OUTDIR)\crc.obj" "$(OUTDIR)\crc.asm" 
+
+"$(OUTDIR)\sfat.asm": "D:\funny_car\p20140116\Platform\modules\sfat\sfat.c" "D:\funny_car\p20140116\Platform\modules\sfat\sfat.h" "..\..\Platform\include\GPCE206x.h" "..\..\Platform\include\stdint.h" 
+	set PATH="$(APPDIR)\toolchain\";%PATH% & \
+	$(CC) $(CFLAGS) -o "$(OUTDIR)/sfat.asm" "D:/funny_car/p20140116/Platform/modules/sfat/sfat.c" 
+
+"$(OUTDIR)\sfat.obj": "$(OUTDIR)\sfat.asm"
+	$(AS) $(CASFLAGS) $(INCLUDES) -o "$(OUTDIR)\sfat.obj" "$(OUTDIR)\sfat.asm" 
 
 "$(OUTDIR)\main.asm": "D:\funny_car\p20140116\Application\funny_car\main.c" ".\SACM.h" "..\..\Platform\modules\freertos\source\include\FreeRTOS.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\stddef.h" "..\..\Platform\include\stdint.h" "D:\funny_car\p20140116\Platform\modules\freertos\source\include\projdefs.h" "..\..\Application\include\FreeRTOSConfig.h" "D:\funny_car\p20140116\Platform\modules\freertos\source\include\portable.h" "..\..\Platform\modules\freertos\source\portable\GCC\unsp_isa_v13\portmacro.h" "D:\funny_car\p20140116\Platform\modules\freertos\source\include\mpu_wrappers.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\string.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\memory.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\stdlib.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\reent.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\sys\reent.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\_ansi.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\machine/_types.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\assert.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\limits.h" "..\..\Platform\modules\freertos\source\include\task.h" "D:\funny_car\p20140116\Platform\modules\freertos\source\include\list.h" "..\..\Platform\modules\freertos\source\include\croutine.h" "..\..\Platform\modules\freertos\source\include\semphr.h" "D:\funny_car\p20140116\Platform\modules\freertos\source\include\queue.h" "..\..\Platform\include\GPCE206x.h" "..\..\Platform\drivers\drv_i2c.h" "..\..\Platform\drivers\drv_mtd.h" "..\..\Platform\drivers\drv_lcd.h" "..\..\Platform\modules\pff\src\pff.h" "D:\funny_car\p20140116\Platform\modules\pff\src\integer.h" "..\..\Platform\modules\hash\crc.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\stdio.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\stdarg.h" 
 	set PATH="$(APPDIR)\toolchain\";%PATH% & \
@@ -283,6 +291,9 @@ clean :
 	$(RM) "$(OUTDIR)\crc.obj" 
 	$(RM) "$(OUTDIR)\crc.lst" 
 	$(RM) "$(OUTDIR)\crc.asm" 
+	$(RM) "$(OUTDIR)\sfat.obj" 
+	$(RM) "$(OUTDIR)\sfat.lst" 
+	$(RM) "$(OUTDIR)\sfat.asm" 
 	$(RM) "$(OUTDIR)\main.obj" 
 	$(RM) "$(OUTDIR)\main.lst" 
 	$(RM) "$(OUTDIR)\main.asm" 
