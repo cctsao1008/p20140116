@@ -44,6 +44,95 @@ uint8_t mtd_init(void)
     
 }
 
+uint8_t mtd_read_status_1(void)
+{
+    uint8_t rc = 0;
+
+    spi_select(CS_SFLASH, 1);
+    spi_select(CS_SFLASH, 0);
+
+    spi_xmit(CMD_RDSR1);
+    rc = spi_rcvr();
+
+    spi_select(CS_SFLASH, 1);
+
+    return rc;
+}
+
+uint8_t mtd_read_status_2(void)
+{
+    uint8_t rc = 0;
+
+    spi_select(CS_SFLASH, 1);
+    spi_select(CS_SFLASH, 0);
+
+    spi_xmit(CMD_RDSR2);
+    rc = spi_rcvr();
+
+    spi_select(CS_SFLASH, 1);
+
+    return rc;
+}
+
+void mtd_write_status(uint8_t data)
+{
+    spi_select(CS_SFLASH, 1);
+    spi_select(CS_SFLASH, 0);
+
+    spi_xmit(CMD_WRSR);
+    spi_xmit(data);
+
+    spi_select(CS_SFLASH, 1);
+}
+
+void mtd_read_data(uint32_t addr,uint8_t *buf, uint32_t size)
+{
+    uint32_t i = 0;
+
+    spi_select(CS_SFLASH, 1);
+
+    /* Chip select go low to start a flash command */
+    spi_select(CS_SFLASH, 0);
+
+    /* Write READ command and address */
+    spi_xmit(CMD_READ);
+    spi_xmit((uint8_t)(addr >> 16));
+    spi_xmit((uint8_t)(addr >> 8 ));
+    spi_xmit((uint8_t)(addr));
+
+    /* Set a loop to read data into buffer */
+    for(i = 0 ; i < size ; i++)
+        buf[i] = spi_rcvr();
+
+    /* Chip select go high to end a flash command */
+    spi_select(CS_SFLASH, 1);
+}
+
+void mtd_fast_read_data(uint32_t addr,uint8_t *buf, uint32_t size)
+{
+    uint32_t i = 0;
+
+    spi_select(CS_SFLASH, 1);
+
+    /* Chip select go low to start a flash command */
+    spi_select(CS_SFLASH, 0);
+
+    /* Write READ command and address */
+    spi_xmit(CMD_FAST_READ);
+    spi_xmit((uint8_t)(addr >> 16));
+    spi_xmit((uint8_t)(addr >> 8 ));
+    spi_xmit((uint8_t)(addr));
+    spi_skip_bytes(1);
+
+    /* Set a loop to read data into buffer */
+    for(i = 0 ; i < size ; i++)
+        buf[i] = spi_rcvr();
+
+    /* Chip select go high to end a flash command */
+    spi_select(CS_SFLASH, 1);
+}
+
+
 #if 0
 void mtd_xmit(const uint8_t d)
 {
