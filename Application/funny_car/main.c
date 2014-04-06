@@ -112,12 +112,13 @@ int main()
 
     #ifdef TEST_CRC16
     /* Please check the result on "http://www.lammertbies.nl/comm/info/crc-calculation.html" and compare it */
-    uint16_t crc = 0, i = 0; 
+    uint16_t crc16 = 0, crc16_ccitt = 0, i = 0; 
     uint8_t data[7] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07};
     
     for(i = 0 ; i < sizeof(data) ; i++)
     {
-        crc = crc16_update(crc, data[i]);
+        crc16 = crc16_update(crc16, data[i]);
+        crc16_ccitt = crc_ccitt_update(crc16_ccitt, data[i]);
     }
     #endif
 
