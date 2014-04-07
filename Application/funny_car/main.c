@@ -37,7 +37,7 @@
 
 #include "crc.h"
 #include "printf.h"
-#include "stdio.h"
+//#include "stdio.h"
 
 
 /* Contant Defintion Are */
@@ -53,8 +53,8 @@
 #define USE_FLASH_WRITER
 
 /* Debug message output */
-#define printf(str, ...)
-#define putchar(...)
+//#define printf(str, ...)
+//#define putchar(c) lcd7735_putc(c)
 
 
 /* Function Call Publication Area */
@@ -111,32 +111,10 @@ int main()
 {
     //unsigned int delay_1 = 5000, delay_2 = 4000;
 
-    #ifdef TEST_CRC16
-    /* Please check the result on "http://www.lammertbies.nl/comm/info/crc-calculation.html" and compare it */
-    uint16_t crc16 = 0, crc16_ccitt = 0, i = 0; 
-    uint8_t data[7] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07};
-    char buff[32] = {0};
-    
-    for(i = 0 ; i < sizeof(data) ; i++)
-    {
-        crc16 = crc16_update(crc16, data[i]);
-        crc16_ccitt = crc_ccitt_update(crc16_ccitt, data[i]);
-    }
-    #endif
-
     bsp_init();
 
     /* Create the tasks defined within this file. */
     #if defined(USE_FLASH_WRITER)
-    #ifdef CODE_1
-    lcd7735_init();
-    lcd7735_initR(INITR_REDTAB);
-    lcd7735_fillScreen(ST7735_BLACK);
-    lcd7735_init_screen((void *)&SmallFont[0],ST7735_WHITE,ST7735_BLACK,PORTRAIT);
-    //test_ascii_screen();
-    tfp_sprintf(buff, "CRC = 0x%X", crc16);
-    lcd7735_puts(buff);
-    #endif
     xTaskCreate(flash_writter, "flash_writter", ( ( unsigned short ) 256 ), buff, 4, NULL );
     #else
     xSemaphore = xSemaphoreCreateBinary();
@@ -190,11 +168,34 @@ void flash_writter(void *pvParameters)
 	WORD bw, br, i;
 	BYTE rc;
     BYTE* buff;
+#ifdef TEST_CRC16
+    /* Please check the result on "http://www.lammertbies.nl/comm/info/crc-calculation.html" and compare it */
+    uint16_t crc16 = 0, crc16_ccitt = 0; 
+    uint8_t data[7] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07};
+#endif
 
     buff = pvParameters;
 
     asm("FIQ ON");
 
+
+    #ifdef CODE_1
+    lcd7735_init();
+    lcd7735_initR(INITR_REDTAB);
+    lcd7735_fillScreen(ST7735_BLACK);
+    lcd7735_init_screen((void *)&SmallFont[0],ST7735_WHITE,ST7735_BLACK,PORTRAIT);
+    #endif
+    
+    #ifdef TEST_CRC16
+    /* Please check the result on "http://www.lammertbies.nl/comm/info/crc-calculation.html" and compare it */    
+    for(i = 0 ; i < sizeof(data) ; i++)
+    {
+        crc16 = crc16_update(crc16, data[i]);
+        crc16_ccitt = crc_ccitt_update(crc16_ccitt, data[i]);
+    }
+    printf("CRC-16 = \n0x%X\n", crc16);
+    printf("CRC-CCITT = \n0x%X\n", crc16_ccitt);
+    #endif
 
     lcd7735_puts("----- DRPM -----");
     lcd7735_puts("Flash Writter.  ");
@@ -220,6 +221,21 @@ void flash_writter(void *pvParameters)
                 putchar(buff[i]);
     }
 
+    if (rc) die(rc);
+#endif
+
+#if 1
+    crc16 = 0;
+
+    for (;;) {
+        rc = pf_read(buff, buff_size, &br);  /* Read a chunk of file */
+    
+        if (rc || !br) break;           /* Error or end of file */
+            for (i = 0; i < br; i++)      /* Type the data */
+                crc16 = crc16_update(crc16, buff[i]);
+    }
+
+    printf("CRC-16 = \n0x%X\n", crc16);
     if (rc) die(rc);
 #endif
 
@@ -538,7 +554,7 @@ void vApplicationIdleHook( void )
     reset_watch_dog();
     asm("INT OFF");
     //P_System_Clock &= ~C_Sleep_RTC_Status;
-    //asm("IRQ ON");
+    asm("IRQ ON");
     //P_IOA_Data->data = P_IOA_Data->data;
     // Ready to enter  sleep mode
     //P_System_Clock = 0x0087;
@@ -565,79 +581,5 @@ void vApplicationStackOverflowHook(void)
     for(;;)
         reset_watch_dog();
 }
-#endif
-
-#ifdef CODE_1
-void test_ascii_screen(void) {
-	unsigned char x;
-	int i;
-
-    //lcd7735_init_screen((void *)&SmallFont[0],ST7735_WHITE,ST7735_BLACK,PORTRAIT);
-    x = 0x20;
-
-	for(i=0;i<95;i++) {
-		lcd7735_putc(x+i);
-	}
-}	
-#endif
-
-#ifdef CODE_2
-void myDelay(int16_t ms);
-
-int st7735_lcd_test(void){
-	// init the 1.8 lcd display
-	init();
-	while(1){
-		// COLORS AND 'T'
-		fillScreen(Color565(0,0,0));
-		fillRect(0,0,127,50,Color565(255,0,0));
-		setTextColor(Color565(255,255,255),Color565(255,00,00));
-		setCursor(55,20);
-		print("red");
-		fillRect(0,50,127,100,Color565(0,255,0));
-		setTextColor(Color565(255,255,255),Color565(0,255,00));
-		setCursor(50,70);
-		print("green");
-		fillRect(0,100,127,159,Color565(0,0,255));
-		setTextColor(Color565(255,255,255),Color565(0,00,255));
-		setCursor(55,120);
-		print("blue");
-
-		drawRect(5,5,118,150,Color565(255,255,255));
-
-		myDelay(5000);
- 
-		fillScreen(Color565(0,0,0));
-
-		for (uint8_t y=0; y<160; y+=8)
-		{
-			drawLine(0, 0, 127, y, Color565(255,0,0));	
-			drawLine(0, 159, 127, y, Color565(0,255,0));
-			drawLine(127, 0, 0, y, Color565(0,0,255));
-			drawLine(127, 159, 0, y, Color565(255,255,255));
-		}
-		myDelay(5000);
-
-		// TEXT		
-		fillScreen(Color565(0,0,0));
-		setCursor(0,0);
-		setTextWrap(1);
-
-		setTextColor(Color565(255,255,255),Color565(0,0,255));
-		print("All available chars:\n\n");
-		setTextColor(Color565(200,200,255),Color565(50,50,50));
-		unsigned char i;
-		char ff[]="a";
-		for (i=32; i<128; i++) 
-		{
-			ff[0]=i;
-			print(ff);
-		}
-		myDelay(5000); 
-	}
-
-	return 0;
-}
-
 #endif
 
