@@ -189,6 +189,19 @@ SOURCE=..\..\Platform\modules\sfat\sfat.c
 USEPARAM=FALSE
 PARAM=
 ID=
+EXPORT=3
+# End Source File
+# End Group
+# Begin Group "printf"
+#PROP Default_Filter=
+USEPARAM=FALSE
+PARAM=
+EXPORT=3
+# Begin Source File
+SOURCE=..\..\Platform\modules\printf\printf.c
+USEPARAM=FALSE
+PARAM=
+ID=
 EXPORT=0
 # End Source File
 # End Group
@@ -358,6 +371,13 @@ EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\sfat\sfat.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\printf\printf.h
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -661,6 +681,19 @@ SOURCE=..\..\Platform\modules\sfat\sfat.c
 USEPARAM=FALSE
 PARAM=
 ID=
+EXPORT=3
+# End Source File
+# End Group
+# Begin Group "printf"
+#PROP Default_Filter=
+USEPARAM=FALSE
+PARAM=
+EXPORT=3
+# Begin Source File
+SOURCE=..\..\Platform\modules\printf\printf.c
+USEPARAM=FALSE
+PARAM=
+ID=
 EXPORT=0
 # End Source File
 # End Group
@@ -830,6 +863,13 @@ EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\sfat\sfat.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\printf\printf.h
 USEPARAM=FALSE
 PARAM=
 ID=

@@ -36,6 +36,7 @@
 #include "pff.h"
 
 #include "crc.h"
+#include "printf.h"
 #include "stdio.h"
 
 
@@ -114,6 +115,7 @@ int main()
     /* Please check the result on "http://www.lammertbies.nl/comm/info/crc-calculation.html" and compare it */
     uint16_t crc16 = 0, crc16_ccitt = 0, i = 0; 
     uint8_t data[7] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07};
+    char buff[32] = {0};
     
     for(i = 0 ; i < sizeof(data) ; i++)
     {
@@ -126,8 +128,15 @@ int main()
 
     /* Create the tasks defined within this file. */
     #if defined(USE_FLASH_WRITER)
-    lcd7735_puts("----- DRPM -----");
-    lcd7735_puts("Flash Writter.  ");
+    #ifdef CODE_1
+    lcd7735_init();
+    lcd7735_initR(INITR_REDTAB);
+    lcd7735_fillScreen(ST7735_BLACK);
+    lcd7735_init_screen((void *)&SmallFont[0],ST7735_WHITE,ST7735_BLACK,PORTRAIT);
+    //test_ascii_screen();
+    tfp_sprintf(buff, "CRC = 0x%X", crc16);
+    lcd7735_puts(buff);
+    #endif
     xTaskCreate(flash_writter, "flash_writter", ( ( unsigned short ) 256 ), buff, 4, NULL );
     #else
     xSemaphore = xSemaphoreCreateBinary();
@@ -185,6 +194,10 @@ void flash_writter(void *pvParameters)
     buff = pvParameters;
 
     asm("FIQ ON");
+
+
+    lcd7735_puts("----- DRPM -----");
+    lcd7735_puts("Flash Writter.  ");
 
     printf("\nMount a volume.\n");
     
@@ -512,14 +525,6 @@ int bsp_init(void)
     #endif
 
     System_Initial();			// System initial
-
-    #ifdef CODE_1
-    lcd7735_init();
-    lcd7735_initR(INITR_REDTAB);
-    lcd7735_fillScreen(ST7735_BLACK);
-    lcd7735_init_screen((void *)&SmallFont[0],ST7735_WHITE,ST7735_BLACK,PORTRAIT);
-    //test_ascii_screen();
-    #endif
     
     return 0;
 }
