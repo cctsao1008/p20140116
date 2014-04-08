@@ -11,8 +11,8 @@
  ****************************************************************************/
 #ifndef DRV_VUSB_H
 #define DRV_VUSB_H
-#include "GPCE206x.h"
-#include "stdint.h"
+
+#include "platform.h"
 
 #endif DRV_VUSB_H
 

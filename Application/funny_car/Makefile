@@ -1,6 +1,6 @@
 #####################################################################
 #																	 
-#	Created by u'nSP IDE V3.0.8		14:34:07	04/07/14
+#	Created by u'nSP IDE V3.0.8		11:02:38	04/08/14
 #
 #####################################################################
 
@@ -23,7 +23,7 @@ RESC	= $(APPDIR)\toolchain\resc
 
 RM	= $(APPDIR)\toolchain\rm -f
 
-INCLUDES	= -I"D:/funny_car/p20140116/Application/funny_car" -I"C:/Program Files (x86)/Generalplus/unSPIDE 3.0.8/library/include" -I"C:/Program Files (x86)/Generalplus/unSPIDE 3.0.8/library/include/sys" -I"../../Application/include" -I"../../Platform/include" -I"../../Platform/modules/pff/src" -I"../../Platform/drivers" -I"../../Platform/modules/freertos/source/include" -I"../../Platform/modules/freertos/source/portable/GCC/unsp_isa_v13" -I"../../Platform/modules/hash" -I"../../Platform/modules/printf"
+INCLUDES	= -I"D:/funny_car/p20140116/Application/funny_car" -I"C:/Program Files (x86)/Generalplus/unSPIDE 3.0.8/library/include" -I"C:/Program Files (x86)/Generalplus/unSPIDE 3.0.8/library/include/sys" -I"../../Application/include" -I"../../Platform/include" -I"../../Platform/modules/pff/src" -I"../../Platform/drivers" -I"../../Platform/modules/freertos/source/include" -I"../../Platform/modules/freertos/source/portable/GCC/unsp_isa_v13" -I"../../Platform/modules/hash" -I"../../Platform/modules/printf" -I"../../Platform/modules/sfat"
 
 BODY	= -body GPCE2P064A -nobdy -bfile "D:\funny_car\p20140116\Application\funny_car\funny_car.bdy"
 
@@ -82,35 +82,35 @@ OBJFILES	= \
 "$(OUTDIR)\Resource.obj": "D:\funny_car\p20140116\Application\funny_car\Resource.asm" 
 	$(AS) $(ASFLAGS) $(INCLUDES) -o "$(OUTDIR)\Resource.obj" "D:\funny_car\p20140116\Application\funny_car\Resource.asm" 
 
-"$(OUTDIR)\drv_i2c.asm": "D:\funny_car\p20140116\Platform\drivers\drv_i2c.c" "D:\funny_car\p20140116\Platform\drivers\drv_i2c.h" "..\..\Platform\include\GPCE206x.h" "..\..\Platform\include\stdint.h" 
+"$(OUTDIR)\drv_i2c.asm": "D:\funny_car\p20140116\Platform\drivers\drv_i2c.c" "D:\funny_car\p20140116\Platform\drivers\drv_i2c.h" "..\..\Platform\include\platform.h" "D:\funny_car\p20140116\Platform\include\GPCE206x.h" "D:\funny_car\p20140116\Platform\include\stdint.h" 
 	set PATH="$(APPDIR)\toolchain\";%PATH% & \
 	$(CC) $(CFLAGS) -o "$(OUTDIR)/drv_i2c.asm" "D:/funny_car/p20140116/Platform/drivers/drv_i2c.c" 
 
 "$(OUTDIR)\drv_i2c.obj": "$(OUTDIR)\drv_i2c.asm"
 	$(AS) $(CASFLAGS) $(INCLUDES) -o "$(OUTDIR)\drv_i2c.obj" "$(OUTDIR)\drv_i2c.asm" 
 
-"$(OUTDIR)\drv_lcd.asm": "D:\funny_car\p20140116\Platform\drivers\drv_lcd.c" "D:\funny_car\p20140116\Platform\drivers\drv_lcd.h" "D:\funny_car\p20140116\Platform\drivers\drv_spi.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\stdlib.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\stddef.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\reent.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\sys\reent.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\_ansi.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\machine/_types.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\assert.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\limits.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\string.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\limits.h" "..\..\Platform\include\GPCE206x.h" "..\..\Platform\include\stdint.h" 
+"$(OUTDIR)\drv_lcd.asm": "D:\funny_car\p20140116\Platform\drivers\drv_lcd.c" "D:\funny_car\p20140116\Platform\drivers\drv_lcd.h" "D:\funny_car\p20140116\Platform\drivers\drv_spi.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\stdlib.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\stddef.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\reent.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\sys\reent.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\_ansi.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\machine/_types.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\assert.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\limits.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\string.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\limits.h" "..\..\Platform\include\platform.h" "D:\funny_car\p20140116\Platform\include\GPCE206x.h" "D:\funny_car\p20140116\Platform\include\stdint.h" 
 	set PATH="$(APPDIR)\toolchain\";%PATH% & \
 	$(CC) $(CFLAGS) -o "$(OUTDIR)/drv_lcd.asm" "D:/funny_car/p20140116/Platform/drivers/drv_lcd.c" 
 
 "$(OUTDIR)\drv_lcd.obj": "$(OUTDIR)\drv_lcd.asm"
 	$(AS) $(CASFLAGS) $(INCLUDES) -o "$(OUTDIR)\drv_lcd.obj" "$(OUTDIR)\drv_lcd.asm" 
 
-"$(OUTDIR)\drv_mtd.asm": "D:\funny_car\p20140116\Platform\drivers\drv_mtd.c" "D:\funny_car\p20140116\Platform\drivers\drv_mtd.h" "D:\funny_car\p20140116\Platform\drivers\drv_spi.h" "..\..\Platform\include\GPCE206x.h" "..\..\Platform\include\stdint.h" 
+"$(OUTDIR)\drv_mtd.asm": "D:\funny_car\p20140116\Platform\drivers\drv_mtd.c" "D:\funny_car\p20140116\Platform\drivers\drv_mtd.h" "D:\funny_car\p20140116\Platform\drivers\drv_spi.h" "..\..\Platform\include\platform.h" "D:\funny_car\p20140116\Platform\include\GPCE206x.h" "D:\funny_car\p20140116\Platform\include\stdint.h" 
 	set PATH="$(APPDIR)\toolchain\";%PATH% & \
 	$(CC) $(CFLAGS) -o "$(OUTDIR)/drv_mtd.asm" "D:/funny_car/p20140116/Platform/drivers/drv_mtd.c" 
 
 "$(OUTDIR)\drv_mtd.obj": "$(OUTDIR)\drv_mtd.asm"
 	$(AS) $(CASFLAGS) $(INCLUDES) -o "$(OUTDIR)\drv_mtd.obj" "$(OUTDIR)\drv_mtd.asm" 
 
-"$(OUTDIR)\drv_spi.asm": "D:\funny_car\p20140116\Platform\drivers\drv_spi.c" "D:\funny_car\p20140116\Platform\drivers\drv_spi.h" "..\..\Platform\include\GPCE206x.h" "..\..\Platform\include\stdint.h" 
+"$(OUTDIR)\drv_spi.asm": "D:\funny_car\p20140116\Platform\drivers\drv_spi.c" "D:\funny_car\p20140116\Platform\drivers\drv_spi.h" "..\..\Platform\include\platform.h" "D:\funny_car\p20140116\Platform\include\GPCE206x.h" "D:\funny_car\p20140116\Platform\include\stdint.h" 
 	set PATH="$(APPDIR)\toolchain\";%PATH% & \
 	$(CC) $(CFLAGS) -o "$(OUTDIR)/drv_spi.asm" "D:/funny_car/p20140116/Platform/drivers/drv_spi.c" 
 
 "$(OUTDIR)\drv_spi.obj": "$(OUTDIR)\drv_spi.asm"
 	$(AS) $(CASFLAGS) $(INCLUDES) -o "$(OUTDIR)\drv_spi.obj" "$(OUTDIR)\drv_spi.asm" 
 
-"$(OUTDIR)\mmcbb.asm": "D:\funny_car\p20140116\Platform\modules\pff\src\mmcbb.c" "D:\funny_car\p20140116\Platform\modules\pff\src\diskio.h" "D:\funny_car\p20140116\Platform\modules\pff\src\integer.h" "D:\funny_car\p20140116\Platform\modules\pff\src\pff.h" "..\..\Platform\include\GPCE206x.h" "..\..\Platform\drivers\drv_spi.h" "..\..\Platform\include\stdint.h" 
+"$(OUTDIR)\mmcbb.asm": "D:\funny_car\p20140116\Platform\modules\pff\src\mmcbb.c" "D:\funny_car\p20140116\Platform\modules\pff\src\diskio.h" "D:\funny_car\p20140116\Platform\modules\pff\src\integer.h" "D:\funny_car\p20140116\Platform\modules\pff\src\pff.h" "..\..\Platform\include\platform.h" "D:\funny_car\p20140116\Platform\include\GPCE206x.h" "D:\funny_car\p20140116\Platform\include\stdint.h" "..\..\Platform\drivers\drv_spi.h" 
 	set PATH="$(APPDIR)\toolchain\";%PATH% & \
 	$(CC) $(CFLAGS) -o "$(OUTDIR)/mmcbb.asm" "D:/funny_car/p20140116/Platform/modules/pff/src/mmcbb.c" 
 
@@ -124,10 +124,10 @@ OBJFILES	= \
 "$(OUTDIR)\pff.obj": "$(OUTDIR)\pff.asm"
 	$(AS) $(CASFLAGS) $(INCLUDES) -o "$(OUTDIR)\pff.obj" "$(OUTDIR)\pff.asm" 
 
-"$(OUTDIR)\port_a.obj": "D:\funny_car\p20140116\Platform\modules\freertos\source\portable\GCC\unsp_isa_v13\port_a.asm" "..\..\Platform\include\GPCE206x.inc" 
+"$(OUTDIR)\port_a.obj": "D:\funny_car\p20140116\Platform\modules\freertos\source\portable\GCC\unsp_isa_v13\port_a.asm" 
 	$(AS) $(ASFLAGS) $(INCLUDES) -o "$(OUTDIR)\port_a.obj" "D:\funny_car\p20140116\Platform\modules\freertos\source\portable\GCC\unsp_isa_v13\port_a.asm" 
 
-"$(OUTDIR)\port_c.asm": "D:\funny_car\p20140116\Platform\modules\freertos\source\portable\GCC\unsp_isa_v13\port_c.c" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\stdlib.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\stddef.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\reent.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\sys\reent.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\_ansi.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\machine/_types.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\assert.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\limits.h" "..\..\Platform\include\stdint.h" "..\..\Platform\modules\freertos\source\include\FreeRTOS.h" "D:\funny_car\p20140116\Platform\modules\freertos\source\include\projdefs.h" "..\..\Application\include\FreeRTOSConfig.h" "D:\funny_car\p20140116\Platform\modules\freertos\source\include\portable.h" "..\..\Platform\modules\freertos\source\portable\GCC\unsp_isa_v13\portmacro.h" "D:\funny_car\p20140116\Platform\modules\freertos\source\include\mpu_wrappers.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\string.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\memory.h" "..\..\Platform\modules\freertos\source\include\task.h" "D:\funny_car\p20140116\Platform\modules\freertos\source\include\list.h" "..\..\Platform\include\GPCE206x.h" 
+"$(OUTDIR)\port_c.asm": "D:\funny_car\p20140116\Platform\modules\freertos\source\portable\GCC\unsp_isa_v13\port_c.c" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\stdlib.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\stddef.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\reent.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\sys\reent.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\_ansi.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\machine/_types.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\assert.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\limits.h" "..\..\Platform\include\stdint.h" "..\..\Platform\modules\freertos\source\include\FreeRTOS.h" "D:\funny_car\p20140116\Platform\modules\freertos\source\include\projdefs.h" "..\..\Application\include\FreeRTOSConfig.h" "D:\funny_car\p20140116\Platform\modules\freertos\source\include\portable.h" "..\..\Platform\modules\freertos\source\portable\GCC\unsp_isa_v13\portmacro.h" "D:\funny_car\p20140116\Platform\modules\freertos\source\include\mpu_wrappers.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\string.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\memory.h" "..\..\Platform\modules\freertos\source\include\task.h" "D:\funny_car\p20140116\Platform\modules\freertos\source\include\list.h" "..\..\Platform\include\platform.h" "D:\funny_car\p20140116\Platform\include\GPCE206x.h" "D:\funny_car\p20140116\Platform\include\stdint.h" 
 	set PATH="$(APPDIR)\toolchain\";%PATH% & \
 	$(CC) $(CFLAGS) -o "$(OUTDIR)/port_c.asm" "D:/funny_car/p20140116/Platform/modules/freertos/source/portable/GCC/unsp_isa_v13/port_c.c" 
 
@@ -183,14 +183,14 @@ OBJFILES	= \
 "$(OUTDIR)\event_groups.obj": "$(OUTDIR)\event_groups.asm"
 	$(AS) $(CASFLAGS) $(INCLUDES) -o "$(OUTDIR)\event_groups.obj" "$(OUTDIR)\event_groups.asm" 
 
-"$(OUTDIR)\crc.asm": "D:\funny_car\p20140116\Platform\modules\hash\crc.c" "D:\funny_car\p20140116\Platform\modules\hash\crc.h" "..\..\Platform\include\GPCE206x.h" "..\..\Platform\include\stdint.h" 
+"$(OUTDIR)\crc.asm": "D:\funny_car\p20140116\Platform\modules\hash\crc.c" "D:\funny_car\p20140116\Platform\modules\hash\crc.h" "..\..\Platform\include\platform.h" "D:\funny_car\p20140116\Platform\include\GPCE206x.h" "D:\funny_car\p20140116\Platform\include\stdint.h" 
 	set PATH="$(APPDIR)\toolchain\";%PATH% & \
 	$(CC) $(CFLAGS) -o "$(OUTDIR)/crc.asm" "D:/funny_car/p20140116/Platform/modules/hash/crc.c" 
 
 "$(OUTDIR)\crc.obj": "$(OUTDIR)\crc.asm"
 	$(AS) $(CASFLAGS) $(INCLUDES) -o "$(OUTDIR)\crc.obj" "$(OUTDIR)\crc.asm" 
 
-"$(OUTDIR)\sfat.asm": "D:\funny_car\p20140116\Platform\modules\sfat\sfat.c" "D:\funny_car\p20140116\Platform\modules\sfat\sfat.h" "..\..\Platform\include\GPCE206x.h" "..\..\Platform\include\stdint.h" 
+"$(OUTDIR)\sfat.asm": "D:\funny_car\p20140116\Platform\modules\sfat\sfat.c" "D:\funny_car\p20140116\Platform\modules\sfat\sfat.h" "..\..\Platform\include\platform.h" "D:\funny_car\p20140116\Platform\include\GPCE206x.h" "D:\funny_car\p20140116\Platform\include\stdint.h" 
 	set PATH="$(APPDIR)\toolchain\";%PATH% & \
 	$(CC) $(CFLAGS) -o "$(OUTDIR)/sfat.asm" "D:/funny_car/p20140116/Platform/modules/sfat/sfat.c" 
 
@@ -204,17 +204,17 @@ OBJFILES	= \
 "$(OUTDIR)\printf.obj": "$(OUTDIR)\printf.asm"
 	$(AS) $(CASFLAGS) $(INCLUDES) -o "$(OUTDIR)\printf.obj" "$(OUTDIR)\printf.asm" 
 
-"$(OUTDIR)\main.asm": "D:\funny_car\p20140116\Application\funny_car\main.c" ".\SACM.h" "..\..\Platform\modules\freertos\source\include\FreeRTOS.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\stddef.h" "..\..\Platform\include\stdint.h" "D:\funny_car\p20140116\Platform\modules\freertos\source\include\projdefs.h" "..\..\Application\include\FreeRTOSConfig.h" "D:\funny_car\p20140116\Platform\modules\freertos\source\include\portable.h" "..\..\Platform\modules\freertos\source\portable\GCC\unsp_isa_v13\portmacro.h" "D:\funny_car\p20140116\Platform\modules\freertos\source\include\mpu_wrappers.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\string.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\memory.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\stdlib.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\reent.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\sys\reent.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\_ansi.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\machine/_types.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\assert.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\limits.h" "..\..\Platform\modules\freertos\source\include\task.h" "D:\funny_car\p20140116\Platform\modules\freertos\source\include\list.h" "..\..\Platform\modules\freertos\source\include\croutine.h" "..\..\Platform\modules\freertos\source\include\semphr.h" "D:\funny_car\p20140116\Platform\modules\freertos\source\include\queue.h" "..\..\Platform\include\GPCE206x.h" "..\..\Platform\drivers\drv_i2c.h" "..\..\Platform\drivers\drv_mtd.h" "..\..\Platform\drivers\drv_lcd.h" "..\..\Platform\modules\pff\src\pff.h" "D:\funny_car\p20140116\Platform\modules\pff\src\integer.h" "..\..\Platform\modules\hash\crc.h" "..\..\Platform\modules\printf\printf.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\stdarg.h" 
+"$(OUTDIR)\main.asm": "D:\funny_car\p20140116\Application\funny_car\main.c" ".\SACM.h" "..\..\Platform\modules\freertos\source\include\FreeRTOS.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\stddef.h" "..\..\Platform\include\stdint.h" "D:\funny_car\p20140116\Platform\modules\freertos\source\include\projdefs.h" "..\..\Application\include\FreeRTOSConfig.h" "D:\funny_car\p20140116\Platform\modules\freertos\source\include\portable.h" "..\..\Platform\modules\freertos\source\portable\GCC\unsp_isa_v13\portmacro.h" "D:\funny_car\p20140116\Platform\modules\freertos\source\include\mpu_wrappers.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\string.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\memory.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\stdlib.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\reent.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\sys\reent.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\_ansi.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\machine/_types.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\assert.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\limits.h" "..\..\Platform\modules\freertos\source\include\task.h" "D:\funny_car\p20140116\Platform\modules\freertos\source\include\list.h" "..\..\Platform\modules\freertos\source\include\croutine.h" "..\..\Platform\modules\freertos\source\include\semphr.h" "D:\funny_car\p20140116\Platform\modules\freertos\source\include\queue.h" "..\..\Platform\include\platform.h" "D:\funny_car\p20140116\Platform\include\GPCE206x.h" "D:\funny_car\p20140116\Platform\include\stdint.h" "..\..\Platform\drivers\drv_i2c.h" "..\..\Platform\drivers\drv_mtd.h" "..\..\Platform\drivers\drv_lcd.h" "..\..\Platform\modules\pff\src\pff.h" "D:\funny_car\p20140116\Platform\modules\pff\src\integer.h" "..\..\Platform\modules\hash\crc.h" "..\..\Platform\modules\sfat\sfat.h" "..\..\Platform\modules\printf\printf.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\stdarg.h" 
 	set PATH="$(APPDIR)\toolchain\";%PATH% & \
 	$(CC) $(CFLAGS) -o "$(OUTDIR)/main.asm" "D:/funny_car/p20140116/Application/funny_car/main.c" 
 
 "$(OUTDIR)\main.obj": "$(OUTDIR)\main.asm"
 	$(AS) $(CASFLAGS) $(INCLUDES) -o "$(OUTDIR)\main.obj" "$(OUTDIR)\main.asm" 
 
-"$(OUTDIR)\System.obj": "D:\funny_car\p20140116\Application\funny_car\System.asm" "..\..\Platform\include\GPCE206x.inc" 
+"$(OUTDIR)\System.obj": "D:\funny_car\p20140116\Application\funny_car\System.asm" 
 	$(AS) $(ASFLAGS) $(INCLUDES) -o "$(OUTDIR)\System.obj" "D:\funny_car\p20140116\Application\funny_car\System.asm" 
 
-"$(OUTDIR)\SACM_A1600_User.obj": "D:\funny_car\p20140116\Application\funny_car\SACM_A1600_User.asm" ".\A1600.inc" "..\..\Platform\include\GPCE206x.inc" 
+"$(OUTDIR)\SACM_A1600_User.obj": "D:\funny_car\p20140116\Application\funny_car\SACM_A1600_User.asm" 
 	$(AS) $(ASFLAGS) $(INCLUDES) -o "$(OUTDIR)\SACM_A1600_User.obj" "D:\funny_car\p20140116\Application\funny_car\SACM_A1600_User.asm" 
 
 "$(OUTDIR)\isr_c.asm": "D:\funny_car\p20140116\Application\funny_car\isr_c.c" 
@@ -224,10 +224,10 @@ OBJFILES	= \
 "$(OUTDIR)\isr_c.obj": "$(OUTDIR)\isr_c.asm"
 	$(AS) $(CASFLAGS) $(INCLUDES) -o "$(OUTDIR)\isr_c.obj" "$(OUTDIR)\isr_c.asm" 
 
-"$(OUTDIR)\isr_a.obj": "D:\funny_car\p20140116\Application\funny_car\isr_a.asm" ".\A1600.inc" "..\..\Platform\include\GPCE206x.inc" 
+"$(OUTDIR)\isr_a.obj": "D:\funny_car\p20140116\Application\funny_car\isr_a.asm" 
 	$(AS) $(ASFLAGS) $(INCLUDES) -o "$(OUTDIR)\isr_a.obj" "D:\funny_car\p20140116\Application\funny_car\isr_a.asm" 
 
-"$(OUTDIR)\ParTest.asm": "D:\funny_car\p20140116\Application\ParTest\ParTest.c" "..\..\Platform\modules\freertos\source\include\FreeRTOS.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\stddef.h" "..\..\Platform\include\stdint.h" "D:\funny_car\p20140116\Platform\modules\freertos\source\include\projdefs.h" "..\..\Application\include\FreeRTOSConfig.h" "D:\funny_car\p20140116\Platform\modules\freertos\source\include\portable.h" "..\..\Platform\modules\freertos\source\portable\GCC\unsp_isa_v13\portmacro.h" "D:\funny_car\p20140116\Platform\modules\freertos\source\include\mpu_wrappers.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\string.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\memory.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\stdlib.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\reent.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\sys\reent.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\_ansi.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\machine/_types.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\assert.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\limits.h" "..\..\Platform\modules\freertos\source\include\task.h" "D:\funny_car\p20140116\Platform\modules\freertos\source\include\list.h" "..\..\Platform\include\GPCE206x.h" 
+"$(OUTDIR)\ParTest.asm": "D:\funny_car\p20140116\Application\ParTest\ParTest.c" "..\..\Platform\modules\freertos\source\include\FreeRTOS.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\stddef.h" "..\..\Platform\include\stdint.h" "D:\funny_car\p20140116\Platform\modules\freertos\source\include\projdefs.h" "..\..\Application\include\FreeRTOSConfig.h" "D:\funny_car\p20140116\Platform\modules\freertos\source\include\portable.h" "..\..\Platform\modules\freertos\source\portable\GCC\unsp_isa_v13\portmacro.h" "D:\funny_car\p20140116\Platform\modules\freertos\source\include\mpu_wrappers.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\string.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\memory.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\stdlib.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\reent.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\sys\reent.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\_ansi.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\machine/_types.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\assert.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\limits.h" "..\..\Platform\modules\freertos\source\include\task.h" "D:\funny_car\p20140116\Platform\modules\freertos\source\include\list.h" "..\..\Platform\include\platform.h" "D:\funny_car\p20140116\Platform\include\GPCE206x.h" "D:\funny_car\p20140116\Platform\include\stdint.h" 
 	set PATH="$(APPDIR)\toolchain\";%PATH% & \
 	$(CC) $(CFLAGS) -o "$(OUTDIR)/ParTest.asm" "D:/funny_car/p20140116/Application/ParTest/ParTest.c" 
 

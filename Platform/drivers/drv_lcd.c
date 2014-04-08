@@ -11,6 +11,7 @@
 #include "drv_lcd.h"
 #include "drv_spi.h"
 
+#if ( CFG_DRV_LCD > 0 )
 #ifdef CODE_1
 /* Standard includes. */
 #include <stdlib.h>
@@ -33,11 +34,12 @@ static void _putch(uint8_t c);
 static uint16_t _width = ST7735_TFTWIDTH;
 static uint16_t _height = ST7735_TFTHEIGHT;
 
-// Font Size	: 8x12
-// Memory usage	: 1144 bytes
-// # characters	: 95
-
-const unsigned char SmallFont[] = {         
+/*
+    Font Size           : 8x12
+    Memory usage   : 1144 bytes
+    Characters        : 95
+*/
+const unsigned char SmallFont[] = {
 0x08,0x0C,0x20,0x5F,
 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, // <Space>
 0x00,0x00,0x20,0x20,0x20,0x20,0x20,0x20,0x00,0x20,0x00,0x00, // !
@@ -263,7 +265,7 @@ int putchar (int c)
 void delay_ms(uint32_t ms)
 {    
     #if 1 // Use this will save 20 word in code.
-    uint32_t c = ms*50*10; // 49 ~= 1 us / ((1 / 49152000) * 10^6) us
+    uint32_t c = ms*50; // 49 ~= 1 us / ((1 / 49152000) * 10^6) us
 
     do{
         //asm("NOP");
@@ -1419,3 +1421,80 @@ void setTextWrap(uint8_t w) {
 
 #endif
 
+#if 0
+#ifdef CODE_1
+void test_ascii_screen(void) {
+	unsigned char x;
+	int i;
+
+    //lcd7735_init_screen((void *)&SmallFont[0],ST7735_WHITE,ST7735_BLACK,PORTRAIT);
+    x = 0x20;
+
+	for(i=0;i<95;i++) {
+		lcd7735_putc(x+i);
+	}
+}
+#endif
+
+#ifdef CODE_2
+void myDelay(int16_t ms);
+
+int st7735_lcd_test(void){
+	// init the 1.8 lcd display
+	init();
+	while(1){
+		// COLORS AND 'T'
+		fillScreen(Color565(0,0,0));
+		fillRect(0,0,127,50,Color565(255,0,0));
+		setTextColor(Color565(255,255,255),Color565(255,00,00));
+		setCursor(55,20);
+		print("red");
+		fillRect(0,50,127,100,Color565(0,255,0));
+		setTextColor(Color565(255,255,255),Color565(0,255,00));
+		setCursor(50,70);
+		print("green");
+		fillRect(0,100,127,159,Color565(0,0,255));
+		setTextColor(Color565(255,255,255),Color565(0,00,255));
+		setCursor(55,120);
+		print("blue");
+
+		drawRect(5,5,118,150,Color565(255,255,255));
+
+		myDelay(5000);
+ 
+		fillScreen(Color565(0,0,0));
+
+		for (uint8_t y=0; y<160; y+=8)
+		{
+			drawLine(0, 0, 127, y, Color565(255,0,0));	
+			drawLine(0, 159, 127, y, Color565(0,255,0));
+			drawLine(127, 0, 0, y, Color565(0,0,255));
+			drawLine(127, 159, 0, y, Color565(255,255,255));
+		}
+		myDelay(5000);
+
+		// TEXT		
+		fillScreen(Color565(0,0,0));
+		setCursor(0,0);
+		setTextWrap(1);
+
+		setTextColor(Color565(255,255,255),Color565(0,0,255));
+		print("All available chars:\n\n");
+		setTextColor(Color565(200,200,255),Color565(50,50,50));
+		unsigned char i;
+		char ff[]="a";
+		for (i=32; i<128; i++) 
+		{
+			ff[0]=i;
+			print(ff);
+		}
+		myDelay(5000); 
+	}
+
+	return 0;
+}
+
+#endif
+#endif
+
+#endif

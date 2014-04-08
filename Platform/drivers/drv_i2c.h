@@ -11,8 +11,7 @@
 #ifndef DRV_I2C_H
 #define DRV_I2C_H
 
-#include "GPCE206x.h"
-#include "stdint.h"
+#include "platform.h"
 
 #define  false           0
 #define  true            1

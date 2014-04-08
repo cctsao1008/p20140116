@@ -196,7 +196,7 @@ EXPORT=3
 #PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
-EXPORT=0
+EXPORT=3
 # Begin Source File
 SOURCE=..\..\Platform\modules\printf\printf.c
 USEPARAM=FALSE
@@ -382,6 +382,13 @@ USEPARAM=FALSE
 PARAM=
 ID=
 EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\include\platform.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\include\GPCE206x.h
@@ -688,7 +695,7 @@ EXPORT=3
 #PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
-EXPORT=0
+EXPORT=3
 # Begin Source File
 SOURCE=..\..\Platform\modules\printf\printf.c
 USEPARAM=FALSE
@@ -874,6 +881,13 @@ USEPARAM=FALSE
 PARAM=
 ID=
 EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\include\platform.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\include\GPCE206x.h

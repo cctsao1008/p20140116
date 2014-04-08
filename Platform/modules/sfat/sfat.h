@@ -10,14 +10,15 @@
  ****************************************************************************/
 #ifndef SFAT_H
 #define SFAT_H
-#include "GPCE206x.h"
-#include "stdint.h"
+
+#include "platform.h"
 
 typedef struct {
-    uint8_t  ver; // Version of SFAT
-    uint8_t  nof; // Number of files
-    uint32_t rbt; // Remain bytes 
-    uint16_t crc; // CRC-16
-} SFAT;
+    char	 name[16];
+    uint8_t  index;
+    uint8_t  size; // Number of files
+    uint32_t addr; // Remain bytes 
+    uint16_t crc16; // CRC-16
+} SFAT_;
 
 #endif SFAT_H

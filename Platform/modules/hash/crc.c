@@ -1,5 +1,7 @@
 #include "crc.h"
 
+#if ( CFG_MOD_CRC > 0 )
+
 /*
     Optimized CRC-16 calculation.
 
@@ -26,6 +28,7 @@ uint16_t crc16_update(uint16_t crc, uint8_t data)
     return crc;
 }
 
+#if ( CFG_MOD_CRC16_CCITT > 0 )
 /* 
     3. CRC-16 (CRC-CCITT) Without Table 
     The table-less version is very similar, but crunches through the math without the benefit 
@@ -36,6 +39,7 @@ uint16_t crc16_update(uint16_t crc, uint8_t data)
 */
 uint16_t crc_ccitt_update(uint16_t crc, uint8_t data)
 {
+    #if 0
     crc = (uint8_t)(crc >> 8) | (crc << 8);
     crc ^= data;
     crc ^= (uint8_t)(crc & 0xFF) >> 4;
@@ -43,4 +47,22 @@ uint16_t crc_ccitt_update(uint16_t crc, uint8_t data)
     crc ^= (crc & 0xFF) << 5;
 
     return crc;
+    #else
+    int i;
+    crc = crc ^ ((uint16_t)data << 8);
+
+    for (i=0; i<8; i++)
+    {
+        if(crc & 0x8000)
+            crc = (crc << 1) ^ 0x1021;
+        else
+            crc <<= 1;
+    }
+ 
+    return crc;
+    #endif
 }
+#endif
+
+#endif
+

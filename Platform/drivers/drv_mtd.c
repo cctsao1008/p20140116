@@ -11,6 +11,27 @@
 #include "drv_mtd.h"
 #include "drv_spi.h"
 
+#if ( CFG_DRV_MTD > 0 )
+
+#define ARRAY_SIZE(arr) \
+   (sizeof(arr) / sizeof(((typeof(arr)){})[0]))
+
+#define MTD_SECTOR_SIZE (4 * 1024)
+
+struct mtd_flash_params {
+	uint8_t idcode1;
+	uint16_t nr_sectors;
+	const char *name;
+};
+
+static const struct mtd_flash_params mtd_flash_table[] = {
+	{
+		.idcode1 = 0x41,
+		.nr_sectors = 512,
+		.name = "SST25VF016B",
+	},
+};
+
 uint8_t mtd_init(void)
 {
     uint8_t i = 0, jedec_id[3] = {0};
@@ -44,7 +65,7 @@ uint8_t mtd_init(void)
     
 }
 
-uint8_t mtd_read_status_1(void)
+uint8_t mtd_read_status_1(uint8_t mask)
 {
     uint8_t rc = 0;
 
@@ -59,7 +80,7 @@ uint8_t mtd_read_status_1(void)
     return rc;
 }
 
-uint8_t mtd_read_status_2(void)
+uint8_t mtd_read_status_2(uint8_t mask)
 {
     uint8_t rc = 0;
 
@@ -76,6 +97,11 @@ uint8_t mtd_read_status_2(void)
 
 void mtd_write_status(uint8_t data)
 {
+    spi_select(CS_SFLASH, 1);
+    spi_select(CS_SFLASH, 0);
+
+    spi_xmit(CMD_WREN);
+
     spi_select(CS_SFLASH, 1);
     spi_select(CS_SFLASH, 0);
 
@@ -132,6 +158,17 @@ void mtd_fast_read_data(uint32_t addr,uint8_t *buf, uint32_t size)
     spi_select(CS_SFLASH, 1);
 }
 
+void mtd_chip_erase(void)
+{
+    spi_select(CS_SFLASH, 1);
+    spi_select(CS_SFLASH, 0);
+    spi_xmit(CMD_WREN);
+    spi_select(CS_SFLASH, 1);
+    spi_select(CS_SFLASH, 0);
+    spi_xmit(CMD_CHIP_ERASE);
+    spi_select(CS_SFLASH, 1);
+    
+}
 
 #if 0
 void mtd_xmit(const uint8_t d)
@@ -147,3 +184,4 @@ uint8_t mtd_rcvr(void)
 }
 #endif
 
+#endif

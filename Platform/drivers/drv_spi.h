@@ -11,8 +11,7 @@
 #ifndef DRV_SPI_H_
 #define DRV_SPI_H_
 
-#include "GPCE206x.h"
-#include "stdint.h"
+#include "platform.h"
 
 #define USE_BIT_BANGING_SPI
 //#define USE_HW_CS_CTRL

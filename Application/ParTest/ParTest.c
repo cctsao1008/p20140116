@@ -79,7 +79,9 @@ Changes from V2.0.0
 #include "task.h"
 
 /* GPCE Hardware Specification */
-#include "GPCE206x.h"
+#include "platform.h"
+
+#if ( CFG_APP_PARTEST > 0 )
 
 #define partstALL_OUTPUTS_OFF			( ( unsigned short ) 0x0000 )
 #define partstMAX_OUTPUT_LED			( ( unsigned short ) 0xFFFF )
@@ -172,4 +174,5 @@ unsigned short ucBit;
 		xTaskResumeAll();			
 	}
 }
+#endif
 

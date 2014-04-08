@@ -11,8 +11,7 @@
 #ifndef DRV_MTD_H
 #define DRV_MTD_H
 
-#include "GPCE206x.h"
-#include "stdint.h"
+#include "platform.h"
 
 /* JEDEC Device ID: Memory type and Capacity */
 #define MF_ID_WINBOND               (0xEF)  /* Winbond*/
@@ -30,7 +29,7 @@
 #define CMD_RDSR2                   (0x35)  /* Read Status Register-2 */
 #define CMD_ERASE_32K               (0x52)  /* 32KB Block Erase */
 #define CMD_JEDEC_ID                (0x9F)  /* Read JEDEC ID */
-#define CMD_ERASE_full              (0xC7)  /* Chip Erase */
+#define CMD_CHIP_ERASE              (0xC7)  /* Chip Erase */
 #define CMD_ERASE_64K               (0xD8)  /* 64KB Block Erase */
 
 #define SIZE_2MB  2  // 16  Mbits
@@ -38,6 +37,11 @@
 #define SIZE_8MB  8  // 64  Mbits
 #define SIZE_16MB 16 // 128 Mbits
 #define SIZE_32MB 32 // 256 Mbits
+
+#define tSE         30 // 30ms
+#define tBE1       120 // 30ms 32K
+#define tBE2       150 // 150ms 64K
+#define tCE       3000 // 3000ms
 
 uint8_t mtd_init(void);
 

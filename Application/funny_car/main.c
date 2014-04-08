@@ -15,8 +15,7 @@
 #include "croutine.h"  
 #include "semphr.h"
 
-/* GPCE206x */
-#include "GPCE206x.h"
+#include "platform.h"
 #include "SACM.h"
 
 /* I2C Driver */
@@ -36,6 +35,7 @@
 #include "pff.h"
 
 #include "crc.h"
+#include "sfat.h"
 #include "printf.h"
 //#include "stdio.h"
 
@@ -88,10 +88,6 @@ void key_scan(void *pvParameters);
 void audio_play(void *pvParameters);
 #endif
 
-#ifdef CODE_1
-void test_ascii_screen(void);
-#endif
-
 portTickType xTick = 0; 
 portSTACK_TYPE stack[configTOTAL_HEAP_SIZE];
 
@@ -101,8 +97,8 @@ xTaskHandle xHandle[3] = {NULL};
 enum tasks { led_task = 0, audio_task, key_task };
 
 #if defined(USE_FLASH_WRITER)
-#define buff_size 64
-BYTE buff[buff_size];
+#define buff_size 256
+//BYTE buff[buff_size];
 #endif
 
 #define TEST_CRC16
@@ -110,12 +106,21 @@ BYTE buff[buff_size];
 int main()
 {
     //unsigned int delay_1 = 5000, delay_2 = 4000;
+    #if 0
+    uint16_t i = 0, crc16 = 0, crc16_ccitt = 0; 
+    uint8_t data[7] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07};
+    for(i = 0 ; i < sizeof(data) ; i++)
+    {
+        crc16 = crc16_update(crc16, data[i]);
+        crc16_ccitt = crc_ccitt_update(crc16_ccitt, data[i]);
+    }
+    #endif
 
     bsp_init();
 
     /* Create the tasks defined within this file. */
     #if defined(USE_FLASH_WRITER)
-    xTaskCreate(flash_writter, "flash_writter", ( ( unsigned short ) 256 ), buff, 4, NULL );
+    xTaskCreate(flash_writter, "flash_writter", ( ( unsigned short ) 256 ), NULL, 4, NULL );
     #else
     xSemaphore = xSemaphoreCreateBinary();
     //xTaskCreate(CDecoder, "CDecoder", configMINIMAL_STACK_SIZE, NULL, 4, NULL );
@@ -168,13 +173,12 @@ void flash_writter(void *pvParameters)
 	WORD bw, br, i;
 	BYTE rc;
     BYTE* buff;
-#ifdef TEST_CRC16
+
     /* Please check the result on "http://www.lammertbies.nl/comm/info/crc-calculation.html" and compare it */
     uint16_t crc16 = 0, crc16_ccitt = 0; 
     uint8_t data[7] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07};
-#endif
 
-    buff = pvParameters;
+    buff = malloc(buff_size * sizeof(BYTE));
 
     asm("FIQ ON");
 
@@ -191,10 +195,10 @@ void flash_writter(void *pvParameters)
     for(i = 0 ; i < sizeof(data) ; i++)
     {
         crc16 = crc16_update(crc16, data[i]);
-        crc16_ccitt = crc_ccitt_update(crc16_ccitt, data[i]);
+        //crc16_ccitt = crc_ccitt_update(crc16_ccitt, data[i]);
     }
+
     printf("CRC-16 = \n0x%X\n", crc16);
-    printf("CRC-CCITT = \n0x%X\n", crc16_ccitt);
     #endif
 
     lcd7735_puts("----- DRPM -----");
@@ -205,7 +209,7 @@ void flash_writter(void *pvParameters)
     rc = pf_mount(&fatfs);
     if (rc) die(rc);
 
-    printf("\nOpen a file (flash.bin).\n");
+    printf("\nOpen flash.bin\n");
     
     rc = pf_open("flash.bin");
     if (rc) die(rc);
@@ -225,17 +229,22 @@ void flash_writter(void *pvParameters)
 #endif
 
 #if 1
-    crc16 = 0;
+    crc16 = 0, crc16_ccitt = 0;
 
     for (;;) {
         rc = pf_read(buff, buff_size, &br);  /* Read a chunk of file */
     
         if (rc || !br) break;           /* Error or end of file */
             for (i = 0; i < br; i++)      /* Type the data */
+            {
                 crc16 = crc16_update(crc16, buff[i]);
+                //crc16_ccitt = crc_ccitt_update(crc16_ccitt, buff[i]);
+                //putchar(buff[i]);
+            }
     }
 
     printf("CRC-16 = \n0x%X\n", crc16);
+    //printf("CRC-16 = \n0x%X\n", crc16_ccitt);
     if (rc) die(rc);
 #endif
 

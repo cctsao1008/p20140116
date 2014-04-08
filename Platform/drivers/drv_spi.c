@@ -10,6 +10,7 @@
  ****************************************************************************/
 #include "drv_spi.h"
 
+#if ( CFG_DRV_SPI > 0)
 void spi_initialize(void)
 {
     reset_watch_dog();
@@ -191,4 +192,5 @@ uint16_t spi_set_divisor(const uint16_t clkdiv)
     reset_watch_dog();
     return 0;
 }
+#endif
 

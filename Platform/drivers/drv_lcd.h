@@ -10,8 +10,8 @@
  ****************************************************************************/
 #ifndef DRV_LCD_H
 #define DRV_LCD_H
-#include "GPCE206x.h"
-#include "stdint.h"
+
+#include "platform.h"
 
 /* Example codes */
 #if 0
@@ -150,6 +150,8 @@
 
 extern const unsigned char SmallFont[]; 
 
+int putchar (int c);
+
 void lcd7735_init(void);
 void lcd7735_initR(uint8_t options);
 void lcd7735_init_screen(void *font,uint16_t fg, uint16_t bg, uint8_t orientation);
@@ -229,7 +231,7 @@ void drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color);
 void drawRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color);
 
 void print(const char str[]);
-void write(uint8_t);
+void write(uint8_t c);
 
 void setCursor(int16_t x, int16_t y);
 void setTextColor(uint16_t c, uint16_t bg);
