@@ -26,7 +26,7 @@ static const struct mtd_spi_flash_params mtd_flash_table[] = {
 
 void mtd_select(uint8_t high);
 
-MTD_RESULT mtd_init(MTD_PARAMS *param)
+MTD_RESULT mtd_probe(MTD_PARAMS *param)
 {
     MTD_RESULT rc = MTD_OK;
     MTD_PARAMS mtd_param;
@@ -177,8 +177,11 @@ error :
 
 MTD_RESULT mtd_read_data(uint32_t addr,uint8_t *buf, uint32_t size)
 {
-    MTD_RESULT rc = MTD_FAILED;
+    MTD_RESULT rc = MTD_OK;
     uint32_t i = 0;
+
+    if( buf == NULL )
+    {    rc = MTD_FAILED; goto error;}
 
     /* Is Flash in busy mode ? */
     while(mtd_read_status_1(B_BUSY))
@@ -202,15 +205,13 @@ MTD_RESULT mtd_read_data(uint32_t addr,uint8_t *buf, uint32_t size)
     /* Chip select go high to end a flash command */
     mtd_select(1);
 
-    rc = MTD_OK;
-
 error :
     return rc;
 }
 
 MTD_RESULT mtd_fast_read_data(uint32_t addr,uint8_t *buf, uint32_t size)
 {
-    MTD_RESULT rc = MTD_FAILED;
+    MTD_RESULT rc = MTD_OK;
     uint32_t i = 0;
 
     /* Is Flash in busy mode ? */
@@ -236,31 +237,54 @@ MTD_RESULT mtd_fast_read_data(uint32_t addr,uint8_t *buf, uint32_t size)
     /* Chip select go high to end a flash command */
     mtd_select(1);
 
-    rc = MTD_OK;
-
 error :
     return rc;
 }
 
 MTD_RESULT mtd_page_program(uint32_t addr,uint8_t *buf, uint32_t size)
 {
-    MTD_RESULT rc = MTD_FAILED;
+    MTD_RESULT rc = MTD_OK;
 
-    if(size > 256)
-        goto error;
+    if( buf == NULL )
+    {    rc = MTD_FAILED; goto error;}
+    else if( size == 0 )
+    {    rc = MTD_FAILED; goto error;}
+    else if( size > 256 )
+    {    rc = MTD_FAILED; goto error;}
+    else if( size > ( 256 - (uint8_t)addr % 256 ) )
+    {    rc = MTD_FAILED; goto error;}
 
-    rc = MTD_OK;
+    /* Is Flash in busy mode ? */
+    while(mtd_read_status_1(B_BUSY))
+    {
+        reset_watch_dog();
+    }
 
+    mtd_write_enable();
+
+    mtd_select(0);
+    spi_xmit(CMD_PP);
+
+    while(size-- == 0)
+        spi_xmit(*(buf++));
+
+    mtd_select(1);
+    
 error :
     return rc;
 }
 
-void mtd_chip_erase(void)
+MTD_RESULT mtd_chip_erase(void)
 {
+    MTD_RESULT rc = MTD_OK;
+
     mtd_write_enable();
     mtd_select(0);
     spi_xmit(CMD_CHIP_ERASE);
-    spi_select(CS_SFLASH, 1);
+    mtd_select(1);
+
+error :
+    return rc;
 }
 
 void mtd_select(uint8_t high)

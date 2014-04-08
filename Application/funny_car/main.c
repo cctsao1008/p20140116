@@ -165,6 +165,7 @@ void flash_writter(void *pvParameters)
 {
 	unsigned int sflash_size = 0, delay = 1000;
     MTD_PARAMS param;
+    uint32_t   addr = 0;
 
     FATFS fatfs;			/* File system object */
 #if _USE_DIR
@@ -176,8 +177,8 @@ void flash_writter(void *pvParameters)
     BYTE* buff;
 
     /* Please check the result on "http://www.lammertbies.nl/comm/info/crc-calculation.html" and compare it */
-    uint16_t crc16 = 0, crc16_ccitt = 0; 
-    uint8_t data[7] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07};
+    uint16_t crc16_1 = 0, crc16_2 = 0; 
+    //uint8_t data[7] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07};
 
     buff = malloc(buff_size * sizeof(BYTE));
 
@@ -203,16 +204,10 @@ void flash_writter(void *pvParameters)
     #endif
 
     lcd7735_puts("----- DRPM -----");
-    lcd7735_puts("Flash Writter.  ");
+    //lcd7735_puts("Flash Writter.  ");
 
-    printf("\nMount a volume.\n");
-    
+    //printf("Mount a volume.\n");
     rc = pf_mount(&fatfs);
-    if (rc) die(rc);
-
-    printf("\nOpen flash.bin\n");
-    
-    rc = pf_open("flash.bin");
     if (rc) die(rc);
 
 #if 0
@@ -229,86 +224,81 @@ void flash_writter(void *pvParameters)
     if (rc) die(rc);
 #endif
 
-#if 1
-    crc16 = 0, crc16_ccitt = 0;
+    /* MTD Device Detect */
+    if(MTD_OK == mtd_probe(&param))
+    {
+        printf("found device..\n");
+        printf((char *)param.name);
+        printf("\n");
 
-    for (;;) {
-        rc = pf_read(buff, buff_size, &br);  /* Read a chunk of file */
+        printf("open flash.bin\n");
+    
+        rc = pf_open("flash.bin");
+        if (rc) die(rc);
+
+        printf("chip erase..\n");
+        mtd_chip_erase();
+        printf("done.\n");
+
+        crc16_1 = 0, crc16_2 = 0;
+
+        printf("page pragram..\n");
+
+        for (;;) {
+            rc = pf_read(buff, buff_size, &br);  /* Read a chunk of file */
     
         if (rc || !br) break;           /* Error or end of file */
             for (i = 0; i < br; i++)      /* Type the data */
             {
-                crc16 = crc16_update(crc16, buff[i]);
-                //crc16_ccitt = crc_ccitt_update(crc16_ccitt, buff[i]);
-                //putchar(buff[i]);
+                if(MTD_OK !=mtd_page_program(addr, (uint8_t*)buff[i], 1))
+                    printf("failed %d, %X.\n", addr, buff[i]);
+
+                crc16_1 = crc16_update(crc16_1, buff[i]);
+
+                if(MTD_OK !=mtd_read_data(addr, (uint8_t*)buff[i], 1))
+                    printf("failed %d, %X.\n", addr, buff[i]);
+
+                crc16_2 = crc16_update(crc16_2, buff[i]);
+
+                addr++;
             }
-    }
+        }
 
-    printf("CRC-16 = \n0x%X\n", crc16);
-    //printf("CRC-16 = \n0x%X\n", crc16_ccitt);
-    if (rc) die(rc);
-#endif
+        printf("done.\n");
+        printf("CRC16-1 0x%X.\n", crc16_1);
+        printf("CRC16-2 0x%X.\n", crc16_2);
 
-    /* MTD Device Detect */
-    printf("\nmtd init.\n");
+        #if 0
+        printf("\ndo page program.\n");
+        if( MTD_OK == mtd_page_program(0, buff, 256))
+        {
+            printf("\ndone.\n");
+        }
+        else
+            printf("\nfailed-1.\n");
 
-    if(MTD_OK == mtd_init(&param))
-    {
-        printf("found device :\n");
-        printf((char *)param.name);
-        printf("\ndo chip erase..\n");
-        mtd_chip_erase();
-        printf("\ndone.\n");
+        if( MTD_OK == mtd_page_program(1, buff, 256))
+        {
+            printf("\ndone.\n");
+        }
+        else
+            printf("\nfailed-2.\n");
+
+        if( MTD_OK == mtd_page_program(1, buff, 255))
+        {
+            printf("\ndone.\n");
+        }
+        else
+            printf("\nfailed-3.\n");
+        #endif
     }
 
     if(fatfs.fsize < (sflash_size * 1024 * 1024))
     {
         // TODO : Copy file from SD to Serial Flash
     }
-   
-#if _USE_WRITE
-    printf("\nOpen a file to write (write.txt).\n");
-
-    rc = pf_open("status.txt");
-    if (rc) die(rc);
     
-    printf("\nWrite a text data. (Hello world!)\n");
-
-    for (;;) {
-        rc = pf_write("Done. \r\n", 14, &bw);
-        if (rc || !bw) break;
-    }
-
-    if (rc) die(rc);
-    
-    printf("\nTerminate the file write process.\n");
-
-    rc = pf_write(0, 0, &bw);
-    if (rc) die(rc);
-#endif
-    
-#if _USE_DIR
-    printf("\nOpen root directory.\n");
-
-    rc = pf_opendir(&dir, "");
-    if (rc) die(rc);
-    
-    printf("\nDirectory listing...\n");
-
-    for (;;) {
-        rc = pf_readdir(&dir, &fno);    /* Read a directory item */
-        if (rc || !fno.fname[0]) break; /* Error or end of dir */
-    
-        if (fno.fattrib & AM_DIR)
-            printf("   <dir>  %s\n", fno.fname);
-        else
-            printf("%8lu  %s\n", fno.fsize, fno.fname);
-    }
-
-    if (rc) die(rc);
-#endif
-    
-    printf("\nTest completed.\n");
+    printf("Completed!!\n");
 
     while(1)
     {

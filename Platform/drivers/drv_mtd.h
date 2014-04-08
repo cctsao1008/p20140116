@@ -16,7 +16,6 @@
 
 /* JEDEC Device ID: Memory type and Capacity */
 #define MF_ID_WINBOND               (0xEF)  /* Winbond*/
-#define MTD_W25Q16_BV               (0x15)  /* Winbond W25Q16BV  */
 
 /* Command List */
 #define CMD_WRSR                    (0x01)  /* Write Status Register */
@@ -32,12 +31,7 @@
 #define CMD_JEDEC_ID                (0x9F)  /* Read JEDEC ID */
 #define CMD_CHIP_ERASE              (0xC7)  /* Chip Erase */
 #define CMD_ERASE_64K               (0xD8)  /* 64KB Block Erase */
-
-#define SIZE_2MB                        2  // 16  Mbits
-#define SIZE_4MB                        4  // 32  Mbits
-#define SIZE_8MB                        8  // 64  Mbits
-#define SIZE_16MB                      16  // 128 Mbits
-#define SIZE_32MB                      32  // 256 Mbits
+#define CMD_CRMR                    (0xFF)  /* Continuous Read Mode Reset */
 
 #define tSE                            30  // 30ms
 #define tBE1                          120  // 30ms 32K
@@ -127,7 +121,9 @@ struct mtd_spi_flash {
 };
 #endif
 
-MTD_RESULT mtd_init(MTD_PARAMS *param);
-void mtd_chip_erase(void);
+MTD_RESULT mtd_probe(MTD_PARAMS *param);
+MTD_RESULT mtd_chip_erase(void);
+MTD_RESULT mtd_page_program(uint32_t addr,uint8_t *buf, uint32_t size);
+MTD_RESULT mtd_read_data(uint32_t addr,uint8_t *buf, uint32_t size);
 
 #endif DRV_MTD_H
