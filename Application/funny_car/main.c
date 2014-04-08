@@ -164,6 +164,7 @@ void die (		/* Stop with dying message */
 void flash_writter(void *pvParameters)
 {
 	unsigned int sflash_size = 0, delay = 1000;
+    MTD_PARAMS param;
 
     FATFS fatfs;			/* File system object */
 #if _USE_DIR
@@ -190,7 +191,7 @@ void flash_writter(void *pvParameters)
     lcd7735_init_screen((void *)&SmallFont[0],ST7735_WHITE,ST7735_BLACK,PORTRAIT);
     #endif
     
-    #ifdef TEST_CRC16
+    #ifdef TEST_CRC16_
     /* Please check the result on "http://www.lammertbies.nl/comm/info/crc-calculation.html" and compare it */    
     for(i = 0 ; i < sizeof(data) ; i++)
     {
@@ -249,7 +250,16 @@ void flash_writter(void *pvParameters)
 #endif
 
     /* MTD Device Detect */
-    sflash_size = mtd_init();
+    printf("\nmtd init.\n");
+
+    if(MTD_OK == mtd_init(&param))
+    {
+        printf("found device :\n");
+        printf((char *)param.name);
+        printf("\ndo chip erase..\n");
+        mtd_chip_erase();
+        printf("\ndone.\n");
+    }
 
     if(fatfs.fsize < (sflash_size * 1024 * 1024))
     {

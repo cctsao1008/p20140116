@@ -29,7 +29,7 @@ EXPORT=3
 #PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
-EXPORT=3
+EXPORT=0
 # Begin Source File
 SOURCE=..\..\Platform\drivers\drv_i2c.c
 USEPARAM=FALSE
@@ -53,6 +53,13 @@ EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\drivers\drv_spi.c
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\drivers\drv_uart.c
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -384,6 +391,13 @@ ID=
 EXPORT=3
 # End Source File
 # Begin Source File
+SOURCE=..\..\Platform\drivers\drv_uart.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
 SOURCE=..\..\Platform\include\platform.h
 USEPARAM=FALSE
 PARAM=
@@ -465,7 +479,7 @@ SOURCE=..\..\Platform\modules\freertos\source\include\croutine.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=707406378
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\queue.h
@@ -500,7 +514,7 @@ SOURCE=..\..\Platform\modules\freertos\source\include\semphr.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=1313818964
 # End Source File
 # End Group
 # End SubItem
@@ -528,7 +542,7 @@ EXPORT=3
 #PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
-EXPORT=3
+EXPORT=0
 # Begin Source File
 SOURCE=..\..\Platform\drivers\drv_i2c.c
 USEPARAM=FALSE
@@ -552,6 +566,13 @@ EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\drivers\drv_spi.c
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\drivers\drv_uart.c
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -883,6 +904,13 @@ ID=
 EXPORT=3
 # End Source File
 # Begin Source File
+SOURCE=..\..\Platform\drivers\drv_uart.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
 SOURCE=..\..\Platform\include\platform.h
 USEPARAM=FALSE
 PARAM=
@@ -964,7 +992,7 @@ SOURCE=..\..\Platform\modules\freertos\source\include\croutine.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=707406378
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\queue.h
@@ -999,7 +1027,7 @@ SOURCE=..\..\Platform\modules\freertos\source\include\semphr.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=1313818964
 # End Source File
 # End Group
 # End SubItem

@@ -1,6 +1,6 @@
 #####################################################################
 #																	 
-#	Created by u'nSP IDE V3.0.8		11:02:38	04/08/14
+#	Created by u'nSP IDE V3.0.8		18:17:59	04/08/14
 #
 #####################################################################
 
@@ -58,6 +58,7 @@ OBJFILES	= \
 	"$(OUTDIR)\drv_lcd.obj" \
 	"$(OUTDIR)\drv_mtd.obj" \
 	"$(OUTDIR)\drv_spi.obj" \
+	"$(OUTDIR)\drv_uart.obj" \
 	"$(OUTDIR)\mmcbb.obj" \
 	"$(OUTDIR)\pff.obj" \
 	"$(OUTDIR)\port_a.obj" \
@@ -96,7 +97,7 @@ OBJFILES	= \
 "$(OUTDIR)\drv_lcd.obj": "$(OUTDIR)\drv_lcd.asm"
 	$(AS) $(CASFLAGS) $(INCLUDES) -o "$(OUTDIR)\drv_lcd.obj" "$(OUTDIR)\drv_lcd.asm" 
 
-"$(OUTDIR)\drv_mtd.asm": "D:\funny_car\p20140116\Platform\drivers\drv_mtd.c" "D:\funny_car\p20140116\Platform\drivers\drv_mtd.h" "D:\funny_car\p20140116\Platform\drivers\drv_spi.h" "..\..\Platform\include\platform.h" "D:\funny_car\p20140116\Platform\include\GPCE206x.h" "D:\funny_car\p20140116\Platform\include\stdint.h" 
+"$(OUTDIR)\drv_mtd.asm": "D:\funny_car\p20140116\Platform\drivers\drv_mtd.c" "D:\funny_car\p20140116\Platform\drivers\drv_mtd.h" "D:\funny_car\p20140116\Platform\drivers\drv_spi.h" "..\..\Platform\include\platform.h" "D:\funny_car\p20140116\Platform\include\GPCE206x.h" "D:\funny_car\p20140116\Platform\include\stdint.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\stddef.h" 
 	set PATH="$(APPDIR)\toolchain\";%PATH% & \
 	$(CC) $(CFLAGS) -o "$(OUTDIR)/drv_mtd.asm" "D:/funny_car/p20140116/Platform/drivers/drv_mtd.c" 
 
@@ -109,6 +110,13 @@ OBJFILES	= \
 
 "$(OUTDIR)\drv_spi.obj": "$(OUTDIR)\drv_spi.asm"
 	$(AS) $(CASFLAGS) $(INCLUDES) -o "$(OUTDIR)\drv_spi.obj" "$(OUTDIR)\drv_spi.asm" 
+
+"$(OUTDIR)\drv_uart.asm": "D:\funny_car\p20140116\Platform\drivers\drv_uart.c" "D:\funny_car\p20140116\Platform\drivers\drv_uart.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\stdio.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\_ansi.h" "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\include\stdarg.h" "..\..\Platform\include\platform.h" "D:\funny_car\p20140116\Platform\include\GPCE206x.h" "D:\funny_car\p20140116\Platform\include\stdint.h" 
+	set PATH="$(APPDIR)\toolchain\";%PATH% & \
+	$(CC) $(CFLAGS) -o "$(OUTDIR)/drv_uart.asm" "D:/funny_car/p20140116/Platform/drivers/drv_uart.c" 
+
+"$(OUTDIR)\drv_uart.obj": "$(OUTDIR)\drv_uart.asm"
+	$(AS) $(CASFLAGS) $(INCLUDES) -o "$(OUTDIR)\drv_uart.obj" "$(OUTDIR)\drv_uart.asm" 
 
 "$(OUTDIR)\mmcbb.asm": "D:\funny_car\p20140116\Platform\modules\pff\src\mmcbb.c" "D:\funny_car\p20140116\Platform\modules\pff\src\diskio.h" "D:\funny_car\p20140116\Platform\modules\pff\src\integer.h" "D:\funny_car\p20140116\Platform\modules\pff\src\pff.h" "..\..\Platform\include\platform.h" "D:\funny_car\p20140116\Platform\include\GPCE206x.h" "D:\funny_car\p20140116\Platform\include\stdint.h" "..\..\Platform\drivers\drv_spi.h" 
 	set PATH="$(APPDIR)\toolchain\";%PATH% & \
@@ -264,6 +272,9 @@ clean :
 	$(RM) "$(OUTDIR)\drv_spi.obj" 
 	$(RM) "$(OUTDIR)\drv_spi.lst" 
 	$(RM) "$(OUTDIR)\drv_spi.asm" 
+	$(RM) "$(OUTDIR)\drv_uart.obj" 
+	$(RM) "$(OUTDIR)\drv_uart.lst" 
+	$(RM) "$(OUTDIR)\drv_uart.asm" 
 	$(RM) "$(OUTDIR)\mmcbb.obj" 
 	$(RM) "$(OUTDIR)\mmcbb.lst" 
 	$(RM) "$(OUTDIR)\mmcbb.asm" 

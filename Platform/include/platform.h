@@ -21,6 +21,9 @@
 /* SPI Driver Configuration */
 #define CFG_DRV_SPI          1
 
+/* UART Driver Configuration */
+#define CFG_DRV_UART         0
+
 /* LCD Driver Configuration */
 #define CFG_DRV_LCD          1
 
