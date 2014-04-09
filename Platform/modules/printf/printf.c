@@ -141,7 +141,8 @@ void tfp_printf(char *fmt, ...)
                 putchar(ch);
         }
     }
-    abort:;
+
+abort:
     va_end(va);
 }
 
