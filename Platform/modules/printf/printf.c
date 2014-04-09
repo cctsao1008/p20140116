@@ -47,7 +47,7 @@ static char zs;
 
 static void out(char c) {
     *bf++ = c;
-    }
+}
 
 static void outDgt(char dgt) {
     out(dgt+(dgt<10 ? '0' : (uc ? 'A' : 'a')-10));
@@ -60,7 +60,7 @@ static void divOut(unsigned int div) {
     while (num>=div) {
         num -= div;
         dgt++;
-        }
+    }
     if (zs || dgt>0) 
         outDgt(dgt);
 }   
@@ -76,7 +76,7 @@ void tfp_printf(char *fmt, ...)
     while ((ch=*(fmt++))) {
         if (ch!='%') {
             putchar(ch);
-            }
+        }
         else {
             char lz=0;
             char w=0;
@@ -84,14 +84,14 @@ void tfp_printf(char *fmt, ...)
             if (ch=='0') {
                 ch=*(fmt++);
                 lz=1;
-                }
+            }
             if (ch>='0' && ch<='9') {
                 w=0;
                 while (ch>='0' && ch<='9') {
                     w=(((w<<2)+w)<<1)+ch-'0';
                     ch=*fmt++;
-                    }
                 }
+            }
             bf=buf;
             p=bf;
             zs=0;
@@ -104,7 +104,7 @@ void tfp_printf(char *fmt, ...)
                     if (ch=='d' && (int)num<0) {
                         num = -(int)num;
                         out('-');
-                        }
+                    }
                     divOut(10000);
                     divOut(1000);
                     divOut(100);
@@ -130,7 +130,7 @@ void tfp_printf(char *fmt, ...)
                     out('%');
                 default:
                     break;
-                }
+            }
             *bf=0;
             bf=p;
             while (*bf++ && w > 0)
@@ -139,8 +139,8 @@ void tfp_printf(char *fmt, ...)
                 putchar(lz ? '0' : ' ');
             while ((ch= *p++))
                 putchar(ch);
-            }
         }
+    }
     abort:;
     va_end(va);
 }
