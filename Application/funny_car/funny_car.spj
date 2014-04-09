@@ -29,7 +29,7 @@ EXPORT=3
 #PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
-EXPORT=0
+EXPORT=3
 # Begin Source File
 SOURCE=..\..\Platform\drivers\drv_i2c.c
 USEPARAM=FALSE
@@ -212,6 +212,26 @@ ID=
 EXPORT=3
 # End Source File
 # End Group
+# Begin Group "sacm"
+#PROP Default_Filter=
+USEPARAM=FALSE
+PARAM=
+EXPORT=3
+# Begin Source File
+SOURCE=..\..\Platform\modules\sacm\SACM_A1600_User_a.asm
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\sacm\SACM_A1600_User_c.c
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# End Group
 # End Group
 # End Group
 # Begin Group "Application"
@@ -233,13 +253,6 @@ EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=System.asm
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=SACM_A1600_User.asm
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -305,14 +318,7 @@ EXPORT=3
 #PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
-EXPORT=0
-# Begin Source File
-SOURCE=SACM.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
+EXPORT=1313818964
 # Begin Source File
 SOURCE=A1600.inc
 USEPARAM=FALSE
@@ -392,6 +398,13 @@ EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\drivers\drv_uart.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\sacm\SACM.h
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -479,7 +492,7 @@ SOURCE=..\..\Platform\modules\freertos\source\include\croutine.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=707406378
+EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\queue.h
@@ -514,7 +527,7 @@ SOURCE=..\..\Platform\modules\freertos\source\include\semphr.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=1313818964
+EXPORT=0
 # End Source File
 # End Group
 # End SubItem
@@ -542,7 +555,7 @@ EXPORT=3
 #PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
-EXPORT=0
+EXPORT=3
 # Begin Source File
 SOURCE=..\..\Platform\drivers\drv_i2c.c
 USEPARAM=FALSE
@@ -725,6 +738,26 @@ ID=
 EXPORT=3
 # End Source File
 # End Group
+# Begin Group "sacm"
+#PROP Default_Filter=
+USEPARAM=FALSE
+PARAM=
+EXPORT=3
+# Begin Source File
+SOURCE=..\..\Platform\modules\sacm\SACM_A1600_User_a.asm
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\sacm\SACM_A1600_User_c.c
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# End Group
 # End Group
 # End Group
 # Begin Group "Application"
@@ -746,13 +779,6 @@ EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=System.asm
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=SACM_A1600_User.asm
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -818,14 +844,7 @@ EXPORT=3
 #PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
-EXPORT=0
-# Begin Source File
-SOURCE=SACM.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
+EXPORT=1313818964
 # Begin Source File
 SOURCE=A1600.inc
 USEPARAM=FALSE
@@ -905,6 +924,13 @@ EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\drivers\drv_uart.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\sacm\SACM.h
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -992,7 +1018,7 @@ SOURCE=..\..\Platform\modules\freertos\source\include\croutine.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=707406378
+EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\queue.h
@@ -1027,7 +1053,7 @@ SOURCE=..\..\Platform\modules\freertos\source\include\semphr.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=1313818964
+EXPORT=0
 # End Source File
 # End Group
 # End SubItem

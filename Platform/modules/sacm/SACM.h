@@ -85,7 +85,7 @@ extern unsigned SACM_A1600_Status(void);
 extern void SACM_A1600_DA_FIRType(unsigned DA_FIRType);
 extern void USER_A1600_Volume(int VolumeIndex);
 //extern void USER_A1600_SetStartAddr(unsigned AddrLow, unsigned AddrHigh);
-//extern void USER_A1600_SetStartAddr_Con(unsigned SpeechIndex);
+extern void USER_A1600_SetStartAddr_Con(unsigned SpeechIndex);
 extern unsigned SACM_A1600_Check_Con(void);
 
 //////////////////////////////////////////////////////////////////////////////////////////

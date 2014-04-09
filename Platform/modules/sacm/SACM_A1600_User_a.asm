@@ -27,23 +27,25 @@
 //**************************************************************************
 // Function Call Publication Area
 //**************************************************************************
-.public  _USER_A1600_SetStartAddr
-.public F_USER_A1600_SetStartAddr
-.public  _USER_A1600_SetStartAddr_Con
-.public F_USER_A1600_SetStartAddr_Con
+//.public  _USER_A1600_SetStartAddr
+.external  _USER_A1600_SetStartAddr
+.public    F_USER_A1600_SetStartAddr
+.public    _USER_A1600_SetStartAddr_Con
+.public    F_USER_A1600_SetStartAddr_Con
 
-.public F_USER_A1600_GetData
-.public  _USER_A1600_Volume
-.public F_USER_A1600_Volume
+.external  _USER_A1600_GetData
+.public    F_USER_A1600_GetData
+.public    _USER_A1600_Volume
+.public    F_USER_A1600_Volume
 
-.public F_SACM_A1600_SendDAC1
-.public F_SACM_A1600_SendDAC2
-.public F_SACM_A1600_StartPlay
-.public F_SACM_A1600_EndPlay
-.public F_SACM_A1600_Init_
-.public F_SACM_A1600_DAC_Timer_X1
-.public F_SACM_A1600_DAC_Timer_X2
-.public F_SACM_A1600_GetStartAddr_Con
+.public    F_SACM_A1600_SendDAC1
+.public    F_SACM_A1600_SendDAC2
+.public    F_SACM_A1600_StartPlay
+.public    F_SACM_A1600_EndPlay
+.public    F_SACM_A1600_Init_
+.public    F_SACM_A1600_DAC_Timer_X1
+.public    F_SACM_A1600_DAC_Timer_X2
+.public    F_SACM_A1600_GetStartAddr_Con
 
 //**************************************************************************
 // External Variable Declaration
@@ -222,6 +224,7 @@ F_SACM_A1600_EndPlay:	.proc
 	retf;
 	.endp
 
+.if 0
 //****************************************************************
 // Function    : F_USER_A1600_SetStartAddr
 // Description : This API allows users to set the beginning address
@@ -264,6 +267,14 @@ F_USER_A1600_SetStartAddr:
 	retf;
 	.endp
 @
+.else
+F_USER_A1600_SetStartAddr:	.proc
+	push R1, R5 to [SP];
+	call _USER_A1600_SetStartAddr;
+	pop R1, R5 from [SP];
+	retf;
+	.endp
+.endif
 //****************************************************************
 // Function    : F_USER_A1600_SetStartAddr_Con
 // Description : This API allows users to set the beginning address
@@ -311,6 +322,7 @@ F_SACM_A1600_GetStartAddr_Con:	.proc
 	retf;
 	.endp
 
+.if 0
 //****************************************************************
 // Function    : F_USER_A1600_GetData
 // Description : Get speech data from internal or external memory
@@ -370,3 +382,12 @@ F_USER_A1600_GetData:	.proc
 	retf;
 	.endp
 @
+.else
+F_USER_A1600_GetData:	.proc
+	push R1, R5 to [SP];
+	call _USER_A1600_GetData;
+	pop R1, R5 from [SP];
+	retf;
+	.endp
+.endif
+
