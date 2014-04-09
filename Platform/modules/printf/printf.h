@@ -59,10 +59,10 @@ To use the printf you need to supply your own character output function,
 something like :
 
 void putchar (char c)
-	{
-	while (!SERIAL_PORT_EMPTY) ;
-	SERIAL_PORT_TX_REGISTER = c;
-	}
+{
+    while (!SERIAL_PORT_EMPTY) ;
+    SERIAL_PORT_TX_REGISTER = c;
+}
 
 
 The printf function is actually a macro that translates to 'tfp_printf'. 
