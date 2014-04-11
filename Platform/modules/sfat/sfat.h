@@ -10,7 +10,6 @@
  ****************************************************************************/
 #ifndef SFAT_H
 #define SFAT_H
-
 #include "platform.h"
 
 typedef struct {
@@ -20,5 +19,11 @@ typedef struct {
     uint32_t addr; // Remain bytes 
     uint16_t crc16; // CRC-16
 } SFAT_;
+
+extern unsigned long LocateFirstFile(void);
+extern unsigned long LocateNextFile(unsigned long);
+extern unsigned long LocatePreFile(unsigned long);
+extern unsigned long LocateLastFile(void);
+extern unsigned long LocateBlankSector(unsigned long);
 
 #endif SFAT_H
