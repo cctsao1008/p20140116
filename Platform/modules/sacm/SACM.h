@@ -84,7 +84,7 @@ extern void SACM_A1600_Volume(int VolumeValue);
 extern unsigned SACM_A1600_Status(void);
 extern void SACM_A1600_DA_FIRType(unsigned DA_FIRType);
 extern void USER_A1600_Volume(int VolumeIndex);
-//extern void USER_A1600_SetStartAddr(unsigned AddrLow, unsigned AddrHigh);
+extern void USER_A1600_SetStartAddr(unsigned AddrLow, unsigned AddrHigh);
 extern void USER_A1600_SetStartAddr_Con(unsigned SpeechIndex);
 extern unsigned SACM_A1600_Check_Con(void);
 
@@ -271,6 +271,22 @@ extern void SACM_MS02_Volume(int VolumeValue);
 extern unsigned SACM_MS02_Status(void);
 extern void USER_MS02_Volume(int VolumeIndex);
 //extern void USER_MS02_SetStartAddr(unsigned AddrLow, unsigned AddrHigh);
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// SACM-VC external C API declaration
+//////////////////////////////////////////////////////////////////////////////////////////
+extern void SACM_VC_Initial(void);
+extern void SACM_VC_ServiceLoop(void);
+extern void SACM_VC_Play(unsigned Monitor, unsigned ADC_Channel, unsigned DAC_Channel, int RampSet);
+extern void SACM_VC_Play_Con(unsigned SpeechIndex, int Channel, int RampSet);
+extern void SACM_VC_Stop(void);
+extern void SACM_VC_Pause(void);
+extern void SACM_VC_Resume(void);
+extern void SACM_VC_Volume(int VolumeValue);
+extern unsigned SACM_VC_Status(void);
+extern void SACM_VC_DA_FIRType(unsigned DA_FIRType);
+extern void SACM_VC_AD_FIRType(unsigned AD_FIRType);
+extern void USER_VC_Volume(int VolumeIndex);
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // SACM-hardware dependent external C API declaration
