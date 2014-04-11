@@ -12,12 +12,16 @@
 .include GPCE206x.inc
 .include A1600.inc
 
+
 //**************************************************************************
 // Contant Defintion Area
 //**************************************************************************
 .define C_A1600_Timer_Setting_X1		C_Timer_Setting_8K
 .define C_A1600_Timer_Setting_X2		C_Timer_Setting_16K
 .define C_A1600_Timer_Setting_X4		C_Timer_Setting_32K
+
+.define C_SpeechNumberLength		4	// for skip song number
+
 
 //**************************************************************************
 // Variable Publication Area
@@ -47,6 +51,7 @@
 .public    F_SACM_A1600_DAC_Timer_X2
 .public    F_SACM_A1600_GetStartAddr_Con
 
+
 //**************************************************************************
 // External Variable Declaration
 //**************************************************************************
@@ -57,11 +62,14 @@
 //**************************************************************************
 .external F_SPI_ReadAWord
 .external F_SPI_ReadNWords
+.external F_SACM_Delay
+
 
 //**************************************************************************
 // External Table Declaration
 //**************************************************************************
 .external T_SACM_A1600_SpeechTable
+
 
 //**************************************************************************
 // RAM Definition Area
@@ -71,6 +79,7 @@
 .var R_ExtMem_High
 .var R_ExtMem_Low_Con
 .var R_ExtMem_High_Con
+
 
 //*****************************************************************************
 // Table Definition Area
@@ -83,10 +92,12 @@ T_SACM_A1600_Volume_Level:
 .dw 0x3500, 0x4000, 0x5000, 0x6500
 .dw	0x7d00, 0x9c00, 0xc400, 0xf500
 
+
 //**************************************************************************
 // CODE Definition Area
 //**************************************************************************
 .CODE
+
 //****************************************************************
 // Function    : F_SACM_A1600_Init_
 // Description : Hardware initilazation for A1600, called by library
@@ -104,10 +115,14 @@ F_SACM_A1600_Init_:	.proc
 	[P_TimerA_Data] = R1;
 	[P_TimerA_CNTR] = R1;
 
+    R1 = C_DAC_Enable | C_DAC_CH1_Up_Sample_Enable | C_DAC_CH1_Enable | C_DAC_CH1_TMR_Sel_TimerA;
+	[P_DAC_Ctrl] = R1;		
 
-	R1 = C_DAC_Enable | C_DAC_TMR_Sel_TimerA;
-	[P_DAC_Ctrl] = R1;		// b2 of P_DAC_Ctrl must be set to 1 in GPCE500A. GPCE060A doesn't use this bit
-
+	R1 = C_Ext_DAC_In_Disable | C_PP_NMOS_Enable | C_PP_Gain_LV10;
+	[P_PPAMP_Ctrl] = R1;
+	call F_SACM_Delay;
+	R1 |= C_PP_PMOS_Enable;
+	[P_PPAMP_Ctrl] = R1;
 
 	R1 = [P_INT_Ctrl];
 	R1 |= C_IRQ0_TMA;
@@ -180,7 +195,7 @@ F_SACM_A1600_DAC_Timer_X2:
 // Note        : None
 //****************************************************************
 F_SACM_A1600_SendDAC1:	.proc
-    [P_DAC_Data] = R4;
+    [P_DAC_CH1_Data] = R4;
 	retf;
 	.endp
 
@@ -193,7 +208,7 @@ F_SACM_A1600_SendDAC1:	.proc
 // Note        : None
 //****************************************************************
 F_SACM_A1600_SendDAC2:	.proc
-
+    [P_DAC_CH2_Data] = R4;
 	retf; 
 	.endp
 
@@ -242,6 +257,31 @@ _USER_A1600_SetStartAddr:	.proc
 	R1 = [R1];
 
 F_USER_A1600_SetStartAddr:
+	push R2 to [SP];
+	
+	R1 = R1 lsl 2;
+	R1 += C_SpeechNumberLength;
+	push R1 to [SP];
+	R2 = 0x0000;
+	call F_SPI_ReadAWord;
+	[R_ExtMem_Low] = R1;
+	
+	pop R1 from [SP];
+	R1 += 2;
+	call F_SPI_ReadAWord;	
+	[R_ExtMem_High] = R1;
+
+	pop R2 from [SP];
+	retf;
+	.endp
+
+
+.comment @
+_USER_A1600_SetStartAddr:	.proc
+	R1 = SP + 3;
+	R1 = [R1];
+
+F_USER_A1600_SetStartAddr:
 	push R1, R2 to [SP];
 	R1 += T_SACM_A1600_SpeechTable;
 	R1 = [R1];
@@ -256,6 +296,8 @@ F_USER_A1600_SetStartAddr:
 	pop R1, R2 from [SP];
 	retf;
 	.endp
+@	
+	
 .comment @
 _USER_A1600_SetStartAddr:	.proc
 	R2 = SP + 3;
@@ -269,12 +311,13 @@ F_USER_A1600_SetStartAddr:
 @
 .else
 F_USER_A1600_SetStartAddr:	.proc
-	push R1, R5 to [SP];
+	push R1, R4 to [SP];
 	call _USER_A1600_SetStartAddr;
-	pop R1, R5 from [SP];
+	pop R1, R4 from [SP];
 	retf;
 	.endp
 .endif
+
 //****************************************************************
 // Function    : F_USER_A1600_SetStartAddr_Con
 // Description : This API allows users to set the beginning address
@@ -287,6 +330,30 @@ F_USER_A1600_SetStartAddr:	.proc
 // Return      : None
 // Note        : None
 //****************************************************************
+_USER_A1600_SetStartAddr_Con:	.proc
+	R1 = SP + 3;
+	R1 = [R1];
+
+F_USER_A1600_SetStartAddr_Con:
+	push R2 to [SP];
+	
+	R1 = R1 lsl 2;
+	R1 += C_SpeechNumberLength;
+	push R1 to [SP];
+	R2 = 0x0000;
+	call F_SPI_ReadAWord;
+	[R_ExtMem_Low_Con] = R1;
+	
+	pop R1 from [SP];
+	R1 += 2;
+	call F_SPI_ReadAWord;	
+	[R_ExtMem_High_Con] = R1;
+
+	pop R2 from [SP];
+	retf;
+	.endp
+
+.comment @
 _USER_A1600_SetStartAddr_Con:	.proc
 	R1 = SP + 3;
 	R1 = [R1];
@@ -305,7 +372,7 @@ F_USER_A1600_SetStartAddr_Con:
 	pop R1, R2 from [SP];
 	retf;
 	.endp
-
+@
 //****************************************************************
 // Function    : F_SACM_A1600_GetStartAddr_Con
 // Description : 
@@ -333,6 +400,7 @@ F_SACM_A1600_GetStartAddr_Con:	.proc
 // Return      : None
 // Note        : None
 //****************************************************************
+.comment @
 F_USER_A1600_GetData:	.proc
 	push R1, R5 to [SP];
 	R3 = [R_ExtMem_Low];
@@ -358,8 +426,8 @@ F_USER_A1600_GetData:	.proc
 	pop R1, R5 from [SP];
 	retf;
 	.endp
+@
 
-.comment @
 F_USER_A1600_GetData:	.proc
 	R3 = [R_ExtMem_Low];
 	R4 = [R_ExtMem_High];
@@ -370,7 +438,7 @@ F_USER_A1600_GetData:	.proc
 	[R_ExtMem_High] = R4;
 	retf;
 	.endp
-@
+
 
 .comment @
 F_USER_A1600_GetData:	.proc
@@ -383,10 +451,11 @@ F_USER_A1600_GetData:	.proc
 	.endp
 @
 .else
+.external _vTaskSwitchContext
 F_USER_A1600_GetData:	.proc
-	push R1, R5 to [SP];
+	push R1, R4 to [SP];
 	call _USER_A1600_GetData;
-	pop R1, R5 from [SP];
+	pop R1, R4 from [SP];
 	retf;
 	.endp
 .endif
