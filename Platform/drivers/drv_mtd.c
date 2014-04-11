@@ -12,6 +12,7 @@
 #include "drv_spi.h"
 
 #if ( CFG_DRV_MTD > 0 )
+uint32_t mtd_curr_addr = 0;
 
 static const struct mtd_spi_flash_params mtd_flash_table[] = {
 	{
@@ -175,6 +176,15 @@ error :
     return rc;
 }
 
+void mtd_set_address(uint32_t addr)
+{
+    spi_xmit((uint8_t)(addr >> 16));
+    spi_xmit((uint8_t)(addr >> 8 ));
+    spi_xmit((uint8_t)(addr));
+
+    mtd_curr_addr = addr;
+}
+
 MTD_RESULT mtd_read_data(uint32_t addr,uint8_t *buf, uint32_t size)
 {
     MTD_RESULT rc = MTD_OK;
@@ -194,13 +204,11 @@ MTD_RESULT mtd_read_data(uint32_t addr,uint8_t *buf, uint32_t size)
 
     /* Write READ command and address */
     spi_xmit(CMD_READ);
-    spi_xmit((uint8_t)(addr >> 16));
-    spi_xmit((uint8_t)(addr >> 8 ));
-    spi_xmit((uint8_t)(addr));
+    mtd_set_address(addr);
 
     /* Set a loop to read data into buffer */
     for(i = 0 ; i < size ; i++)
-        buf[i] = spi_rcvr();
+    {    buf[i] = spi_rcvr(); mtd_curr_addr++; }
 
     /* Chip select go high to end a flash command */
     mtd_select(1);
@@ -225,14 +233,12 @@ MTD_RESULT mtd_fast_read_data(uint32_t addr,uint8_t *buf, uint32_t size)
 
     /* Write READ command and address */
     spi_xmit(CMD_FAST_READ);
-    spi_xmit((uint8_t)(addr >> 16));
-    spi_xmit((uint8_t)(addr >> 8 ));
-    spi_xmit((uint8_t)(addr));
+    mtd_set_address(addr);
     spi_skip_bytes(1);
 
     /* Set a loop to read data into buffer */
     for(i = 0 ; i < size ; i++)
-        buf[i] = spi_rcvr();
+    {    buf[i] = spi_rcvr(); mtd_curr_addr++; }
 
     /* Chip select go high to end a flash command */
     mtd_select(1);
@@ -264,9 +270,29 @@ MTD_RESULT mtd_page_program(uint32_t addr,uint8_t *buf, uint32_t size)
 
     mtd_select(0);
     spi_xmit(CMD_PP);
+    mtd_set_address(addr);
 
-    while(size-- == 0)
+    while(size--)
+    {
+        /* Cross page check */
+        if(((uint8_t)mtd_curr_addr == 0x0) && (0 != size))
+        {
+            mtd_select(1);
+
+            /* Is Flash in busy mode ? */
+            while(mtd_read_status_1(B_BUSY))
+            {
+                reset_watch_dog();
+            }
+
+            mtd_select(0);
+            spi_xmit(CMD_PP);
+            mtd_set_address(mtd_curr_addr);
+        }
+
         spi_xmit(*(buf++));
+        mtd_curr_addr++;
+    }
 
     mtd_select(1);
     
@@ -293,6 +319,11 @@ void mtd_select(uint8_t high)
         spi_select(CS_SFLASH, 1);
     else
         spi_select(CS_SFLASH, 0);
+}
+
+void mtd_open(void)
+{
+
 }
 
 #if 0
