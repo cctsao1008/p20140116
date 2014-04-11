@@ -1,41 +1,43 @@
 //==========================================================================
-// File Name   : GPCE02064.h
-// Description : GPCE02064 registers and constants definition
-// Written by  : Ricardo
+// File Name   : GPCE206x.H
+// Description : GPCE206x registers and constants definition
+// Written by  : Caspar Chi
 // Last modified date:
-//              2014/01/21
+//              2011/06/03
 //==========================================================================
 
 //--------------------------------------------------------------------------------------------------------------------------------------------
-//  GPIO Configration
-//  Dir   Att   Dat   Function   Description       Wakeup
-//  0     0     0     Input      Pull Low          Yes
-//  0     0     1     Input      Pull High         Yes
-//  0     1     0     Input      Floating          Yes
-//  0     1     1     Input      Floating          Yes
-//  1     0     0     Output     High (Inverted)   Yes   (With Io Toggle Capability)
-//  1     0     1     Output     Low (Inverted)    Yes   (With Io Toggle Capability)
-//  1     1     0     Output     Low               Yes
-//  1     1     1     Output     High              Yes
+//	GPIO Configration
+//	Dir		Att		Dat		Function Description			Wakeup
+//	0		0		0		Input Pull Low					Yes
+//	0		0		1		Input Pull High					Yes
+//	0		1		0		Input Floating					Yes
+//	0		1		1		Input Floating					Yes
+//	1		0		0		Output High (Inverted)			No		(With Io Toggle Capability)
+//	1		0		1		Output Low (Inverted)			No		(With Io Toggle Capability)
+//	1		1		0		Output Low						No
+//	1		1		1		Output High						No
 //--------------------------------------------------------------------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------------------------------------------------------------------
-//  Special IO    Function
-//  IOA_Func       Bit15 Bit14 Bit13 Bit12 Bit11 Bit10 Bit9  Bit8  Bit7  Bit6  Bit5  Bit4  Bit3  Bit2  Bit1  Bit0
-//  IR             -     -     -     -     -     -     -     -     -     -     -     -     -     -     IROUT -
-//  Wakeup         Yes   Yes   Yes   Yes   Yes   Yes   Yes   Yes   Yes   Yes   Yes   Yes   Yes   Yes   Yes   Yes
-//  FB/OSC         -     -     -     -     FO2   FI2   FO1   FI1   -     -     -     -     -     -     -     -
-//  Ext_Int        -     -     -     -     -     EXT2  -     EXT1  -     -     -     -     -     -     -     -
-//  IOPWM          -     -     -     -     -     -     -     -     -     -     -     -     -     -     -     IOPWM
-//  SPI            SPIRX SPITX SPICK SPICS -     -     -     -     -     -     -     -     -     -     -     -
-//  HighDriving    -     -     -     -     -     -     -     -     Yes   Yes   Yes   Yes   -     -     -     -
+//	Special IO Function
+//	IOA_Func	Bit15	Bit14	Bit13	Bit12	Bit11	Bit10	Bit9	Bit8	Bit7	Bit6	Bit5	Bit4	Bit3	Bit2	Bit1	Bit0
+//	IR			-		-		-		-		-		-		-		-		-		-		-		-		-		-		IROUT	-
+//	Wakeup		Yes		Yes		Yes		Yes		Yes		Yes		Yes		Yes		Yes		Yes		Yes		Yes		Yes		Yes		Yes		Yes
+//	FB/OSC		-		-		-		-		FO2		FI2		FO1		FI1		-		-		-		-		-		-		-		-
+//	Ext_Int		-		-		-		-		-		EXT2	-		EXT1	-		-		-		-		-		-		-		-
+//	IOPWM		-		-		-		-		-		-		-		-		-		-		-		-		-		-		-		IOPWM
+//	SPI			SPIRX	SPITX	SPICK	SPICS	-		-		-		-		-		-		-		-		-		-		-		-
+//	HighDriving	-		-		-		-		-		-		-		-		Yes		Yes		Yes		Yes		-		-		-		-
+//	IOToggle	Yes		Yes		Yes		Yes		Yes		Yes		Yes		Yes		Yes		Yes		Yes		Yes		Yes		Yes		Yes		Yes
 //--------------------------------------------------------------------------------------------------------------------------------------------
-//  IOB_Func       Bit15 Bit14 Bit13 Bit12 Bit11 Bit10 Bit9  Bit8  Bit7  Bit6  Bit5  Bit4  Bit3  Bit2  Bit1  Bit0
-//  ADC_CH         -     -     -     -     -     -     -     -     AN7   AN6   AN5   AN4   AN3   AN2   AN1   AN0
+//	IOB_Func	Bit15	Bit14	Bit13	Bit12	Bit11	Bit10	Bit9	Bit8	Bit7	Bit6	Bit5	Bit4	Bit3	Bit2	Bit1	Bit0
+//	ADC_CH		I2S_WS	I2S_DA	I2S_CK	-		-		-		-		-		-		AN7		AN6		AN5		AN4		AN3		AN2		AN1		AN0
+//	IOToggle	Yes		Yes		Yes		Yes		Yes		Yes		Yes		Yes		Yes		Yes		Yes		Yes		Yes		Yes		Yes		Yes
 //--------------------------------------------------------------------------------------------------------------------------------------------
 
-#ifndef    __GPCE02064_H__
-#define    __GPCE02064_H__
+#ifndef    __GPCE206x_H__
+#define    __GPCE206x_H__
 
 typedef union tagIOBITS {
 
@@ -75,6 +77,7 @@ typedef union tagIOBITS {
 #define P_IOB_Dir             ((volatile  IO_BITS)       0x2006)
 #define P_IOB_Attrib          ((volatile  IO_BITS)       0x2007)
 #define P_IO_Ctrl             ((volatile  IO_BITS)       0x2008)
+#define P_IOA_WakeUp_Mask		0x2009		// New Register
 
 #define P_IOA_DA              ((volatile  IO_BITS)       0x2000)
 #define P_IOA_BU              ((volatile  IO_BITS)       0x2001)
@@ -109,11 +112,13 @@ typedef union tagIOBITS {
 
 //---------------------------------------------------
 #define P_DAC_Ctrl            (*(volatile unsigned int*) 0x2040)
-#define P_DAC_Data            (*(volatile unsigned int*) 0x2041)
+#define P_DAC_CH1_Data        (*(volatile unsigned int*) 0x2041)
+#define P_DAC_CH2_Data			0x2042		// New Register
+#define P_PPAMP_Ctrl			0x2043		// New Register
 
 //---------------------------------------------------
-#define P_Int_Ctrl            (*(volatile unsigned int*) 0x2050)
-#define P_Int_Status          (*(volatile unsigned int*) 0x2051)
+#define P_INT_Ctrl            (*(volatile unsigned int*) 0x2050)
+#define P_INT_Status          (*(volatile unsigned int*) 0x2051)
 #define P_FIQ_Sel             (*(volatile unsigned int*) 0x2052)
 
 //---------------------------------------------------
@@ -128,6 +133,7 @@ typedef union tagIOBITS {
 #define P_ADC_Ctrl            (*(volatile unsigned int*) 0x2070)
 #define P_ADC_Data            (*(volatile unsigned int*) 0x2071)
 #define P_ADC_LineIn_BitCtrl  (*(volatile unsigned int*) 0x2072)
+#define P_ADC_PGA_Ctrl			0x2073		// New Register
 
 //---------------------------------------------------
 #define P_Flash_Ctrl          (*(volatile unsigned int*) 0x26FF)
@@ -146,13 +152,16 @@ typedef union tagIOBITS {
 //====================================================================================
 // P_IO_Ctrl (0x2008)
 //====================================================================================
-// Bit[15:11] : Reserved
-// Bit10 : FW_SPI_CS
-#define C_FW_SPI_CS             0x0400
-#define C_SPI_CS_Firmware       0x0000    // CS Control by Firmware
-#define C_SPI_CS_Hardware       0x0400    // CS Control by Hardware
+// Bit[15:12] : Reserved
+// Bit[11] : IO_Toggle_En
+#define	C_IO_Toggle_Disable		0x0000		// IO Toggle Disable 
+#define	C_IO_Toggle_Enable		0x0800		// IO Toggle Enable 
+// Bit[10] : FW_SPI_CS
+#define C_FW_SPI_CS				0x0400
+#define	C_SPI_CS_Firmware		0x0000		// Set CS_Pin as SPI_CS, Control by Hardware SPI
+#define	C_SPI_CS_Hardware		0x0400		// Set CS_Pin as GPIO, Control by Program (Only by Output Configuration)
 // Bit[9:8] : IR_Duty === IRout:IOA1
-#define C_IR_Duty               0x0300
+#define	C_IR_Duty				0x0300
 #define C_IR_Duty_DIV_2         0x0000    // 1/2 Duty
 #define C_IR_Duty_DIV_3         0x0100    // 1/3 Duty
 #define C_IR_Duty_DIV_4         0x0200    // 1/4 Duty
@@ -174,101 +183,96 @@ typedef union tagIOBITS {
 #define C_EXT1_Normal_Rising    0x0000    // Normal IO With Rising Edge Trigger
 #define C_EXT1_Normal_Falling   0x0004    // Normal IO With Falling Edge Trigger
 #define C_EXT1_Feedback_Rising  0x0008    // Feedback Oscillator With Rising Edge Trigger
-#define C_EXT1_Feedback_Falling 0x000C    // Feedback Oscillator With Falling Edge Trigger
-// Bit[1:0] : Reserved
+#define	C_EXT1_Feedback_Falling	0x000C		// Feedback Oscillator With Falling Edge Trigger
+// Bit[1:0] : IO_Toggle_Ctrl 
+#define	C_IO_Toggle_Ctrl		0x0003
+#define C_IO_Toggle_With_FRTC	0x0000		// IO Toggle Function Source form FRTC directly
+#define C_IO_Toggle_With_TimerA	0x0001		// IO Toggle Function with Timer A
+#define C_IO_Toggle_With_TimerB	0x0002		// IO Toggle Function with Timer B
+#define C_IO_Toggle_With_TimerC	0x0003		// IO Toggle Function with Timer C
+
+//====================================================================================
+// P_IOA_WakeUp_Mask (0x2009)
+//====================================================================================
+// Bit[15:0] : Wakeup Mask Control (Bit Control)
+#define C_IOA_WakeUp_UnMask		0x0000
+#define C_IOA_WakeUp_Mask		0xFFFF
 
 //====================================================================================
 // P_Timer_Ctrl (0x2016)  Timer Setting
 //====================================================================================
-// Bit[3:0] : TMASEL
-#define C_TimerA_Sel            0x000F
-#define C_TimerA_Disable        0x0000
-#define C_TimerA_Software_Count 0x0001
-#define C_TimerA_FRTC_EXT2      0x0002
-#define C_TimerA_EXT1_EXT2      0x0002
-#define C_TimerA_FPLL_EXT2      0x0003
-#define C_TimerA_EXT2_64Hz      0x0004
-#define C_TimerA_EXT2_16Hz      0x0005
-#define C_TimerA_EXT2_2Hz       0x0006
-#define C_TimerA_EXT2           0x0007
-#define C_TimerA_FRTC_64Hz      0x0008
-//#define C_TimerA_EXT1_64Hz      0x0008
-#define C_TimerA_FRTC_16Hz      0x0009
-//#define C_TimerA_EXT1_16Hz      0x0009
-#define C_TimerA_FRTC_2Hz       0x000A
-//#define C_TimerA_EXT1_2Hz        0x000A
-#define C_TimerA_FRTC           0x000B
-//#define C_TimerA_EXT1               0x000B
-#define C_TimerA_FPLL_64Hz      0x000C
-#define C_TimerA_FPLL_16Hz      0x000D
-#define C_TimerA_FPLL_2Hz       0x000E
-#define C_TimerA_FPLL           0x000F
-// Bit[7:4] : TMBSEL
-#define C_TimerB_Sel            0x00F0
-#define C_TimerB_Disable        0x0000
-#define C_TimerB_Software_Count 0x0010
-#define C_TimerB_FRTC_EXT2      0x0020
-#define C_TimerB_EXT1_EXT2      0x0020
-#define C_TimerB_FPLL_EXT2      0x0030
-#define C_TimerB_EXT2_64Hz      0x0040
-#define C_TimerB_EXT2_16Hz      0x0050
-#define C_TimerB_EXT2_2Hz       0x0060
-#define C_TimerB_EXT2           0x0070
-#define C_TimerB_FRTC_64Hz      0x0080
-//#define C_TimerB_EXT1_64Hz        0x0080
-#define C_TimerB_FRTC_16Hz      0x0090
-//#define C_TimerB_EXT1_16Hz        0x0090
-#define C_TimerB_FRTC_2Hz       0x00A0
-//#define C_TimerB_EXT1_2Hz          0x00A0
-#define C_TimerB_FRTC           0x00B0
-//#define C_TimerB_EXT1                 0x00B0
-#define C_TimerB_FPLL_64Hz      0x00C0
-#define C_TimerB_FPLL_16Hz      0x00D0
-#define C_TimerB_FPLL_2Hz       0x00E0
-#define C_TimerB_FPLL           0x00F0
+// Bit[15:12] : Reserved
 // Bit[11:8] : TMCSEL
-#define C_TimerC_Sel            0x0F00
-#define C_TimerC_Disable        0x0000
-#define C_TimerC_Software_Count 0x0100
-#define C_TimerC_FRTC_EXT2      0x0200
-#define C_TimerC_EXT1_EXT2      0x0200
-#define C_TimerC_FPLL_EXT2      0x0300
-#define C_TimerC_EXT2_64Hz      0x0400
-#define C_TimerC_EXT2_16Hz      0x0500
-#define C_TimerC_EXT2_2Hz       0x0600
-#define C_TimerC_EXT2           0x0700
-#define C_TimerC_FRTC_64Hz      0x0800
-//#define C_TimerC_EXT1_64Hz       0x0800
-#define C_TimerC_FRTC_16Hz      0x0900
-//#define C_TimerC_EXT1_16Hz       0x0900
-#define C_TimerC_FRTC_2Hz       0x0A00
-//#define C_TimerC_EXT1_2Hz         0x0A00
-#define C_TimerC_FRTC           0x0B00
-//#define C_TimerC_EXT1                0x0B00
-#define C_TimerC_FPLL_64Hz      0x0C00
-#define C_TimerC_FPLL_16Hz      0x0D00
-#define C_TimerC_FPLL_2Hz       0x0E00
-#define C_TimerC_FPLL           0x0F00
-// Bit12 : Timer A input source select; 0 for FRTC, 1 for EXT1
-//#define C_TimerA_Input1             0x1000
-//#define C_TimerA_Input1_FRTC    0x0000
-//#define C_TimerA_Input1_EXT1    0x1000
-// Bit13 : Timer B input source select; 0 for FRTC, 1 for EXT1
-//#define C_TimerB_Input1             0x2000
-//#define C_TimerB_Input1_FRTC    0x0000
-//#define C_TimerB_Input1_EXT1    0x2000
-// Bit14 : Timer C input source select; 0 for FRTC, 1 for EXT1
-//#define C_TimerC_Input1             0x4000
-//#define C_TimerC_Input1_FRTC    0x0000
-//#define C_TimerC_Input1_EXT1    0x4000
-// Bit15 : Reserved
+#define C_TimerC_Sel			0x0F00
+#define C_TimerC_Disable		0x0000
+#define C_TimerC_Software_Count	0x0100
+#define C_TimerC_FRTC_EXT2		0x0200
+#define C_TimerC_EXT1_EXT2		0x0200
+#define C_TimerC_FPLL_EXT2		0x0300
+#define C_TimerC_EXT2_64Hz		0x0400
+#define C_TimerC_EXT2_16Hz		0x0500
+#define C_TimerC_EXT2_2Hz		0x0600
+#define C_TimerC_EXT2			0x0700
+#define C_TimerC_FRTC_64Hz		0x0800
+#define C_TimerC_FRTC_16Hz		0x0900
+#define C_TimerC_FRTC_2Hz		0x0A00
+#define C_TimerC_FRTC			0x0B00
+#define C_TimerC_FPLL_64Hz		0x0C00
+#define C_TimerC_FPLL_16Hz		0x0D00
+#define C_TimerC_FPLL_2Hz		0x0E00
+#define C_TimerC_FPLL			0x0F00
+// Bit[7:4] : TMBSEL
+#define C_TimerB_Sel			0x00F0
+#define C_TimerB_Disable		0x0000
+#define C_TimerB_Software_Count	0x0010
+#define C_TimerB_FRTC_EXT2		0x0020
+#define C_TimerB_EXT1_EXT2		0x0020
+#define C_TimerB_FPLL_EXT2		0x0030
+#define C_TimerB_EXT2_64Hz		0x0040
+#define C_TimerB_EXT2_16Hz		0x0050
+#define C_TimerB_EXT2_2Hz		0x0060
+#define C_TimerB_EXT2			0x0070
+#define C_TimerB_FRTC_64Hz		0x0080
+#define C_TimerB_FRTC_16Hz		0x0090
+#define C_TimerB_FRTC_2Hz		0x00A0
+#define C_TimerB_FRTC			0x00B0
+#define C_TimerB_FPLL_64Hz		0x00C0
+#define C_TimerB_FPLL_16Hz		0x00D0
+#define C_TimerB_FPLL_2Hz		0x00E0
+#define C_TimerB_FPLL			0x00F0
+// Bit[3:0] : TMASEL
+#define C_TimerA_Sel			0x000F
+#define C_TimerA_Disable		0x0000
+#define C_TimerA_Software_Count	0x0001
+#define C_TimerA_FRTC_EXT2		0x0002
+#define C_TimerA_EXT1_EXT2		0x0002
+#define C_TimerA_FPLL_EXT2		0x0003
+#define C_TimerA_EXT2_64Hz		0x0004
+#define C_TimerA_EXT2_16Hz		0x0005
+#define C_TimerA_EXT2_2Hz		0x0006
+#define C_TimerA_EXT2			0x0007
+#define C_TimerA_FRTC_64Hz		0x0008
+#define C_TimerA_FRTC_16Hz		0x0009
+#define C_TimerA_FRTC_2Hz		0x000A
+#define C_TimerA_FRTC			0x000B
+#define C_TimerA_FPLL_64Hz		0x000C
+#define C_TimerA_FPLL_16Hz		0x000D
+#define C_TimerA_FPLL_2Hz		0x000E
+#define C_TimerA_FPLL			0x000F
 
-//#define SystemClock            20480000
-//#define SystemClock            24576000
-//#define SystemClock            32768000
-//#define SystemClock            40960000
-//#define SystemClock            49152000
-#define SystemClock         12000000    // For FPGA Test
+
+//====================================================================================
+// Timer Data and System Clock Definition
+// P_TimerA_Data (0x2010)  Timer Data 
+// P_TimerB_Data (0x2012)  Timer Data 
+// P_TimerC_Data (0x2014)  Timer Data 
+//====================================================================================
+//#define SystemClock				20480000
+//#define SystemClock				24576000
+//#define SystemClock				32768000
+//#define SystemClock				40960000
+#define SystemClock				49152000
+//#define SystemClock				12000000		// For FPGA Test
 //#define SystemClock            24000000    // For FPGA Test
 //#define SystemClock            48000000    // For FPGA Test
 
@@ -294,52 +298,45 @@ typedef union tagIOBITS {
 #define C_Timer_Setting_32K     65536 - (SystemClock / 32000)
 #define C_Timer_Setting_36K     65536 - (SystemClock / 36000)
 #define C_Timer_Setting_40K     65536 - (SystemClock / 40000)
-#define C_Timer_Setting_48K     65536 - (SystemClock / 48000)
-#define C_Timer_Setting_64K     65536 - (SystemClock / 64000)
-#define C_Timer_Setting_500K    65536 - (SystemClock / 500000)
-#define C_Timer_Setting_15555   65536 - (SystemClock / 15555) // For FPGA Test
-#define C_Timer_Setting_17777   65536 - (SystemClock / 17777) // For FPGA Test
+#define C_Timer_Setting_48K    	65536 - (SystemClock / 48000)
+#define C_Timer_Setting_64K    	65536 - (SystemClock / 64000)
+#define C_Timer_Setting_96K    	65536 - (SystemClock / 96000)
+#define C_Timer_Setting_500K   	65536 - (SystemClock / 500000)
+
+#define C_Timer_Setting_15555  	65536 - (SystemClock / 15555)	// For FPGA Test
+#define C_Timer_Setting_17777  	65536 - (SystemClock / 17777)	// For FPGA Test
+
 //====================================================================================
 // P_PWM_Ctrl (0x2020)  IOPWM
 //====================================================================================
 // Bit[15] : IOPWM_CNT_Clear
-#define C_IOPWM_CNT_Clear         0x8000
-// Bit[14:7] : Reserved
-// Bit[6] : IOPWM_Mask
-#define C_IOPWM_Mask              0x0040
-#define C_IOPWM_Mask_Disable      0x0000
-#define C_IOPWM_Mask_Enable       0x0040
-// Bit[5:4] : Clock Source for IOPWM
-#define C_IOPWM_CLK_SRC           0x0030
-#define C_IOPWM_SRC_FRTC_Div2     0x0000
-#define C_IOPWM_SRC_TimerA        0x0010
-#define C_IOPWM_SRC_TimerB        0x0020
-#define C_IOPWM_SRC_TimerC        0x0030
-// Bit[3:0] : PWM_Duty
-#define C_IOPWM_Duty              0x000F
-#define C_IOPWM_OFF               0x0000
-#define C_IOPWM_1_Div_16          0x0001
-#define C_IOPWM_2_Div_16          0x0002
-#define C_IOPWM_3_Div_16          0x0003
-#define C_IOPWM_4_Div_16          0x0004
-#define C_IOPWM_5_Div_16          0x0005
-#define C_IOPWM_6_Div_16          0x0006
-#define C_IOPWM_7_Div_16          0x0007
-#define C_IOPWM_8_Div_16          0x0008
-#define C_IOPWM_9_Div_16          0x0009
-#define C_IOPWM_10_Div_16         0x000A
-#define C_IOPWM_11_Div_16         0x000B
-#define C_IOPWM_12_Div_16         0x000C
-#define C_IOPWM_13_Div_16         0x000D
-#define C_IOPWM_14_Div_16         0x000E
-#define C_IOPWM_1_Div_2           0x000F
+#define	C_IOPWM_CNT_Clear		0x8000
+// Bit[14:11] : Reserved
+// Bit[10] : IOPWM_Mask
+#define	C_IOPWM_Mask			0x0400
+#define	C_IOPWM_Mask_Disable	0x0000		//default
+#define	C_IOPWM_Mask_Enable		0x0400
+// Bit[9:8] : Clock Source for IOPWM
+#define	C_IOPWM_CLK_SRC			0x0300
+#define	C_IOPWM_SRC_FRTC_Div2	0x0000
+#define	C_IOPWM_SRC_TimerA		0x0100
+#define	C_IOPWM_SRC_TimerB		0x0200
+#define	C_IOPWM_SRC_TimerC		0x0300
+// Bit[7:0] : PWM_Duty => have 256 steps
+#define	C_IOPWM_Duty			0x00FF
+#define C_IOPWM_OFF				0x0000
+#define C_IOPWM_1_Div_256		0x0001
+#define C_IOPWM_128_Div_256		0x0080
+#define C_IOPWM_254_Div_256		0x00FE
+#define C_IOPWM_1_Div_2			0x00FF
 
 //====================================================================================
-// P_System_Clock (0x2030)
+// P_System_Clock (0x2030)  
 // The System Clock can be configured form 24.576MHz to 49.152MHz
 //====================================================================================
+// Bit[15:8] : Reserved
 // Bit[7:5] : FOSC
-#define C_FOSC                    0x00E0
+#define C_FOSC					0x00E0
 #define C_FOSC_24576KHz           0x0000
 #define C_FOSC_20480KHz           0x0020
 #define C_FOSC_32768KHz           0x0040
@@ -395,13 +392,15 @@ typedef union tagIOBITS {
 #define C_LVD_Ctrl_3D2V           0x0000      // Default Value
 #define C_LVD_Ctrl_3D0V           0x0001
 #define C_LVD_Ctrl_2D8V           0x0002
-#define C_LVD_Ctrl_2D6V           0x0003
-// LVR always setting 2.2v
+#define	C_LVD_Ctrl_2D6V			0x0003
+// LVR always setting as 2.2v
 
 //====================================================================================
 // P_Wait_Ctrl (0x2035)
 //====================================================================================
-#define C_Wait_State_Reg          0x000F
+// Bit[15:4] : Reserved
+// Bit[3:0] : Wait State Value
+#define	C_Wait_State_Reg		0x000F
 #define C_Wait_State_2Cycles1     0x0000
 #define C_Wait_State_2Cycles2     0x0001
 #define C_Wait_State_2Cycles      0x0002
@@ -422,16 +421,75 @@ typedef union tagIOBITS {
 //====================================================================================
 // P_DAC_Ctrl (0x2040)
 //====================================================================================
-// Bit[15:3] : Reserved
-// Bit[2] : DAC Enable
-#define C_DAC_Disable             0x0000
-#define C_DAC_Enable              0x0004
-// Bit[1:0] : DAC Timer Select
-#define C_DAC_TMR_Sel             0x0003
-#define C_DAC_TMR_Sel_Manual      0x0000
-#define C_DAC_TMR_Sel_TimerA      0x0001
-#define C_DAC_TMR_Sel_TimerB      0x0002
-#define C_DAC_TMR_Sel_TimerC      0x0003
+// Bit[15] : Reserved
+// Bit[14] : Scaler Enable
+#define	C_DAC_Scaler_Disable		0x0000
+#define	C_DAC_Scaler_Enable			0x4000
+// Bit[13] : Half Volume Enable
+#define	C_DAC_Half_Vol_Disable		0x0000
+#define	C_DAC_Half_Vol_Enable		0x2000
+// Bit[12] : Voltage DAC Enable
+#define	C_DAC_Disable				0x0000
+#define	C_DAC_Enable				0x1000
+// Bit[11] : DAC CH2 UpSample Enable
+#define	C_DAC_CH2_Up_Sample_Disable	0x0000
+#define	C_DAC_CH2_Up_Sample_Enable	0x0800
+// Bit[10] : DAC Channel 2 Data Enable
+#define	C_DAC_CH2_Disable			0x0000
+#define	C_DAC_CH2_Enable			0x0400
+// Bit[9:8] : DAC CH2 Timer Select
+#define C_DAC_CH2_TMR_Sel			0x0300
+#define C_DAC_CH2_TMR_Sel_Manual	0x0000
+#define C_DAC_CH2_TMR_Sel_TimerA	0x0100
+#define C_DAC_CH2_TMR_Sel_TimerB	0x0200
+#define C_DAC_CH2_TMR_Sel_TimerC	0x0300
+// Bit[7:4] : Reserved
+// Bit[3] : DAC CH1 UpSample Enable
+#define	C_DAC_CH1_Up_Sample_Disable	0x0000
+#define	C_DAC_CH1_Up_Sample_Enable	0x0008
+// Bit[2] : DAC Channel 1 Data Enable
+#define	C_DAC_CH1_Disable			0x0000
+#define	C_DAC_CH1_Enable			0x0004		// DAC1 Mixer Enable
+// Bit[1:0] : DAC CH1 Timer Select
+#define C_DAC_CH1_TMR_Sel			0x0003
+#define C_DAC_CH1_TMR_Sel_Manual	0x0000
+#define C_DAC_CH1_TMR_Sel_TimerA	0x0001
+#define C_DAC_CH1_TMR_Sel_TimerB	0x0002
+#define C_DAC_CH1_TMR_Sel_TimerC	0x0003
+
+//====================================================================================
+// P_PPAMP_Ctrl (0x2043)
+//====================================================================================
+// Bit[15:8] : Reserved
+// Bit[7] : Extenal Line In Signal Mixer Enable
+#define	C_Ext_DAC_In_Disable	0x0000
+#define	C_Ext_DAC_In_Enable		0x0080
+// Bit[6] : Push-Pull PMOS Enable
+#define	C_PP_PMOS_Disable		0x0000
+#define	C_PP_PMOS_Enable		0x0040
+// Bit[5] : Push-Pull NMOS Enable
+#define	C_PP_NMOS_Disable		0x0000
+#define	C_PP_NMOS_Enable		0x0020
+// Bit[4] : Reserved
+// Bit[3:0] : Push-Pull Gain Select
+#define C_PP_Gain_Sel			0x000F
+#define C_PP_Gain_LV0			0x0000
+#define C_PP_Gain_LV0_1			0x0001
+#define C_PP_Gain_LV0_2			0x0002
+#define C_PP_Gain_LV0_3			0x0003
+#define C_PP_Gain_LV0_4			0x0004
+#define C_PP_Gain_LV1			0x0005
+#define C_PP_Gain_LV2			0x0006
+#define C_PP_Gain_LV3			0x0007
+#define C_PP_Gain_LV4			0x0008
+#define C_PP_Gain_LV5			0x0009
+#define C_PP_Gain_LV6			0x000A
+#define C_PP_Gain_LV7			0x000B
+#define C_PP_Gain_LV8			0x000C
+#define C_PP_Gain_LV9			0x000D
+#define C_PP_Gain_LV10			0x000E
+#define C_PP_Gain_LV11			0x000F
+
 
 //====================================================================================
 // P_INT_Ctrl (0x2050)
@@ -439,216 +497,249 @@ typedef union tagIOBITS {
 // P_FIQ_Sel (0x2052)
 //====================================================================================
 // Bit[15:13] : Reserve
-#define C_IRQ0_TMA                0x1000
-#define C_IRQ1_TMB                0x0800
-#define C_IRQ2_TMC                0x0400
-#define C_IRQ3_SPI                0x0200
-#define C_IRQ4_KEY                0x0100
-#define C_IRQ5_EXT1               0x0080
-#define C_IRQ5_EXT2               0x0040
-#define C_IRQ6_4096Hz             0x0020
-#define C_IRQ6_2048Hz             0x0010
-#define C_IRQ6_512Hz              0x0008
-#define C_IRQ7_64Hz               0x0004
-#define C_IRQ7_16Hz               0x0002
-#define C_IRQ7_2Hz                0x0001
+// Bit[12:0] : All Interrupt Vector
+#define C_IRQ0_TMA					0x1000
+#define C_IRQ1_TMB					0x0800
+#define C_IRQ2_TMC					0x0400
+#define C_IRQ3_SPI					0x0200
+#define C_IRQ4_KEY					0x0100
+#define C_IRQ5_EXT1					0x0080
+#define C_IRQ5_EXT2					0x0040
+#define C_IRQ6_4096Hz				0x0020
+#define C_IRQ6_2048Hz				0x0010
+#define C_IRQ6_512Hz				0x0008
+#define C_IRQ7_64Hz					0x0004
+#define C_IRQ7_16Hz					0x0002
+#define C_IRQ7_2Hz					0x0001
 
 //====================================================================================
 // P_SPI_Ctrl (0x2060)
 //====================================================================================
+// Bit[15] : SPI Enable
+#define C_SPI_Disable				0x0000
+#define C_SPI_Enable				0x8000
+// Bit[14] : Reserved
+// Bit[13] : Loop Back Mode Selection
+#define	C_SPI_LBM_Normal			0x0000
+#define	C_SPI_LBM_Enable			0x2000
+// Bit[12] : Reserved
+// Bit[11] : SPI Reset
+#define C_SPI_Reset					0x0800
+// Bit[10:9] : Reserved
+// Bit[8] : SPI Mode
+#define	C_SPI_Mode					0x0100
+#define C_MasterMode				0x0000
+#define C_SlaveMode  				0x0100
+// Bit[7:6] : Reserved
+// Bit[5] : SPI Clock Phase
+#define C_SPI_Clock_Phase			0x0020
+#define C_SPI_Clock_Phase_Normal	0x0000	// Rising Edge Trigger or Falling Edge Trigger depend on Polarity
+#define C_SPI_Clock_Phase_Shift		0x0020  // (POL=0, PHA=1)
+// Bit[4] : SPI Clock Polarity
+#define	C_SPI_Clock_Pol				0x0010
+#define C_SPI_Clock_Pol_Normal		0x0000	// Clock Normal or Inverted 
+#define C_SPI_Clock_Pol_Inverse		0x0010
+// Bit[3] : Reserved
 // Bit[2:0] : Master Mode clock selection : 111b is reserved
-#define C_SPI_SCK_SEL             0x0007
+#define C_SPI_SCK_SEL				0x0007
 #define C_SCKSEL_FPLL_Div_2       0x0000
 #define C_SCKSEL_FPLL_Div_4       0x0001
 #define C_SCKSEL_FPLL_Div_8       0x0002
 #define C_SCKSEL_FPLL_Div_16      0x0003
 #define C_SCKSEL_FPLL_Div_32      0x0004
-#define C_SCKSEL_FPLL_Div_64      0x0005
-#define C_SCKSEL_FPLL_Div_128     0x0006
-// Bit3 : Reserved
-// Bit4 : SPI Clock Polarity
-#define C_SPI_Clock_Pol           0x0010
-#define C_SPI_Clock_Pol_Normal    0x0000  // Clock Normal or Inverted
-#define C_SPI_Clock_Pol_Inverse   0x0010
-// Bit5 : SPI Clock Phase
-#define C_SPI_Clock_Phase         0x0020
-#define C_SPI_Clock_Phase_Normal  0x0000  // Rising Edge Trigger or Falling Edge Trigger depend on Polarity
-#define C_SPI_Clock_Phase_Shift   0x0020  // (POL=0, PHA=1)
-// Bit[7:6] : Reserved
-// Bit8 : SPI Mode
-#define C_SPI_Mode                0x0100
-#define C_MasterMode              0x0000
-#define C_SlaveMode               0x0100
-// Bit[10:9] : Reserved
-// Bit11 : SPI Reset
-#define C_SPI_Reset               0x0800
-// Bit12 : Reserved
-// Bit13 : Loop Back Mode Selection
-#define C_SPI_LBM_Normal          0x0000
-#define C_SPI_LBM_Enable          0x2000
-// Bit14: Reserved
-// Bit15 : SPI Enable
-#define C_SPI_Disable             0x0000
-#define C_SPI_Enable              0x8000
+#define C_SCKSEL_FPLL_Div_64		0x0005	
+#define C_SCKSEL_FPLL_Div_128		0x0006
 
 //====================================================================================
 // P_SPI_TX_Status (0x2061)
 //====================================================================================
-// Bit[3:0] : SPI TX Flag (read only) : Only 8 FIFOs
-#define C_SPI_TX_Flag             0x0007    // 0 ~ 7
-// Bit[7:4] : SPI TX level setting
-#define C_SPI_TX_FIFO_Level       0x0070    // 0 ~ 7
-#define C_SPI_TX_FIFO_Level_0     0x0000
-#define C_SPI_TX_FIFO_Level_1     0x0010
-#define C_SPI_TX_FIFO_Level_2     0x0020
-#define C_SPI_TX_FIFO_Level_3     0x0030
-#define C_SPI_TX_FIFO_Level_4     0x0040
-#define C_SPI_TX_FIFO_Level_5     0x0050
-#define C_SPI_TX_FIFO_Level_6     0x0060
-#define C_SPI_TX_FIFO_Level_7     0x0070
+// Bit[15] : SPI TX interrupt flag
+#define C_SPI_TX_INT_Flag			0x8000
+// Bit[14] : SPI TX interrupt enable
+#define C_SPI_TX_INT_DIS			0x0000
+#define C_SPI_TX_INT_EN				0x4000
 // Bit[13:8] : Reserved
-// Bit14 : SPI TX interrupt enable
-#define C_SPI_TX_INT_DIS          0x0000
-#define C_SPI_TX_INT_EN           0x4000
-// Bit15 : SPI TX interrupt flag
-#define C_SPI_TX_INT_Flag         0x8000
+// Bit[7:4] : SPI TX level setting
+#define C_SPI_TX_FIFO_Level			0x0070		// 0 ~ 7
+#define C_SPI_TX_FIFO_Level_0		0x0000
+#define C_SPI_TX_FIFO_Level_1		0x0010
+#define C_SPI_TX_FIFO_Level_2		0x0020
+#define C_SPI_TX_FIFO_Level_3		0x0030
+#define C_SPI_TX_FIFO_Level_4		0x0040
+#define C_SPI_TX_FIFO_Level_5		0x0050
+#define C_SPI_TX_FIFO_Level_6		0x0060
+#define C_SPI_TX_FIFO_Level_7		0x0070
+// Bit[3:0] : SPI TX Flag (read only) : Only 8 FIFOs  
+#define	C_SPI_TX_Flag				0x0007		// 0 ~ 7
 
 //====================================================================================
 // P_SPI_RX_Status (0x2063)
 //====================================================================================
-// Bit[3:0] : SPI RX Flag (read only)
-#define C_SPI_RX_Flag             0x0007    // 0 ~ 7
-// Bit[7:4] : SPI RX full level setting
-#define C_SPI_RX_FIFO_Level       0x0070
-#define C_SPI_RX_FIFO_Level_1     0x0000
-#define C_SPI_RX_FIFO_Level_2     0x0010
-#define C_SPI_RX_FIFO_Level_3     0x0020
-#define C_SPI_RX_FIFO_Level_4     0x0030
-#define C_SPI_RX_FIFO_Level_5     0x0040
-#define C_SPI_RX_FIFO_Level_6     0x0050
-#define C_SPI_RX_FIFO_Level_7     0x0060
-#define C_SPI_RX_FIFO_Level_8     0x0070
-// Bit8 : SPI RX buffer overwrite (read only)
-#define C_SPI_RX_BUF_OVER_ERROR   0x0100
-// Bit9 : SPI RX buffer full (read only)
-#define C_SPI_RX_BUF_Full         0x0200
+// Bit[15] : SPI RX interrupt flag
+#define C_SPI_RX_INT_Flag			0x8000
+// Bit[14] : SPI Rx interrupt enable
+#define C_SPI_RX_INT_DIS			0x0000
+#define C_SPI_RX_INT_EN				0x4000
 // Bit[13:10] : Reserved
-// Bit14 : SPI Rx interrupt enable
-#define C_SPI_RX_INT_DIS          0x0000
-#define C_SPI_RX_INT_EN           0x4000
-// Bit15 : SPI RX interrupt flag
-#define C_SPI_RX_INT_Flag         0x8000
+// Bit[9] : SPI RX buffer full (read only)
+#define C_SPI_RX_BUF_Full			0x0200
+// Bit[8] : SPI RX buffer overwrite (read only)
+#define C_SPI_RX_BUF_OVER_ERROR		0x0100
+// Bit[7:4] : SPI RX full level setting
+#define C_SPI_RX_FIFO_Level			0x0070
+#define C_SPI_RX_FIFO_Level_1		0x0000
+#define C_SPI_RX_FIFO_Level_2		0x0010
+#define C_SPI_RX_FIFO_Level_3		0x0020
+#define C_SPI_RX_FIFO_Level_4		0x0030
+#define C_SPI_RX_FIFO_Level_5		0x0040
+#define C_SPI_RX_FIFO_Level_6		0x0050
+#define C_SPI_RX_FIFO_Level_7		0x0060
+#define C_SPI_RX_FIFO_Level_8		0x0070
+// Bit[3:0] : SPI RX Flag (read only)
+#define	C_SPI_RX_Flag				0x0007		// 0 ~ 7
 
 //====================================================================================
 // P_SPI_Misc (0x2065)
 //====================================================================================
-// Bit0 : Transmit FIFO Empty Flag
-#define C_SPI_TX_Empty_Flag           0x0001
-// Bit1 : Transmit FIFO Not Full Flag
-#define C_SPI_TX_NonFull_Flag         0x0002
-// Bit2 : Receive FIFO Empty Flag
-#define C_SPI_RX_Empty_Flag           0x0004
-// Bit3 : Receive FIFO Full Flag
-#define C_SPI_RX_Full_Flag            0x0008
-// Bit4 : SPI Controller Busy Flag
-#define C_SPI_Busy_Flag               0x0010
-// Bit[7:5] : Reserved
-// Bit8 : SPI FIFO Smart Mode Register
-#define C_SPI_FIFO_Normal_Mode        0x0000
-#define C_SPI_FIFO_Smart_Mode         0x0100
-// Bit9 : SPI FIFO Over Write Mode
-#define C_SPI_FIFO_Full_Write_Skipped 0x0000
-#define C_SPI_FIFO_Full_Overwrite     0x0200
 // Bit[15:10] : Reserved
+// Bit[9] : SPI FIFO Over Write Mode
+#define	C_SPI_FIFO_Full_Write_Skipped	0x0000
+#define	C_SPI_FIFO_Full_Overwrite		0x0200
+// Bit[8] : SPI FIFO Smart Mode Register
+#define	C_SPI_FIFO_Normal_Mode			0x0000
+#define	C_SPI_FIFO_Smart_Mode			0x0100
+// Bit[7:5] : Reserved
+// Bit[4] : SPI Controller Busy Flag
+#define	C_SPI_Busy_Flag					0x0010
+// Bit[3] : Receive FIFO Full Flag
+#define	C_SPI_RX_Full_Flag				0x0008
+// Bit[2] : Receive FIFO Empty Flag
+#define	C_SPI_RX_Empty_Flag				0x0004
+// Bit[1] : Transmit FIFO Not Full Flag
+#define	C_SPI_TX_NonFull_Flag			0x0002
+// Bit[0] : Transmit FIFO Empty Flag
+#define	C_SPI_TX_Empty_Flag				0x0001
 
 //====================================================================================
 // P_ADC_Ctrl (0x2070)
 //====================================================================================
-// Bit[1:0] : Conversion Cycle Select
-#define C_ADC_Conv_Cycle              0x0003
-#define C_ADC_Conv_Cyc_8              0x0000  // Default
-#define C_ADC_Conv_Cyc_16             0x0001
-#define C_ADC_Conv_Cyc_32             0x0002
-#define C_ADC_Conv_Cyc_64             0x0003
-// Bit2 : ADC Enable
-#define C_ADC_Disable                 0x0000
-#define C_ADC_Enable                  0x0004
-// Bit3 : AGC Enable
-#define C_AGC_Disable                 0x0000
-#define C_AGC_Enable                  0x0008
-// Bit4 : A/D Input Select in Manual Mode
-#define C_ADC_Ch0_in_MIC              0x0000
-#define C_ADC_Ch0_in_LineinPB0        0x0010
-// Bit5 : V_MIC Power Supply Enable
-#define C_ADC_MIC_Disable             0x0000
-#define C_ADC_MIC_Enable              0x0020
-// Bit6 : ADC Chip Enable for Bias Circuit
-#define C_ADC_Bias_Disable            0x0000
-#define C_ADC_Bias_Enable             0x0040
-// Bit[8:7] : ADC clock setting
-#define C_ADC_CLK_Sel                 0x0180
-#define C_ADC_CLK_FPLL_Div_16         0x0000
-#define C_ADC_CLK_FPLL_Div_32         0x0080
-#define C_ADC_CLK_FPLL_Div_64         0x0100
-#define C_ADC_CLK_FPLL_Div_128        0x0180
+// Bit[15] : ADC busy (read only)
+#define C_ADC_Busy						0x8000
+// Bit[14] : Auto scan busy (read only)
+#define C_ADC_Auto_Scan_Busy			0x4000
+// Bit[13:12] : Timer select for auto scan mode
+#define C_ADC_Manual					0x0000
+#define C_ADC_Timer_A					0x1000
+#define C_ADC_Timer_B					0x2000
+#define C_ADC_Timer_C					0x3000
 // Bit[11:9] : ADC manual mode channel setting
-#define C_ADC_Manual_AN0              0x0000
-#define C_ADC_Manual_AN1              0x0200
+#define C_ADC_Manual_AN0				0x0000
+#define C_ADC_Manual_AN1				0x0200
 #define C_ADC_Manual_AN2              0x0400
 #define C_ADC_Manual_AN3              0x0600
 #define C_ADC_Manual_AN4              0x0800
 #define C_ADC_Manual_AN5              0x0A00
-#define C_ADC_Manual_AN6              0x0C00
-#define C_ADC_Manual_AN7              0x0E00
-// Bit[13:12] : Timer select for auto scan mode
-#define C_ADC_Manual                  0x0000
-#define C_ADC_Timer_A                 0x1000
-#define C_ADC_Timer_B                 0x2000
-#define C_ADC_Timer_C                 0x3000
-// Bit14 : Auto scan busy (read only)
-#define C_ADC_Auto_Scan_Busy          0x4000
-// Bit15 : ADC busy (read only)
-#define C_ADC_Busy                    0x8000
+#define C_ADC_Manual_AN6				0x0C00
+#define C_ADC_Manual_AN7				0x0E00
+// Bit[8:7] : ADC clock setting
+#define C_ADC_CLK_Sel					0x0180
+#define C_ADC_CLK_FPLL_Div_16			0x0000
+#define C_ADC_CLK_FPLL_Div_32			0x0080
+#define C_ADC_CLK_FPLL_Div_64			0x0100
+#define C_ADC_CLK_FPLL_Div_128			0x0180
+// Bit[6] : ADC Chip Enable for Bias Circuit
+#define	C_ADC_Bias_Disable				0x0000
+#define	C_ADC_Bias_Enable				0x0040
+// Bit[5] : V_MIC Power Supply Enable
+#define	C_ADC_MIC_Disable				0x0000
+#define	C_ADC_MIC_Enable				0x0020
+// Bit[4] : A/D Input Select in Manual Mode
+#define C_ADC_Ch0_in_MIC 				0x0000
+#define C_ADC_Ch0_in_LineinPB0			0x0010
+// Bit[3] : AGC Enable 
+#define	C_AGC_Disable					0x0000
+#define	C_AGC_Enable					0x0008
+// Bit[2] : ADC Enable 
+#define	C_ADC_Disable					0x0000
+#define	C_ADC_Enable					0x0004
+// Bit[1:0] : Conversion Cycle Select
+#define	C_ADC_Conv_Cycle				0x0003
+#define	C_ADC_Conv_Cyc_8				0x0000	// Default
+#define	C_ADC_Conv_Cyc_16				0x0001
+#define	C_ADC_Conv_Cyc_32				0x0002
+#define	C_ADC_Conv_Cyc_64				0x0003
 
 //====================================================================================
 // P_ADC_LineIn_BitCtrl (0x2072)
 //====================================================================================
-#define C_ADC_Linein_Enable           0x00FF
-#define C_ADC_AN0_Enable              0x0001
-#define C_ADC_AN1_Enable              0x0002
-#define C_ADC_AN2_Enable              0x0004
-#define C_ADC_AN3_Enable              0x0008
-#define C_ADC_AN4_Enable              0x0010
-#define C_ADC_AN5_Enable              0x0020
-#define C_ADC_AN6_Enable              0x0040
-#define C_ADC_AN7_Enable              0x0080
+#define	C_ADC_Linein_Enable				0x00FF
+#define	C_ADC_AN0_Enable				0x0001
+#define	C_ADC_AN1_Enable				0x0002
+#define	C_ADC_AN2_Enable				0x0004
+#define	C_ADC_AN3_Enable				0x0008
+#define	C_ADC_AN4_Enable				0x0010
+#define	C_ADC_AN5_Enable				0x0020
+#define	C_ADC_AN6_Enable				0x0040
+#define	C_ADC_AN7_Enable				0x0080
+
+//====================================================================================
+// P_ADC_PGA_Ctrl (0x2072)
+//====================================================================================
+// Bit[15:8] : Reserved
+// Bit[7] : PGA Function Enable
+#define C_ADC_PGA_Disable				0x0000
+#define C_ADC_PGA_Enable				0x0080
+// Bit[6:5] : Reserved
+// Bit[4:0] : PGA's Gain Stage Select
+#define C_ADC_PGA_Gain_Sel				0x001F
+#define C_ADC_PGA_Gain_Sel_0			0x0000		//    0dB
+#define C_ADC_PGA_Gain_Sel_1			0x0001		//  1.5dB
+#define C_ADC_PGA_Gain_Sel_2			0x0002		//    3dB
+#define C_ADC_PGA_Gain_Sel_3			0x0003		//  4.5dB
+#define C_ADC_PGA_Gain_Sel_4			0x0004		//    6dB
+#define C_ADC_PGA_Gain_Sel_5			0x0005		//  7.5dB
+#define C_ADC_PGA_Gain_Sel_6			0x0006		//    9dB
+#define C_ADC_PGA_Gain_Sel_7			0x0007		// 10.5dB
+#define C_ADC_PGA_Gain_Sel_8			0x0008		//   12dB
+#define C_ADC_PGA_Gain_Sel_9			0x0009		// 13.5dB
+#define C_ADC_PGA_Gain_Sel_A			0x000A		//   15dB
+#define C_ADC_PGA_Gain_Sel_B			0x000B		// 16.5dB
+#define C_ADC_PGA_Gain_Sel_C			0x000C		//   18dB -> Default Value
+#define C_ADC_PGA_Gain_Sel_D			0x000D		// 19.5dB
+#define C_ADC_PGA_Gain_Sel_E			0x000E		//   21dB
+#define C_ADC_PGA_Gain_Sel_F			0x000F		// 22.5dB
+#define C_ADC_PGA_Gain_Sel_10			0x0010		//   24dB
+#define C_ADC_PGA_Gain_Sel_11			0x0011		// 25.5dB
+#define C_ADC_PGA_Gain_Sel_12			0x0012		//   27dB
+#define C_ADC_PGA_Gain_Sel_13			0x0013		// 28.5dB
+#define C_ADC_PGA_Gain_Sel_14			0x0014		//   30dB
 
 //====================================================================================
 // P_Flash_Ctrl (0x26FF)
 //====================================================================================
-#define C_Flash_Enable_Access_CMD     0xAAAA
-#define C_Flash_PageErase_CMD         0x5511
-#define C_Flash_Program_CMD           0x5533
+#define C_Flash_Enable_Access_CMD		0xAAAA
+#define C_Flash_PageErase_CMD			0x5511
+#define C_Flash_Program_CMD				0x5533
 
 //====================================================================================
 // Bits Definition
 //====================================================================================
-#define C_Bit0                        0x0001
-#define C_Bit1                        0x0002
-#define C_Bit2                        0x0004
-#define C_Bit3                        0x0008
-#define C_Bit4                        0x0010
-#define C_Bit5                        0x0020
-#define C_Bit6                        0x0040
-#define C_Bit7                        0x0080
-#define C_Bit8                        0x0100
-#define C_Bit9                        0x0200
-#define C_Bit10                       0x0400
-#define C_Bit11                       0x0800
-#define C_Bit12                       0x1000
-#define C_Bit13                       0x2000
-#define C_Bit14                       0x4000
-#define C_Bit15                       0x8000
+#define	C_Bit15							0x8000
+#define	C_Bit14							0x4000
+#define	C_Bit13							0x2000
+#define	C_Bit12							0x1000
+#define	C_Bit11							0x0800
+#define	C_Bit10							0x0400
+#define	C_Bit9							0x0200
+#define	C_Bit8							0x0100
+#define	C_Bit7							0x0080
+#define	C_Bit6							0x0040
+#define	C_Bit5							0x0020
+#define	C_Bit4							0x0010
+#define	C_Bit3							0x0008
+#define	C_Bit2							0x0004
+#define	C_Bit1							0x0002
+#define	C_Bit0							0x0001
 
 #ifndef sbi
 #define sbi(x,y)    x|=(1 << (y))
@@ -672,4 +763,4 @@ typedef union tagIOBITS {
 
 #define reset_watch_dog() (P_Watchdog_Clear = C_Watchdog_Clear)
 
-#endif __GPCE02064_H__
+#endif __GPCE206x_H__
