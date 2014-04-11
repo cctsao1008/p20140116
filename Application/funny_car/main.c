@@ -8,37 +8,7 @@
  *  
  *
  ****************************************************************************/
-
-/* FreeRTOS head  files */
-#include "FreeRTOS.h" 
-#include "task.h" 
-#include "croutine.h"  
-#include "semphr.h"
-
 #include "platform.h"
-#include "SACM.h"
-
-/* I2C Driver */
-#include "drv_i2c.h"
-
-/* SPI Driver */
-//#include "drv_spi.h"
-
-/* MTD Driver */
-#include "drv_mtd.h"
-
-/* LCD Driver */
-#include "drv_lcd.h"
-
-
-/* Petit FAT File System Module head files */
-#include "pff.h"
-
-#include "crc.h"
-#include "sfat.h"
-#include "printf.h"
-//#include "stdio.h"
-
 
 /* Contant Defintion Are */
 #define MaxSpeechNum		7		// Max. of speech in resource
@@ -52,14 +22,9 @@
 /* Write file that provide from SD card to Serial Flash */
 #define USE_FLASH_WRITER
 
-/* Debug message output */
-//#define printf(str, ...)
-//#define putchar(c) lcd7735_putc(c)
-
-
 /* Function Call Publication Area */
-void USER_A1600_SetStartAddr(int SpeechIndex);
-void USER_A1600_SetStartAddr_Con(int SpeechIndex);
+//extern void USER_A1600_SetStartAddr(int SpeechIndex);
+//void USER_A1600_SetStartAddr_Con(int SpeechIndex);
 
 /* Global Variable Defintion Area */
 #if 0
@@ -82,29 +47,50 @@ void flash_writter(void *pvParameters);
 #else
 void loop_test_01(void *pvParameters); // Play audio
 void loop_test_02(void *pvParameters); // I2C
-void demo(void *pvParameters);
 void led_update(void *pvParameters);
 void key_scan(void *pvParameters);
 void audio_play(void *pvParameters);
 #endif
 
+void demo(void *pvParameters);
+
 portTickType xTick = 0; 
 portSTACK_TYPE stack[configTOTAL_HEAP_SIZE];
 
 xSemaphoreHandle xSemaphore;
+QueueHandle_t xQueue;
 
 xTaskHandle xHandle[3] = {NULL};
+
+xTaskHandle fill_ram = NULL;
 enum tasks { led_task = 0, audio_task, key_task };
 
 #if defined(USE_FLASH_WRITER)
-#define buff_size 256
-//BYTE buff[buff_size];
+#define shared_buff_size 128
+uint8_t shared_buff[shared_buff_size];
 #endif
 
 #define TEST_CRC16
 
+typedef union tagSPEECH_TBL {
+
+    uint32_t addr_32;
+
+    struct {
+        uint8_t addr_0 : 8;
+        uint8_t addr_1 : 8;
+        uint8_t addr_2 : 8;
+        uint8_t addr_3 : 8;
+    };
+} SPEECH_TBL;
+
+SPEECH_TBL rom_tbl[32];
+
+ringBufS rb;
+
 int main()
 {
+	//uint16_t mem[] = {0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88, 0x99};
     //unsigned int delay_1 = 5000, delay_2 = 4000;
     #if 0
     uint16_t i = 0, crc16 = 0, crc16_ccitt = 0; 
@@ -175,98 +161,114 @@ void flash_writter(void *pvParameters)
 	WORD bw, br, i;
 	BYTE rc;
     BYTE* buff;
-
-    /* Please check the result on "http://www.lammertbies.nl/comm/info/crc-calculation.html" and compare it */
-    uint16_t crc16_1 = 0, crc16_2 = 0; 
-    //uint8_t data[7] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07};
-
-    buff = malloc(buff_size * sizeof(BYTE));
+    uint16_t crc16_sd = 0, crc16_sf = 0; 
 
     asm("FIQ ON");
-
 
     #ifdef CODE_1
     lcd7735_init();
     lcd7735_initR(INITR_REDTAB);
     lcd7735_fillScreen(ST7735_BLACK);
-    lcd7735_init_screen((void *)&SmallFont[0],ST7735_WHITE,ST7735_BLACK,PORTRAIT);
-    #endif
-    
-    #ifdef TEST_CRC16_
-    /* Please check the result on "http://www.lammertbies.nl/comm/info/crc-calculation.html" and compare it */    
-    for(i = 0 ; i < sizeof(data) ; i++)
-    {
-        crc16 = crc16_update(crc16, data[i]);
-        //crc16_ccitt = crc_ccitt_update(crc16_ccitt, data[i]);
-    }
-
-    printf("CRC-16 = \n0x%X\n", crc16);
+    lcd7735_init_screen((void *)&SmallFont[0],ST7735_WHITE,ST7735_BLACK,LANDSAPE);
     #endif
 
-    lcd7735_puts("----- DRPM -----");
-    //lcd7735_puts("Flash Writter.  ");
+    printf("DRPM <Data Updater>\n");
+    //printf("Flash Writter.  ");
 
     //printf("Mount a volume.\n");
     rc = pf_mount(&fatfs);
-    if (rc) die(rc);
-
-#if 0
-    printf("\nType the file content.\n");
-
-    for (;;) {
-        rc = pf_read(buff, buff_size, &br);  /* Read a chunk of file */
-    
-        if (rc || !br) break;           /* Error or end of file */
-            for (i = 0; i < br; i++)      /* Type the data */
-                putchar(buff[i]);
+    if (rc)
+    {
+         printf("no sd card.\n");
+         die(rc);
     }
 
-    if (rc) die(rc);
-#endif
-
+    #if 1
     /* MTD Device Detect */
     if(MTD_OK == mtd_probe(&param))
     {
-        printf("found device..\n");
+        printf("found spi flash..\n");
         printf((char *)param.name);
         printf("\n");
 
-        printf("open flash.bin\n");
+        printf("open flash.bin from sd card.\n");
     
         rc = pf_open("flash.bin");
         if (rc) die(rc);
 
-        printf("chip erase..\n");
-        mtd_chip_erase();
-        printf("done.\n");
+        //buff = malloc(buff_size * sizeof(BYTE));
+        buff = shared_buff;
 
-        crc16_1 = 0, crc16_2 = 0;
+        if(NULL == buff)
+        {
+            printf("buff == NULL\n");
+            die(rc);
+        }
 
-        printf("page pragram..\n");
-
-        for (;;) {
-            rc = pf_read(buff, buff_size, &br);  /* Read a chunk of file */
+        for (;;) { // 0x32000UL
+            rc = pf_read(buff, shared_buff_size, &br);  /* Read a chunk of file */
     
-        if (rc || !br) break;           /* Error or end of file */
+        if (rc || !br || (addr > 0x20)) break;           /* Error or end of file */
             for (i = 0; i < br; i++)      /* Type the data */
             {
-                if(MTD_OK !=mtd_page_program(addr, (uint8_t*)buff[i], 1))
+                if(MTD_OK !=mtd_read_data(addr, (uint8_t*)&rc, 1))
                     printf("failed %d, %X.\n", addr, buff[i]);
 
-                crc16_1 = crc16_update(crc16_1, buff[i]);
-
-                if(MTD_OK !=mtd_read_data(addr, (uint8_t*)buff[i], 1))
-                    printf("failed %d, %X.\n", addr, buff[i]);
-
-                crc16_2 = crc16_update(crc16_2, buff[i]);
+                if(rc != buff[i])
+                { goto flash; }
 
                 addr++;
             }
         }
 
-        printf("done.\n");
-        printf("CRC16-1 0x%X.\n", crc16_1);
-        printf("CRC16-2 0x%X.\n", crc16_2);
+        //if( 0 == br)
+        {
+            printf("data mtached!!\n");
+            goto done;
+        }
+
+flash:
+        printf("flash.bin mismatch to spi flash!!\n");
+
+        printf("erase spi flash..\n");
+
+        mtd_chip_erase();
+
+        printf("program spi flash..\n");
+
+        pf_lseek(0); addr = 0;
+
+        for (;;) {
+            rc = pf_read(buff, shared_buff_size, &br);  /* Read a chunk of file */
+    
+        if (rc || !br) break;           /* Error or end of file */
+            for (i = 0; i < br; i++)      /* Type the data */
+            {
+                if(MTD_OK !=mtd_page_program(addr, (uint8_t*)&buff[i], 1))
+                    printf("failed %d, %X.\n", addr, buff[i]);
+
+                crc16_sd = crc16_update(crc16_sd, buff[i]);
+
+                if(MTD_OK !=mtd_read_data(addr, (uint8_t*)&buff[i], 1))
+                    printf("failed %d, %X.\n", addr, buff[i]);
+
+                crc16_sf = crc16_update(crc16_sf, buff[i]);
+
+                addr++;
+            }
+        }
+
+        
+        printf("CRC16-SD 0x%X.\n", crc16_sd);
+        printf("CRC16-SF 0x%X.\n", crc16_sf);
+done:
+        printf("completed!!\n");
+        //free(buff);
+
+        if(crc16_sf == crc16_sd)
+            xTaskCreate(demo, "demo", configMINIMAL_STACK_SIZE, NULL, 3, NULL);
+        else
+            printf("CRC is not match!!\n");
 
         #if 0
         printf("\ndo page program.\n");
@@ -292,13 +294,12 @@ void flash_writter(void *pvParameters)
             printf("\nfailed-3.\n");
         #endif
     }
+    #endif
 
-    if(fatfs.fsize < (sflash_size * 1024 * 1024))
-    {
-        // TODO : Copy file from SD to Serial Flash
-    }
-    
-    printf("Completed!!\n");
+    //xTaskCreate(demo, "demo", configMINIMAL_STACK_SIZE, NULL, 3, NULL);
+
+    vTaskSuspend( NULL );
+    //vTaskDelete(NULL);
 
     while(1)
     {
@@ -446,8 +447,9 @@ void led_update(void *pvParameters)
 	    vTaskDelay( delay / portTICK_RATE_MS );
     }
 }
+#endif
 
-
+#if 0
 void demo(void *pvParameters)
 {
 	unsigned Key = 0;
@@ -531,8 +533,110 @@ void demo(void *pvParameters)
 		System_ServiceLoop();
 	} // end of while
 }
-#endif
+#else
+uint8_t playing = 0;
+extern uint32_t addr;
+void demo(void *pvParameters)
+{
+    uint16_t delay = 1000;
+	unsigned SpeechIndex = 0, VolumeIndex = 9, SpeechNum = 0,  i = 0;
+    //mtd_data_buff s,r;
+    uint8_t temp[4] = {0};
+    uint8_t buff;
 
+    asm("FIQ ON");
+
+    //uint32_t* tbl = NULL;
+
+    printf("demo task..\n");
+
+    mtd_read_data(0, (uint8_t *)&SpeechNum, 1);
+
+    if( 0 != SpeechNum)
+        ;//tbl = malloc(SpeechNum * sizeof(uint32_t));
+    else
+    { printf("no speech file."); goto error; }
+
+    //if(NULL == tbl)
+    //{ printf("tbl == NULL"); goto error; }
+
+    for(i = 0 ; i < SpeechNum ; i++ )
+    {
+        mtd_read_data((uint32_t)(4 + 4*i), (uint8_t *)&temp, 4);
+
+        rom_tbl[i].addr_0 = temp[0];
+        rom_tbl[i].addr_1 = temp[1];
+        rom_tbl[i].addr_2 = temp[2];
+        rom_tbl[i].addr_3 = temp[3];
+    }
+
+    #if 0
+    for(i = 0 ; i < 10 ; i++)
+        s.data[i] = i;
+
+    xQueue = xQueueCreate( 4, sizeof( mtd_data_buff ) );
+
+    if( xQueue == 0 )
+    {
+        printf("queue create failed!\n");
+        vTaskSuspend( NULL );
+    }
+
+    if( xQueueSend( xQueue, ( void * ) &s, ( TickType_t ) 10 ) != pdPASS )
+    {
+        // Failed to post the message, even after 10 ticks.
+        printf("queue send failed!\n");
+        vTaskSuspend( NULL );
+    }
+    #endif
+
+	SACM_A1600_Initial();		// A1600 initial
+	USER_A1600_SetStartAddr(0, 0);
+
+    //vTaskResume(fill_ram);
+    //xTaskCreate(fill_data, "fill_data", ( unsigned short ) 192, NULL, 5, fill_ram);
+	
+	//vTaskDelay( delay / portTICK_RATE_MS );
+
+    //xTaskCreate(fill_data, "fill_data", ( unsigned short ) 256, NULL, 5, NULL);
+    ringBufS_init(&rb, shared_buff, shared_buff_size);
+
+    for(;;)
+    { 
+        while(!ringBufS_full(&rb))
+        {
+            mtd_read_data((uint32_t)addr, (uint8_t *)&buff, 1);
+
+            portENTER_CRITICAL();
+            ringBufS_put(&rb, buff);
+            addr++;
+            portEXIT_CRITICAL();
+        }
+
+        if(playing == 0) //  if(0 == SACM_A1600_Status())
+        {
+            playing = 1;
+            printf("playing..\n");
+            SACM_A1600_Play(Manual_Mode_Index, DAC1 + DAC2, Ramp_Up);
+        }
+
+        vTaskDelay( 50 / portTICK_RATE_MS );
+
+        if( 0 == SACM_A1600_Status())
+        {
+            printf("paly end..\n");
+            playing = 0;
+            break;
+        }
+    }
+
+error:
+    while(1)
+    {
+	    vTaskDelay( delay / portTICK_RATE_MS );
+    }
+}
+#endif
 int bsp_init(void)
 {
     init_heap((size_t)stack,configTOTAL_HEAP_SIZE);
@@ -559,26 +663,30 @@ int bsp_init(void)
 #if ( configUSE_IDLE_HOOK > 0 )
 void vApplicationIdleHook( void )
 {
-    //portENABLE_INTERRUPTS(); // This is very very IMPORTANT !! for  Scheduler
+    portENABLE_INTERRUPTS(); // This is very very IMPORTANT !! for  Scheduler
     reset_watch_dog();
+
+    #if 0
     asm("INT OFF");
-    //P_System_Clock &= ~C_Sleep_RTC_Status;
+    P_System_Clock &= ~C_Sleep_RTC_Status;
     asm("IRQ ON");
-    //P_IOA_Data->data = P_IOA_Data->data;
+    P_IOA_Data->data = P_IOA_Data->data;
     // Ready to enter  sleep mode
-    //P_System_Clock = 0x0087;
-    //P_System_Sleep = C_System_Sleep;
+    P_System_Clock = 0x0087;
+    P_System_Sleep = C_System_Sleep;
     asm("NOP");
 
-    //P_System_Clock = 0x0080;
+    P_System_Clock = 0x0080;
 
-    //vTaskResume( xHandle[key_task] ); // To resume key scan function.
+    vTaskResume( xHandle[key_task] ); // To resume key scan function.
+    #endif
 }
 #endif
 
 #if( configUSE_MALLOC_FAILED_HOOK > 0 )
 void vApplicationMallocFailedHook(void)
 {
+    printf("vApplicationMallocFailedHook.\n");
     for(;;)
         reset_watch_dog();
 }
@@ -587,6 +695,7 @@ void vApplicationMallocFailedHook(void)
 #if configCHECK_FOR_STACK_OVERFLOW > 0
 void vApplicationStackOverflowHook(void)
 {
+    printf("vApplicationStackOverflowHook.\n");
     for(;;)
         reset_watch_dog();
 }
