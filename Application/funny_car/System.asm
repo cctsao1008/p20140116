@@ -240,12 +240,15 @@ L_DebounceCntZero:
 //****************************************************************
 F_Key_Scan_ServiceLoop:	.proc
 
-	R1 = [P_IOA_Data];				// get key data from IOA  
+	//R1 = [P_IOA_Data];				// get key data from IOA
+	R1 = [P_IOB_Data];				// get key data from IOB
 .IF C_SCAN_8_Bits
 	//////////////////// Avoid Latch PortA Data Error 
 	R1 &= 0xFF00;  			          //R1 &= 0xFFFF;
-	[P_IOA_Buffer] = R1;
-	R1 = [P_IOA_Data];
+	//[P_IOA_Buffer] = R1;
+	//R1 = [P_IOA_Data];
+	[P_IOB_Buffer] = R1;
+	R1 = [P_IOB_Data];
 	//////////////////// 
 	R1 &= 0x00FF; 			          
 .ELSE	
