@@ -259,8 +259,7 @@ static struct __screen {
 int putchar (int c)
 {
     lcd7735_putc(c);
-    
-	return c;
+    return c;
 }
 
 void delay_ms(uint32_t ms)
@@ -499,6 +498,7 @@ void lcd7735_init_screen(void *font,uint16_t fg, uint16_t bg, uint8_t orientatio
 	memset((void*)_screen.scr,' ',_screen.nrow * _screen.ncol);
 	cursor_init();
 	cursor_draw;
+    delay_ms(100);
 }
 
 void lcd7735_putc(char c) {
@@ -526,6 +526,7 @@ void lcd7735_puts(char *s) {
 	cursor_draw;
 }
 
+#if 0
 void lcd7735_cursor_set(uint16_t row, uint16_t col) {
 	if( row < _screen.nrow && col < _screen.ncol ) {
 		_screen.c.row = row;
@@ -533,6 +534,12 @@ void lcd7735_cursor_set(uint16_t row, uint16_t col) {
 	}
 	cursor_draw;
 }
+
+void lcd7735_cursor_get(uint16_t *row, uint16_t *col) {
+		*row = _screen.c.row;
+		*col = _screen.c.col;
+}
+#endif
 
 /* Service functions */
 void lcd7735_fillScreen(uint16_t color) {
@@ -614,22 +621,22 @@ void lcd7735_xmit(const uint8_t tb) {
     }
 #else
     reset_watch_dog();
-	if (tb & 0x80) LCD_SDA_H(); else LCD_SDA_L();	/* bit7 */
-	LCD_SCK_L(); LCD_SCK_H();
-	if (tb & 0x40) LCD_SDA_H(); else LCD_SDA_L();	/* bit6 */
-	LCD_SCK_L(); LCD_SCK_H();
-	if (tb & 0x20) LCD_SDA_H(); else LCD_SDA_L();	/* bit5 */
-	LCD_SCK_L(); LCD_SCK_H();
-	if (tb & 0x10) LCD_SDA_H(); else LCD_SDA_L();	/* bit4 */
-	LCD_SCK_L(); LCD_SCK_H();
-	if (tb & 0x08) LCD_SDA_H(); else LCD_SDA_L();	/* bit3 */
-	LCD_SCK_L(); LCD_SCK_H();
-	if (tb & 0x04) LCD_SDA_H(); else LCD_SDA_L();	/* bit2 */
-	LCD_SCK_L(); LCD_SCK_H();
-	if (tb & 0x02) LCD_SDA_H(); else LCD_SDA_L();	/* bit1 */
-	LCD_SCK_L(); LCD_SCK_H();
-	if (tb & 0x01) LCD_SDA_H(); else LCD_SDA_L();	/* bit0 */
-	LCD_SCK_L(); LCD_SCK_H();
+    if (tb & 0x80) LCD_SDA_H(); else LCD_SDA_L();	/* bit7 */
+    LCD_SCK_L(); LCD_SCK_H();
+    if (tb & 0x40) LCD_SDA_H(); else LCD_SDA_L();	/* bit6 */
+    LCD_SCK_L(); LCD_SCK_H();
+    if (tb & 0x20) LCD_SDA_H(); else LCD_SDA_L();	/* bit5 */
+    LCD_SCK_L(); LCD_SCK_H();
+    if (tb & 0x10) LCD_SDA_H(); else LCD_SDA_L();	/* bit4 */
+    LCD_SCK_L(); LCD_SCK_H();
+    if (tb & 0x08) LCD_SDA_H(); else LCD_SDA_L();	/* bit3 */
+    LCD_SCK_L(); LCD_SCK_H();
+    if (tb & 0x04) LCD_SDA_H(); else LCD_SDA_L();	/* bit2 */
+    LCD_SCK_L(); LCD_SCK_H();
+    if (tb & 0x02) LCD_SDA_H(); else LCD_SDA_L();	/* bit1 */
+    LCD_SCK_L(); LCD_SCK_H();
+    if (tb & 0x01) LCD_SDA_H(); else LCD_SDA_L();	/* bit0 */
+    LCD_SCK_L(); LCD_SCK_H();
 #endif
 }
 
@@ -649,6 +656,7 @@ void lcd7735_sendData(const uint8_t d) {
     //LCD_CS_H();
 }
 
+#if 0
 void test_ascii_screen(void) {
 	unsigned char x;
 	int i;
@@ -660,6 +668,7 @@ void test_ascii_screen(void) {
 		lcd7735_putc(x+i);
 	}
 }
+#endif
 #endif
 
 #endif
