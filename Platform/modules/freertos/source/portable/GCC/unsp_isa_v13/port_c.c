@@ -165,7 +165,8 @@ void vApplicationIdleHook( void )
 void vApplicationTickHook( void )
 {
     //portENABLE_INTERRUPTS();
-    reset_watch_dog();
+    //reset_watch_dog();
+    System_ServiceLoop();
 }
 
 void vPortEnterCritical( void )
