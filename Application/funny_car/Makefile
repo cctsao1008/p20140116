@@ -1,6 +1,6 @@
 #####################################################################
 #																	 
-#	Created by u'nSP IDE V3.0.8		22:42:02	04/13/14
+#	Created by u'nSP IDE V3.0.8		14:27:24	04/13/14
 #
 #####################################################################
 
@@ -23,7 +23,9 @@ RESC	= $(APPDIR)\toolchain\resc
 
 RM	= $(APPDIR)\toolchain\rm -f
 
-INCLUDES	= -I"D:/funny_car/p20140116/Application/funny_car" -I"C:/Program Files (x86)/Generalplus/unSPIDE 3.0.8/library/include" -I"C:/Program Files (x86)/Generalplus/unSPIDE 3.0.8/library/include/sys" -I"../../Application/include" -I"../../Platform/include" -I"../../Platform/modules/pff/src" -I"../../Platform/drivers" -I"../../Platform/modules/freertos/source/include" -I"../../Platform/modules/freertos/source/portable/GCC/unsp_isa_v13" -I"../../Platform/modules/hash" -I"../../Platform/modules/printf" -I"../../Platform/modules/sfat" -I"../../Platform/modules/sacm" -I"../../Platform/modules/rinbufs" -I"../../Platform/modules/xprintf"
+INCLUDES	= -I"D:/funny_car/p20140116/Application/funny_car" -I"C:/Program Files (x86)/Generalplus/unSPIDE 3.0.8/library/include" -I"C:/Program Files (x86)/Generalplus/unSPIDE 3.0.8/library/include/sys" -I"../../Application/include" -I"../../Platform/include" -I"../../Platform/modules/pff/src" -I"../../Platform/drivers" -I"../../Platform/modules/freertos/source/include" -I"../../Platform/modules/freertos/source/portable/GCC/unsp_isa_v13" -I"../../Platform/modules/hash" -I"../../Platform/modules/printf" -I"../../Platform/modules/sfat" -I"../../Platform/modules/sacm" -I"../../Platform/modules/rinbufs"
+
+../../Platform/modules/xprintf"
 
 BODY	= -body GPCE2P064A -nobdy -bfile "D:\funny_car\p20140116\Application\funny_car\funny_car.bdy"
 

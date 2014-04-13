@@ -418,7 +418,7 @@ void sflash_updater(void *pvParameters)
                     printf("failed %d, %X.\n", addr, buff[i]);
 
                 if(rc != buff[i])
-                { goto flash; }
+                { goto update; }
 
                 addr++;
             }
@@ -427,7 +427,7 @@ void sflash_updater(void *pvParameters)
         printf("data mtached!!\n");
             goto done;
 
-flash:
+update:
         printf("flash.bin mismatched!!\n");
 
         printf("erase spi flash..\n");
@@ -444,22 +444,7 @@ flash:
     
             if (rc || !br) break;         /* Error or end of file */
 
-            #if 0
-            for (i = 0; i < br; i++)      /* Type the data */
-            {
-                if(MTD_OK !=mtd_page_program(addr, (uint8_t*)&buff[i], 1))
-                    printf("failed %d, %X.\n", addr, buff[i]);
-
-                crc16_sd = crc16_update(crc16_sd, buff[i]);
-
-                if(MTD_OK !=mtd_read_data(addr, (uint8_t*)&buff[i], 1))
-                    printf("failed %d, %X.\n", addr, buff[i]);
-
-                crc16_sf = crc16_update(crc16_sf, buff[i]);
-
-                addr++;
-            }
-            #else
+            /* Do Page Program and Computer CRC */
             if(MTD_OK !=mtd_page_program(addr, (uint8_t*)buff, br))
                     printf("failed in 0x%X.\n", addr);
 
@@ -468,9 +453,9 @@ flash:
                 crc16_sd = crc16_update(crc16_sd, buff[i]);
             }
 
+            /* Read Back Data and Computer CRC */
             if(MTD_OK !=mtd_read_data(addr, (uint8_t*)buff, br))
                     printf("failed in 0x%X.\n", addr);
-
 
             for (i = 0; i < br; i++)      /* Type the data */
             {
@@ -478,7 +463,6 @@ flash:
             }
 
             addr = addr + br;            
-            #endif
         }
 
         printf("CRC16-SD 0x%X.\n", crc16_sd);
@@ -486,37 +470,11 @@ flash:
 
         vTaskDelay( (5000UL) / portTICK_RATE_MS );
 done:
-        printf("completed!!\n");
-        //free(buff);
-
         if(crc16_sf == crc16_sd)
             xTaskCreate(demo, "demo", configMINIMAL_STACK_SIZE, NULL, 3, NULL);
         else
             printf("CRC is not match!!\n");
 
-        #if 0
-        printf("\ndo page program.\n");
-        if( MTD_OK == mtd_page_program(0, buff, 256))
-        {
-            printf("\ndone.\n");
-        }
-        else
-            printf("\nfailed-1.\n");
-
-        if( MTD_OK == mtd_page_program(1, buff, 256))
-        {
-            printf("\ndone.\n");
-        }
-        else
-            printf("\nfailed-2.\n");
-
-        if( MTD_OK == mtd_page_program(1, buff, 255))
-        {
-            printf("\ndone.\n");
-        }
-        else
-            printf("\nfailed-3.\n");
-        #endif
     }
 
     vTaskSuspend( NULL );
@@ -527,18 +485,6 @@ int bsp_init(void)
 {
     init_heap((size_t)stack,configTOTAL_HEAP_SIZE);
 
-    #if 0
-    // Config System Clock
-    P_Int_Ctrl = 0x0000;
-    P_Int_Status = 0xFFFF;
-    P_System_Clock = 0x0098;
-
-    // Config IOB as Output Port
-    P_IOB_Data->data   = 0x0000;
-    P_IOB_Attrib->data = 0xFFFF;
-    P_IOB_Dir->data    = 0xFFFF;
-    #endif
-
     System_Initial();			// System initial
 
     lcd7735_init();
@@ -548,8 +494,7 @@ int bsp_init(void)
     return 0;
 }
 
-/* Hook Functions */
-
+/* FreeRTOS Hook Functions */
 #if ( configUSE_IDLE_HOOK > 0 )
 void vApplicationIdleHook( void )
 {
@@ -588,92 +533,6 @@ void vApplicationStackOverflowHook(void)
     printf("vApplicationStackOverflowHook.\n");
     for(;;)
         reset_watch_dog();
-}
-#endif
-
-#if 0
-void demo(void *pvParameters)
-{
-	unsigned Key = 0;
-	unsigned SpeechIndex = 0;
-	unsigned VolumeIndex = 9;
-	unsigned DAC_FIR_Type = C_DAC_FIR_Type2;
-	unsigned PlayCon = 0;
-
-	SACM_A1600_Initial();		// A1600 initial
-	
-	while(1)
-	{
-		Key = SP_GetCh();
-		switch(Key)
-		{	
-			case 0x0000:
-				break;
-
-			case 0x0001:	// IOA0 + Vcc
-				PlayCon = 0;
-				SACM_A1600_Play(SpeechIndex, DAC1 + DAC2, Ramp_Up + Ramp_Dn);		// play speech
-				break;
-
-			case 0x0002:	// IOA1 + Vcc
-				PlayCon = 0;
-				SACM_A1600_Stop();						// stop
-				break;
-
-			case 0x0004:	// IOA2 + Vcc
-				SACM_A1600_Pause();						// playback pause
-				break;
-
-			case 0x0008:	// IOA3 + Vcc
-				SACM_A1600_Resume();					// playback resuem
-				break;
-			
-			case 0x0010:	// IOA4 + Vcc
-				if(++SpeechIndex >= MaxSpeechNum)		// next speech
-					SpeechIndex = 0;
-				PlayCon = 0;
-				SACM_A1600_Play(SpeechIndex, DAC1 + DAC2, Ramp_Up + Ramp_Dn);		// play next speech
-				break;
-
-			case 0x0020:	// IOA5 + Vcc
-				if(++VolumeIndex >= MaxVolumeNum)
-					VolumeIndex = 0;
-				USER_A1600_Volume(VolumeIndex);			// volume up
-				break;
-
-			case 0x0040:	// IOA6 + Vcc
-				if(++DAC_FIR_Type > C_DAC_FIR_Type3)
-					DAC_FIR_Type = C_DAC_FIR_Type0;
-				SACM_A1600_DA_FIRType(DAC_FIR_Type);	// change DAC filter type
-				break;
-
-			case 0x0080:	// IOA7 + Vcc
-				PlayCon = 1;
-				SpeechIndex = 0;
-				USER_A1600_SetStartAddr(SpeechIndex);
-				SACM_A1600_Play(Manual_Mode_Index, DAC1 + DAC2, Ramp_Up);
-				break;
-
-			default:
-				break;
-		} // end of switch
-		
-		if(PlayCon)
-		{
-			if(SACM_A1600_Check_Con() == -1)
-			{
-				if(++SpeechIndex >= MaxSpeechNum)		// next speech
-					SpeechIndex = 0;
-				USER_A1600_SetStartAddr_Con(SpeechIndex);
-				SACM_A1600_Play_Con(Manual_Mode_Index, DAC1 + DAC2, Ramp_Dn);
-			}
-		}
-		
-		if(ServiceType == Foreground)
-			SACM_A1600_ServiceLoop();
-		
-		System_ServiceLoop();
-	} // end of while
 }
 #endif
 
