@@ -86,7 +86,7 @@ regs Kusti, 26.2.2008
 
 void tfp_printf(char *fmt, ...);
 
-#define printf tfp_printf 
+//#define printf tfp_printf
 
 #endif
 

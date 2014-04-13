@@ -74,11 +74,14 @@
 #include "crc.h"
 #include "sfat.h"
 #include "printf.h"
+#include "xprintf.h"
 #include "ringBufS.h"
 
 /* Debug message output */
 //#define printf(str, ...)
 //#define putchar(c)
+//#define printf xprintf
+#define printf tfp_printf
 
 typedef struct _mtd_data_buff
 {
