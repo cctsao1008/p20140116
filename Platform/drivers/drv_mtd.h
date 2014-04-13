@@ -126,4 +126,6 @@ MTD_RESULT mtd_chip_erase(void);
 MTD_RESULT mtd_page_program(uint32_t addr,uint8_t *buf, uint32_t size);
 MTD_RESULT mtd_read_data(uint32_t addr,uint8_t *buf, uint32_t size);
 
+extern uint32_t mtd_curr_addr;
+
 #endif DRV_MTD_H

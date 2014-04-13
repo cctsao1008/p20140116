@@ -70,7 +70,6 @@ MTD_RESULT mtd_probe(MTD_PARAMS *param)
             break;
     }
 
-error :
     return rc;
 }
 
@@ -87,6 +86,7 @@ uint8_t mtd_read_status_1(uint8_t mask)
     return ( rc & mask );
 }
 
+#if 0
 uint8_t mtd_read_status_2(uint8_t mask)
 {
     uint8_t rc = 0;
@@ -98,10 +98,11 @@ uint8_t mtd_read_status_2(uint8_t mask)
 
     return ( rc & mask );
 }
+#endif
 
 MTD_RESULT mtd_write_enable(void)
 {
-	MTD_RESULT rc = MTD_FAILED;
+	MTD_RESULT rc = MTD_OK;
 
     while(mtd_read_status_1(B_BUSY))
     {
@@ -118,16 +119,12 @@ MTD_RESULT mtd_write_enable(void)
         reset_watch_dog();
     }
 
-    rc = MTD_OK;
-
-error :
     return rc;
-
 }
 
 MTD_RESULT mtd_write_disable(void)
 {
-    MTD_RESULT rc = MTD_FAILED;
+    MTD_RESULT rc = MTD_OK;
 
     while(mtd_read_status_1(B_BUSY))
     {
@@ -144,15 +141,12 @@ MTD_RESULT mtd_write_disable(void)
         reset_watch_dog();
     }
 
-    rc = MTD_OK;
-
-error :
     return rc;
 }
 
 MTD_RESULT mtd_write_status(uint8_t data)
 {
-	MTD_RESULT rc = MTD_FAILED;
+	MTD_RESULT rc = MTD_OK;
 
     while(mtd_read_status_1(B_BUSY))
     {
@@ -170,9 +164,6 @@ MTD_RESULT mtd_write_status(uint8_t data)
     spi_xmit(data);
     mtd_select(1);
 
-    rc = MTD_OK;
-
-error :
     return rc;
 }
 
@@ -217,6 +208,7 @@ error :
     return rc;
 }
 
+#if 0
 MTD_RESULT mtd_fast_read_data(uint32_t addr,uint8_t *buf, uint32_t size)
 {
     MTD_RESULT rc = MTD_OK;
@@ -246,6 +238,7 @@ MTD_RESULT mtd_fast_read_data(uint32_t addr,uint8_t *buf, uint32_t size)
 error :
     return rc;
 }
+#endif
 
 MTD_RESULT mtd_page_program(uint32_t addr,uint8_t *buf, uint32_t size)
 {
@@ -309,7 +302,6 @@ MTD_RESULT mtd_chip_erase(void)
     spi_xmit(CMD_CHIP_ERASE);
     mtd_select(1);
 
-error :
     return rc;
 }
 
