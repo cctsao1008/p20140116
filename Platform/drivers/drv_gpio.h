@@ -10,8 +10,8 @@
  ****************************************************************************/
 #ifndef DRV_GPIO_H
 #define DRV_GPIO_H
-#include "GPCE206x.h"
-#include "stdint.h"
+
+#include "platform.h"
 
 #endif DRV_GPIO_H
 

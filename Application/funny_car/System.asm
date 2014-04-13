@@ -39,7 +39,7 @@
 .public  _SP_RampDnDAC2
 .public F_SP_RampDnDAC2
 
-
+.public F_SACM_Delay
 //**************************************************************************
 // RAM Definition Area
 //**************************************************************************
@@ -134,16 +134,50 @@ F_System_Initial:
 	R1 = 0x3;
 	[P_Wait_Ctrl] = R1;
 
-	R1 = 0x0000;
-//	[P_IOA_Dir] = R1;
-//	[P_IOA_Attrib] = R1;
-//	[P_IOB_Dir] = R1;
-//	[P_IOB_Attrib] = R1;
+    call F_Key_Scan_Initial;
+    call F_System_Initial_User_IO;
 
 	retf;
 	.endp;
 
+//****************************************************************
+// Function    : F_Key_Scan_Initial
+// Description : Key scan variable initialzation
+// Destory     : R1
+// Parameter   : None
+// Return      : None
+// Note        : None
+//****************************************************************
+F_Key_Scan_Initial:	.proc
+	R1 = 0x0000;
+	[R_DebounceReg] = R1;
+	[R_KeyBuf] = R1;
+	[R_KeyStrobe] = R1;
+	R1 = C_DebounceCnt;
+	[R_DebounceCnt] = R1;
+	retf;
+	.endp
 	
+//****************************************************************
+// Function    : F_System_Initial_User_IO
+// Description : I/O initialization
+// Destory     : R1
+// Parameter   : None
+// Return      : None
+// Note        : None
+//****************************************************************
+F_System_Initial_User_IO: .proc
+	R1 = 0x0000;			// IOA[15:0] input pull low
+	[P_IOA_Dir] = R1;
+	[P_IOA_Attrib] = R1;
+	[P_IOA_Buffer] = R1;	
+
+	R1 = 0x0000;			// IOB[15:0] input pull low
+	[P_IOB_Dir] = R1;
+	[P_IOB_Attrib] = R1;
+	[P_IOB_Buffer] = R1;
+	retf;
+	.endp	
 
 //****************************************************************
 // Function    : F_WatchdogClear
@@ -175,7 +209,7 @@ F_WatchdogClear:
 F_System_ServiceLoop:
 	call F_Key_DebounceCnt_Down;		// debounce counter countdown
 	call F_Key_Scan_ServiceLoop;		// key scan
-	call F_WatchdogClear;			// clear watchdog register
+	call F_WatchdogClear;				// clear watchdog register
 	retf;
 	.endp;
 
@@ -206,12 +240,15 @@ L_DebounceCntZero:
 //****************************************************************
 F_Key_Scan_ServiceLoop:	.proc
 
-	R1 = [P_IOA_Data];				// get key data from IOA  
+	//R1 = [P_IOA_Data];				// get key data from IOA
+	R1 = [P_IOB_Data];				// get key data from IOB
 .IF C_SCAN_8_Bits
 	//////////////////// Avoid Latch PortA Data Error 
 	R1 &= 0xFF00;  			          //R1 &= 0xFFFF;
-	[P_IOA_Data] = R1;
-	R1 = [P_IOA_Data];
+	//[P_IOA_Buffer] = R1;
+	//R1 = [P_IOA_Data];
+	[P_IOB_Buffer] = R1;
+	R1 = [P_IOB_Data];
 	//////////////////// 
 	R1 &= 0x00FF; 			          
 .ELSE	
@@ -281,7 +318,7 @@ F_SP_GetCh:
  _SP_RampDnDAC1: .proc
 F_SP_RampDnDAC1:
 	push R1, R2 to [SP];
-	R1 = [P_DAC_Data];
+	R1 = [P_DAC_CH1_Data];
 	R1 &= 0xFFC0;
 	cmp R1, 0x0000;
 	je ?_Branch_0;
@@ -291,7 +328,7 @@ F_SP_RampDnDAC1:
 ?_Loop_1:
 	call F_SACM_Delay;
 	R1 -= 0x0040;
-	[P_DAC_Data] = R1;
+	[P_DAC_CH1_Data] = R1;
 	cmp R1, 0x0000;
 	jne ?_Loop_1;
 
@@ -300,7 +337,7 @@ F_SP_RampDnDAC1:
 ?_Loop_0:
 	call F_SACM_Delay;
 	R1 += 0x0040;
-	[P_DAC_Data] = R1;
+	[P_DAC_CH1_Data] = R1;
 	cmp R1, 0x0000;
 	jne ?_Loop_0;
 
@@ -320,7 +357,30 @@ F_SP_RampDnDAC1:
  _SP_RampDnDAC2: .proc
 F_SP_RampDnDAC2:
 	push R1, R2 to [SP];
+	R1 = [P_DAC_CH2_Data];
+	R1 &= 0xFFC0;
+	cmp R1, 0x0000;
+	je ?_Branch_0;
+	test R1, 0x8000;
+	jnz ?_Loop_0;
 
+?_Loop_1:
+	call F_SACM_Delay;
+	R1 -= 0x0040;
+	[P_DAC_CH2_Data] = R1;
+	cmp R1, 0x0000;
+	jne ?_Loop_1;
+
+	jmp ?_Branch_0;
+
+?_Loop_0:
+	call F_SACM_Delay;
+	R1 += 0x0040;
+	[P_DAC_CH2_Data] = R1;
+	cmp R1, 0x0000;
+	jne ?_Loop_0;
+
+?_Branch_0:
 	pop R1, R2 from [SP];
 	retf;
 	.endp
@@ -337,7 +397,7 @@ F_SP_RampDnDAC2:
 F_SP_RampUpDAC1:
 	push R1, R2 to [SP];
 
-	R1 = [P_DAC_Data];
+	R1 = [P_DAC_CH1_Data];
 	R1 &= 0xFFC0;
 	cmp R1, 0x0000;
 	je ?_Branch_0;
@@ -347,7 +407,7 @@ F_SP_RampUpDAC1:
 ?_Loop_1:
 	call F_SACM_Delay;
 	R1 -= 0x0040;
-	[P_DAC_Data] = R1;
+	[P_DAC_CH1_Data] = R1;
 	cmp R1, 0x0000;
 	jne ?_Loop_1;
 
@@ -356,7 +416,7 @@ F_SP_RampUpDAC1:
 ?_Loop_0:
 	call F_SACM_Delay;
 	R1 += 0x0040;
-	[P_DAC_Data] = R1;
+	[P_DAC_CH1_Data] = R1;
 	cmp R1, 0x0000;
 	jne ?_Loop_0;
 
@@ -377,11 +437,32 @@ F_SP_RampUpDAC1:
 F_SP_RampUpDAC2:
 	push R1, R2 to [SP];
 
+	R1 = [P_DAC_CH2_Data];
+	R1 &= 0xFFC0;
+	cmp R1, 0x0000;
+	je ?_Branch_0;
+	test R1, 0x8000;
+	jnz ?_Loop_0;
 
+?_Loop_1:
+	call F_SACM_Delay;
+	R1 -= 0x0040;
+	[P_DAC_CH2_Data] = R1;
+	cmp R1, 0x0000;
+	jne ?_Loop_1;
+	jmp ?_Branch_0;
+
+?_Loop_0:
+	call F_SACM_Delay;
+	R1 += 0x0040;
+	[P_DAC_CH2_Data] = R1;
+	cmp R1, 0x0000;
+	jne ?_Loop_0;
+
+?_Branch_0:
 	pop R1, R2 from [SP];
 	retf;
 	.endp
-
 //****************************************************************
 // Function    : F_SACM_Delay
 // Description : Provide delay for Ramp up/down 

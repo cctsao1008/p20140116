@@ -10,6 +10,7 @@
  ****************************************************************************/
 #include "drv_spi.h"
 
+#if ( CFG_DRV_SPI > 0)
 void spi_initialize(void)
 {
     reset_watch_dog();
@@ -20,14 +21,14 @@ void spi_initialize(void)
 #endif
 
     /* Chip Select Pins */
-#ifdef USE_HW_CS_CTRL
-    CS_HWCTRL_INIT();
-#else
     #ifdef USE_SDCARD
-    //SD_CS : Micro SD Card Chip Select
-    CS_SDCARD_INIT();
+        #ifdef USE_HW_CS_CTRL
+        CS_HWCTRL_INIT();
+        #else    
+        //SD_CS : Micro SD Card Chip Select
+        CS_SDCARD_INIT();
+        #endif
     #endif
-#endif
 
 
     #ifdef USE_SFLASH
@@ -35,9 +36,9 @@ void spi_initialize(void)
     CS_SFLASH_INIT();
     #endif
 
-    #ifdef USE_TFTMOD
+    #ifdef USE_LCDMOD
     //CS : TFT Drive IC Chip Select
-    CS_TFTMOD_INIT();
+    CS_LCDMOD_INIT();
     #endif
 }
 
@@ -158,13 +159,13 @@ void spi_select(uint8_t cs, uint8_t high)
             break;
         #endif
 
-        #ifdef USE_TFTMOD
-        case CS_TFTMOD :
+        #ifdef USE_LCDMOD
+        case CS_LCDMOD :
 
             if(high)
-                CS_TFTMOD_H();
+                CS_LCDMOD_H();
             else
-                CS_TFTMOD_L();
+                CS_LCDMOD_L();
 
             break;
         #endif
@@ -191,4 +192,5 @@ uint16_t spi_set_divisor(const uint16_t clkdiv)
     reset_watch_dog();
     return 0;
 }
+#endif
 

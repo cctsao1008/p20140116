@@ -13,9 +13,8 @@
 // Software I2C driver, using same pins as hardware I2C, with hw i2c module disabled.
 // SCL  PB0
 // SDA  PB1
-#define SOFT_I2C
 
-#ifdef SOFT_I2C
+#if ( CFG_DRV_I2C > 0 )
 
 #define SCL_read (P_IOB_Data->bit_0)
 #define SCL_H (P_IOB_Buffer->bit_0) = 0x1
@@ -223,4 +222,5 @@ uint16_t i2cGetErrorCounter(void)
     return 0;
 }
 
-#endif
+#endif /* USE_DRV_I2C */
+

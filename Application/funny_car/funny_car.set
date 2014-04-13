@@ -13,7 +13,7 @@ BodyName=GPCE2P064A
 
 [SetLink]
 ExeFile=1
-Output=.\Debug\gpce063_diagnostic.s37
+Output=funny_car.S37
 INTVEC=1
 STARTUP=1
 ALIGNRES=0
@@ -34,10 +34,10 @@ Count=0
 
 [Option]
 CC_LOC=$(APPDIR)\toolchain\gcc
-CC_FLAG_D=-S -gstabs -Wall -mglobal-var-iram
+CC_FLAG_D=-S -Wall -mglobal-var-iram -gstabs
 CC_FLAG_R=-S -O1 -Wall -mglobal-var-iram
 AS_LOC=$(APPDIR)\toolchain\xasm16
-AS_FLAG_D=-t5 -d -sr
+AS_FLAG_D=-t5  -sr -d
 AS_FLAG_R=-t5 -sr
 LD_LOC=$(APPDIR)\toolchain\xlink16
 LD_FLAG_D= -blank 0x00
