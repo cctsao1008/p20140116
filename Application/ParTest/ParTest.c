@@ -89,7 +89,7 @@ Changes from V2.0.0
 #define partstDEFAULT_PORT_ADDRESS      P_IOA_DA
 
 /*lint -e956 File scope parameters okay here. */
-static volatile IO_BITS usPortAddress = partstDEFAULT_PORT_ADDRESS;
+static volatile REG usPortAddress = partstDEFAULT_PORT_ADDRESS;
 static unsigned short ucCurrentOutputValue = partstALL_OUTPUTS_OFF;
 /*lint +e956 */
 
@@ -98,11 +98,11 @@ void portOUTPUT_WORD(unsigned short addr, unsigned short state)
     switch(addr)
     {
         case P_IOA_DA :
-            (volatile IO_BITS)(P_IOA_DA -> data) = state;
+            (volatile REG)(P_IOA_DA->w) = state;
             break;
 
         case P_IOB_DA :
-            (volatile IO_BITS)(P_IOB_DA -> data) = state;
+            (volatile REG)(P_IOB_DA->w) = state;
             break;
 
         default :

@@ -39,55 +39,55 @@
 #ifndef    __GPCE206x_H__
 #define    __GPCE206x_H__
 
-typedef union tagIOBITS {
+typedef union tagREG {
 
-    unsigned int data;
+    unsigned int w;
 
     struct {
-        unsigned bit_0 :1;
-        unsigned bit_1 :1;
-        unsigned bit_2 :1;
-        unsigned bit_3 :1;
-        unsigned bit_4 :1;
-        unsigned bit_5 :1;
-        unsigned bit_6 :1;
-        unsigned bit_7 :1;
-        unsigned bit_8 :1;
-        unsigned bit_9 :1;
-        unsigned bit_10:1;
-        unsigned bit_11:1;
-        unsigned bit_12:1;
-        unsigned bit_13:1;
-        unsigned bit_14:1;
-        unsigned bit_15:1;
+        unsigned b_0 :1;
+        unsigned b_1 :1;
+        unsigned b_2 :1;
+        unsigned b_3 :1;
+        unsigned b_4 :1;
+        unsigned b_5 :1;
+        unsigned b_6 :1;
+        unsigned b_7 :1;
+        unsigned b_8 :1;
+        unsigned b_9 :1;
+        unsigned b_10 :1;
+        unsigned b_11 :1;
+        unsigned b_12 :1;
+        unsigned b_13 :1;
+        unsigned b_14 :1;
+        unsigned b_15 :1;
     };
-} *IO_BITS;
+} *REG;
 
 //////////////////////////////////////////////////////////////////////////////////////
 //====================================================================================
 //  Port Definition
 //====================================================================================
 //////////////////////////////////////////////////////////////////////////////////////
-#define P_IOA_Data            ((volatile  IO_BITS)       0x2000)
-#define P_IOA_Buffer          ((volatile  IO_BITS)       0x2001)
-#define P_IOA_Dir             ((volatile  IO_BITS)       0x2002)
-#define P_IOA_Attrib          ((volatile  IO_BITS)       0x2003)
-#define P_IOB_Data            ((volatile  IO_BITS)       0x2004)
-#define P_IOB_Buffer          ((volatile  IO_BITS)       0x2005)
-#define P_IOB_Dir             ((volatile  IO_BITS)       0x2006)
-#define P_IOB_Attrib          ((volatile  IO_BITS)       0x2007)
-#define P_IO_Ctrl             ((volatile  IO_BITS)       0x2008)
+#define P_IOA_Data            ((volatile  REG)       0x2000)
+#define P_IOA_Buffer          ((volatile  REG)       0x2001)
+#define P_IOA_Dir             ((volatile  REG)       0x2002)
+#define P_IOA_Attrib          ((volatile  REG)       0x2003)
+#define P_IOB_Data            ((volatile  REG)       0x2004)
+#define P_IOB_Buffer          ((volatile  REG)       0x2005)
+#define P_IOB_Dir             ((volatile  REG)       0x2006)
+#define P_IOB_Attrib          ((volatile  REG)       0x2007)
+#define P_IO_Ctrl             ((volatile  REG)       0x2008)
 #define P_IOA_WakeUp_Mask		0x2009		// New Register
 
-#define P_IOA_DA              ((volatile  IO_BITS)       0x2000)
-#define P_IOA_BU              ((volatile  IO_BITS)       0x2001)
-#define P_IOA_DI              ((volatile  IO_BITS)       0x2002)
-#define P_IOA_AT              ((volatile  IO_BITS)       0x2003)
-#define P_IOB_DA              ((volatile  IO_BITS)       0x2004)
-#define P_IOB_BU              ((volatile  IO_BITS)       0x2005)
-#define P_IOB_DI              ((volatile  IO_BITS)       0x2006)
-#define P_IOB_AT              ((volatile  IO_BITS)       0x2007)
-#define P_IOX_CT              ((volatile  IO_BITS)       0x2008)
+#define P_IOA_DA              ((volatile  REG)       0x2000)
+#define P_IOA_BU              ((volatile  REG)       0x2001)
+#define P_IOA_DI              ((volatile  REG)       0x2002)
+#define P_IOA_AT              ((volatile  REG)       0x2003)
+#define P_IOB_DA              ((volatile  REG)       0x2004)
+#define P_IOB_BU              ((volatile  REG)       0x2005)
+#define P_IOB_DI              ((volatile  REG)       0x2006)
+#define P_IOB_AT              ((volatile  REG)       0x2007)
+#define P_IOX_CT              ((volatile  REG)       0x2008)
 
 //---------------------------------------------------
 #define P_TimerA_Data         (*(volatile unsigned int*) 0x2010)
