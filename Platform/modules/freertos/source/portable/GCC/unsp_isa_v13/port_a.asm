@@ -5,49 +5,34 @@
 // *   Author: TSAO, CHIA-CHENG <chiacheng.tsao@gmail.com>
 // *
 // *   GENERAL DESCRIPTION
-// *   
+// *
 // *
 // ****************************************************************************
-.include    GPCE206x.inc
-//.DEFINE     _ASM_PORT
-
-.IFDEF      _ASM_PORT
-.PUBLIC     _vPortStartFirstTask
-.ENDIF
-
-.IFDEF      _ASM_PORT
-.PUBLIC     _vPortYield
-.PUBLIC     _vPortYieldFromTick
-.ENDIF
+.INCLUDE    GPCE206x.inc
 
 .PUBLIC     _uxPortReadFlagRegister
 .PUBLIC     _vPortWriteFlagRegister
 .PUBLIC     _portSAVE_CONTEXT
 .PUBLIC     _portRESTORE_CONTEXT
 
-.IFDEF      _ASM_PORT
-.PUBLIC     _IRQ7
-.ENDIF
-
 .EXTERNAL   _pxCurrentTCB
 .EXTERNAL   _vTaskSwitchContext
 .EXTERNAL   _vTaskIncrementTick
 
-
-// Macro definition
-PUSHALL: .MACRO
+// Macro Definition
+PUSH_ALL: .MACRO
 
     PUSH R1,R5 TO [SP]
 
-    .ENDM
+.ENDM
 
-POPALL: .MACRO
+POP_ALL: .MACRO
 
     POP R1,R5 FROM [SP]
 
-    .ENDM
+.ENDM
 
-PUSHFR: .MACRO
+PUSH_FR: .MACRO
 
     SECBANK ON
     R1 = FR
@@ -56,9 +41,9 @@ PUSHFR: .MACRO
     PUSH R1 TO [SP]
     SECBANK OFF
 
-    .ENDM
+.ENDM
 
-POPFR: .MACRO
+POP_FR: .MACRO
 
     SECBANK ON
     POP R1 FROM [SP]
@@ -67,9 +52,9 @@ POPFR: .MACRO
     FR = R1
     SECBANK OFF
 
-    .ENDM
+.ENDM
 
-// Code section
+// Code Section
 .CODE
 
 _portSAVE_CONTEXT: .PROC
@@ -79,17 +64,16 @@ _portSAVE_CONTEXT: .PROC
     PUSH R3,R4 TO [SP]
     SECBANK OFF
 
-    PUSHFR
-
-    PUSHALL
+    PUSH_FR
+    PUSH_ALL
 
     R1 = [_pxCurrentTCB]
     [R1] = SP
-    
+
     SECBANK ON 
     PUSH R3,R4 TO [SP]
     SECBANK OFF
-    
+
     RETF
 
 .ENDP
@@ -99,71 +83,11 @@ _portRESTORE_CONTEXT: .PROC
     R1 = [_pxCurrentTCB]
     SP = [R1]
 
-    POPALL
+    POP_ALL
 
     RETI
 
 .ENDP
-
-.IFDEF      _ASM_PORT
-_vPortStartFirstTask: .PROC
-    
-    .IF 1
-    R1 = [_pxCurrentTCB]
-    SP = [R1]
-    POPALL
-    RETI
-    .ELSE
-    portRESTORE_CONTEXT
-    .ENDIF
-
-.ENDP
-.ENDIF
-
-.IFDEF      _ASM_PORT
-
-_vPortYield: .PROC
-
-    PUSHFR
-
-    PUSHALL
-
-    R1 = [_pxCurrentTCB]
-    [R1] = SP
-
-    CALL _vTaskSwitchContext
-
-    R1 = [_pxCurrentTCB]
-    SP = [R1]
-
-    POPALL
-
-    RETI
-
-.ENDP
-
-_vPortYieldFromTick .PROC
-
-    PUSHFR
-
-    PUSHALL
-
-    R1 = [_pxCurrentTCB]
-    [R1] = SP
-
-    CALL _vTaskIncrementTick
-    CALL _vTaskSwitchContext
-
-    R1 = [_pxCurrentTCB]
-    SP = [R1]
-
-    POPALL
-
-    RETI
-
-.ENDP
-
-.ENDIF
 
 _uxPortReadFlagRegister: .PROC
 
@@ -177,38 +101,21 @@ _uxPortReadFlagRegister: .PROC
 
 _vPortWriteFlagRegister: .PROC
 
-    PUSH R1,R5 TO [SP]		
+    PUSH_ALL
+
     BP = SP + 5
-    R1 = [BP+3]
-    
+    R1 = [BP + 3]
+
     R2 = 0x1FFF
     R1 = R1 & R2
     FR = R1
-    
-    POP R1,R5 FROM [SP]
+
+    POP_ALL
 
     RETF
 
 .ENDP
 
-// Text section
+// Text Section
 .TEXT
 
-.IFDEF      _ASM_PORT
-_IRQ7:
-
-    PUSHALL
-
-    R1 = C_IRQ7_64Hz
-    [P_INT_Status] = R1
-
-    R1 = C_Watchdog_Clear
-    [P_Watchdog_Clear] = R1
-
-    CALL _vTaskIncrementTick
-
-    POPALL
-
-    RETI
-
-.ENDIF

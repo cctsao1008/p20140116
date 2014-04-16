@@ -33,12 +33,12 @@ extern "C" {
 /* Type definitions. */
 #define portCHAR              short
 #define portFLOAT             float
-#define portDOUBLE		      double
+#define portDOUBLE            double
 #define portLONG              long int
-#define portSHORT		      short
-#define portSTACK_TYPE	      short
-#define portBASE_TYPE	      short
-#define portPOINTER_SIZE_TYPE short
+#define portSHORT             short
+#define portSTACK_TYPE        unsigned short
+#define portBASE_TYPE         unsigned short
+#define portPOINTER_SIZE_TYPE unsigned short
 
 
 typedef portSTACK_TYPE StackType_t;
@@ -47,11 +47,11 @@ typedef unsigned short UBaseType_t;
 
 
 #if( configUSE_16_BIT_TICKS == 1 )
-	typedef uint16_t TickType_t;
-	#define portMAX_DELAY ( TickType_t ) 0xffff
+    typedef uint16_t TickType_t;
+    #define portMAX_DELAY ( TickType_t ) 0xffff
 #else
-	typedef uint32_t TickType_t;
-	#define portMAX_DELAY ( TickType_t ) 0xffffffffUL
+    typedef uint32_t TickType_t;
+    #define portMAX_DELAY ( TickType_t ) 0xffffffffUL
 #endif
 
 /*-----------------------------------------------------------*/
@@ -59,7 +59,7 @@ typedef unsigned short UBaseType_t;
 /* Hardware specifics. */
 #define portBYTE_ALIGNMENT          2
 #define portSTACK_GROWTH            ( -1 ) // unsp isa13 stack form high to low : Ricardo
-#define portTICK_PERIOD_MS			( ( TickType_t ) 1000 / configTICK_RATE_HZ )
+#define portTICK_PERIOD_MS          ( ( TickType_t ) 1000 / configTICK_RATE_HZ )
 extern void vPortYield( void );
 #define portYIELD()                 vPortYield();
 #define portNOP()                   asm("NOP")
@@ -69,7 +69,7 @@ extern void vPortYield( void );
 extern void vPortEnterCritical( void );
 extern void vPortExitCritical( void );
 #define portDISABLE_INTERRUPTS()    asm("INT OFF")    
-#define portENABLE_INTERRUPTS()     asm("INT FIQ");asm("INT IRQ")    
+#define portENABLE_INTERRUPTS()     asm("INT FIQ,IRQ")
 #define portENTER_CRITICAL()        vPortEnterCritical()
 #define portEXIT_CRITICAL()         vPortExitCritical()
 
