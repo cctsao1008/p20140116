@@ -26,12 +26,12 @@
 #define LCD_CS_H()  spi_select(CS_LCDMOD, 1)
 
 #define LCD_SCK_INIT()  P_IOA_DA->b_1  = 0x0; P_IOA_AT->b_1 = 0x1; P_IOA_DI->b_1 = 0x1
-#define LCD_SCK_H()    (P_IOA_BU->b_1) = 0x1
-#define LCD_SCK_L()    (P_IOA_BU->b_1) = 0x0
+#define LCD_SCK_H()    (P_IOA_DA->b_1) = 0x1
+#define LCD_SCK_L()    (P_IOA_DA->b_1) = 0x0
 
 #define LCD_SDA_INIT()  P_IOA_DA->b_2  = 0x0; P_IOA_AT->b_2 = 0x1; P_IOA_DI->b_2 = 0x1
-#define LCD_SDA_H()    (P_IOA_BU->b_2) = 0x1
-#define LCD_SDA_L()    (P_IOA_BU->b_2) = 0x0
+#define LCD_SDA_H()    (P_IOA_DA->b_2) = 0x1
+#define LCD_SDA_L()    (P_IOA_DA->b_2) = 0x0
 
 // A0 (DC, R/S)
 #define LCD_A0_INIT()   P_IOA_DA->b_3  = 0x0; P_IOA_AT->b_3 = 0x1; P_IOA_DI->b_3 = 0x1
@@ -43,8 +43,8 @@
 
 #ifndef LCD_SOFT_RESET
 #define LCD_RST_INIT()   P_IOA_DA->b_4  = 0x0; P_IOA_AT->b_4 = 0x1; P_IOA_DI->b_4 = 0x1
-#define LCD_RST_H()     (P_IOA_BU->b_4) = 0x1
-#define LCD_RST_L()     (P_IOA_BU->b_4) = 0x0
+#define LCD_RST_H()     (P_IOA_DA->b_4) = 0x1
+#define LCD_RST_L()     (P_IOA_DA->b_4) = 0x0
 #endif
 
 //#define CK_H()      (P_IOA_BU->bit_13) = 0x1  /* Set MMC SCLK "high" */

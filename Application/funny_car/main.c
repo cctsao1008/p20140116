@@ -11,13 +11,13 @@
 #include "platform.h"
 
 /* Contant Defintion Are */
-#define MaxSpeechNum		30		// Max. of speech in resource
-#define MaxVolumeNum		16		// Max. of volume settings
+#define MaxSpeechNum        30      // Max. of speech in resource
+#define MaxVolumeNum        16      // Max. of volume settings
 
-#define Foreground			0
-#define Background			1
-//#define ServiceType		Foreground
-#define ServiceType			Background
+#define Foreground          0
+#define Background          1
+//#define ServiceType       Foreground
+#define ServiceType         Background
 
 #define shared_buff_size 128
 #define USE_SFLASH_UPDATER
@@ -45,28 +45,32 @@ uint8_t shared_buff[shared_buff_size];
 SPEECH_TBL speech_addr[MaxSpeechNum];
 ringBufS rb;
 uint8_t playing = 0;
-extern uint32_t addr;
+uint32_t addr;
+
+SemaphoreHandle_t xSemaphore;
 
 int main()
 {
     bsp_init();
 
+    xSemaphore = xSemaphoreCreateBinary();
+
     /* Create the tasks defined within this file. */
-    #ifdef USE_SFLASH_UPDATER
-    xTaskCreate(sflash_updater, "sflash_updater", ( ( unsigned short ) 256 ), NULL, 4, NULL );
-    #else
+    //#ifdef USE_SFLASH_UPDATER
+    xTaskCreate(sflash_updater, "sflash_updater", ( ( unsigned short ) 384 ), NULL, 4, NULL );
+    //#else
     xTaskCreate(demo, "demo", ( ( unsigned short ) 256 ), NULL, 3, NULL);
-    #endif
+    //#endif
     
     /* In this port, to use preemptive scheduler define configUSE_PREEMPTION
-	as 1 in portmacro.h.  To use the cooperative scheduler define
-	configUSE_PREEMPTION as 0. */
+    as 1 in portmacro.h.  To use the cooperative scheduler define
+    configUSE_PREEMPTION as 0. */
     vTaskStartScheduler();     
     
     /* RunSchedular fail !!*/
     while(1)
     {
-    	reset_watch_dog();
+        reset_watch_dog();
     }
     
     return 0;
@@ -74,14 +78,19 @@ int main()
 
 void demo(void *pvParameters)
 {
-	unsigned SpeechIndex = 0, VolumeIndex = 9, SpeechNum = 0, i = 0;
+    unsigned SpeechIndex = 0, VolumeIndex = 9, SpeechNum = 0, i = 0;
     unsigned DAC_FIR_Type = C_DAC_FIR_Type0;
-    uint8_t buff[4] = {0}, reset = 1, test_item = 2, Key = 0;
+    uint8_t buff[4] = {0}, reset = 1;
+    uint16_t  key = 0;
 
-    asm("FIQ ON");
+    portENABLE_INTERRUPTS();
 
-    printf("start demo task.\n");
-    vTaskDelay( (4000UL) / portTICK_RATE_MS );
+    while( xSemaphoreTake( xSemaphore, ( TickType_t ) 0 ) != pdTRUE )
+    {
+        vTaskDelay( (2000UL) / portTICK_RATE_MS );
+    }
+
+    printf("start demo task >>>\n");
 
     ringBufS_init(&rb, shared_buff, shared_buff_size);
 
@@ -90,10 +99,10 @@ void demo(void *pvParameters)
     if( 0 != SpeechNum)
     {
         if( 0x1 == SpeechNum )
-            printf("found 1 speech in sflash.\n");
+            printf("found 1 speech(sf).\n");
         else
         {
-            printf("found %d speechs in sflash.\n", SpeechNum);
+            printf("found %d speechs(sf).\n", SpeechNum);
 
             if(SpeechNum > MaxSpeechNum)
             {
@@ -111,7 +120,7 @@ void demo(void *pvParameters)
                 speech_addr[i].addr_3 = buff[3];
             }
 
-            vTaskDelay( (4000UL) / portTICK_RATE_MS );
+            vTaskDelay( (2000UL) / portTICK_RATE_MS );
         }
     }
     else
@@ -121,250 +130,161 @@ void demo(void *pvParameters)
     }
 
     /* A1600 Initial */
-	SACM_A1600_Initial();
-	USER_A1600_SetStartAddr(0, 0);
+    SACM_A1600_Initial();
+    USER_A1600_SetStartAddr(0, 0);
 
-    USER_A1600_Volume(VolumeIndex);	
+    USER_A1600_Volume(VolumeIndex); 
 
-    printf("playing....\n");
+    printf("playing >>>\n");
 
     for(;;)
     {
         #ifdef USE_RINGBUFS
         while(!ringBufS_full(&rb))
         {
+            addr = speech_addr[0];
+
             mtd_read_data((uint32_t)addr, (uint8_t *)buff, 1);
 
             portENTER_CRITICAL();
+
             ringBufS_put(&rb, buff);
+
             addr++;
+
             portEXIT_CRITICAL();
         }
         #endif
 
-        switch(test_item)
+        if(reset == 1)
         {
-            case 0x00 :
-            #if 0
+            printf("\npaly all test >>>\n");
+            VolumeIndex = 2;
+            SpeechIndex = 0;
+            DAC_FIR_Type = C_DAC_FIR_Type0;
+            reset = 0;
+        }
 
-            /*
-
-                       DAC_FIR_Type   Demo
-
-                       Parameters: DAC_FIR_Type :
-
-                       0 : no filter. F_SACM_A1600_DAC_Timer_X1 will be called by library.
-                       1 : filter type 1. F_SACM_A1600_DAC_Timer_X2 will be called by library.
-                       2 : filter type 2. F_SACM_A1600_DAC_Timer_X2 will be called by library.
-                       3 : filter type 3. F_SACM_A1600_DAC_Timer_X2 will be called by library.
-
-                       The CPU usage rate are difference for different filter types
-
-                           type 3 > type 2 > type 1 > no filter
-
-                       Users depend on their requirement to select the digital filter type.
-
-                     */
-
-            if(playing == 0)
+        if(playing == 0)
+        {
+            if(SpeechIndex == SpeechNum)
             {
-                if(reset == 1)
-                {
-                    printf("\nfir test >>>\n");
-                    DAC_FIR_Type = C_DAC_FIR_Type0;
-                    reset = 0;
-                }
-
-                if(DAC_FIR_Type > C_DAC_FIR_Type3)
-                {
-                    reset = 1;
-                    test_item++;
-                    break;
-                }
-
-                playing = 1;
-                addr = speech_addr[SpeechIndex].addr_32;
-
-                printf("select fir type %d.\n", DAC_FIR_Type);
-                SACM_A1600_DA_FIRType(DAC_FIR_Type);
-                USER_A1600_Volume(9);	
-                SACM_A1600_Play(Manual_Mode_Index, DAC1 + DAC2, Ramp_Up);
-                DAC_FIR_Type++;
+                reset = 1;
             }
-            #else
-            test_item++;
-            #endif
-
-            break;
-
-            case 0x01 :
-
-            #if 0
-            if(reset == 1)
+            else
             {
-                printf("\nvolume test >>>\n");
-                VolumeIndex = 0;
-                DAC_FIR_Type = C_DAC_FIR_Type0;
-                reset = 0;
-            }
-   
-            if(playing == 0)
-            {
-                if(VolumeIndex > MaxVolumeNum)
-                {
-                    reset = 1;
-                    test_item++;
-                    break;
-                }
-
-                playing = 1;
-                addr = speech_addr[SpeechIndex].addr_32;
-
-                printf("set volume %d.\n", VolumeIndex);
-                SACM_A1600_DA_FIRType(DAC_FIR_Type);
-                USER_A1600_Volume(VolumeIndex);	
-                SACM_A1600_Play(Manual_Mode_Index, DAC1 + DAC2, Ramp_Up);
-                VolumeIndex++;
-            }
-            #else
-            test_item++;
-            #endif
-
-            break;
-
-            case 0x02 :
-
-            /* 
-
-                       Play All Speechs
-
-                     */
-
-            if(reset == 1)
-            {
-                printf("\npaly all test >>>\n");
-                VolumeIndex = 1;
-                SpeechIndex = 0;
-                DAC_FIR_Type = C_DAC_FIR_Type0;
-                reset = 0;
-            }
-
-            if(playing == 0)
-            {
-                if(SpeechIndex == SpeechNum)
-                {
-                    reset = 1;
-                    test_item++;
-                    break;
-                }
-
                 playing = 1;
                 addr = speech_addr[SpeechIndex].addr_32;
 
                 printf("playing speech %d.\n", SpeechIndex);
                 SACM_A1600_DA_FIRType(DAC_FIR_Type);
-                USER_A1600_Volume(VolumeIndex);	
+                USER_A1600_Volume(VolumeIndex); 
                 SACM_A1600_Play(Manual_Mode_Index, DAC1 + DAC2, Ramp_Up);
                 SpeechIndex++;
             }
-
-            break;
-
-            default :
-            break;
-                //printf("demo finished!!\n");
-                //goto done;
-
         }
+        
 
         if( 0 == SACM_A1600_Status())
         {
             playing = 0;
         }
 
-        Key = SP_GetCh();
+        key = SP_GetCh();
 
-        switch(Key)
-		{	
-			case 0x0000:
-				break;
-
-			case 0x0001:	// IOB0 + Vcc
-                printf("K%d detected.\n", 0);
-                SACM_A1600_Stop();
-				break;
-
-			case 0x0002:	// IOB1 + Vcc
-                printf("K%d detected.\n", 1);
-				if(++VolumeIndex >= MaxVolumeNum)
-					VolumeIndex = 0;
-                printf("set volume %d.\n", VolumeIndex);
-				USER_A1600_Volume(VolumeIndex);			// volume up
+        switch(key)
+        {   
+            case 0x00:
                 break;
 
-			case 0x0004:	// IOB2 + Vcc
-                printf("K%d detected.\n", 2);
+            /* IOB0 + Vcc */
+            case 0x01:
+                printf("K%d detected.\n", PB_K0);
+
+                SACM_A1600_Stop();
+                break;
+
+            /* IOB1 + Vcc */
+            case 0x02:
+                printf("K%d detected.\n", PB_K1);
+
+                if(++VolumeIndex >= MaxVolumeNum)
+                    VolumeIndex = 0;
+                printf("set volume %d.\n", VolumeIndex);
+                USER_A1600_Volume(VolumeIndex);         // volume up
+                break;
+
+            /* IOB2 + Vcc */
+            case 0x04:
+                printf("K%d detected.\n", PB_K2);
+
                 printf("pause.\n");
-				SACM_A1600_Pause();						// playback pause
-				break;
+                SACM_A1600_Pause();                     // playback pause
+                break;
 
-			case 0x0008:	// IOB3 + Vcc
-                printf("K%d detected.\n", 3);
+            /* IOB3 + Vcc */
+            case 0x08:
+                printf("K%d detected.\n", PB_K3);
+
                 printf("resume.\n");
-				SACM_A1600_Resume();					// playback resuem
-				break;
-			
-			case 0x0010:	// IOB4 + Vcc
-                printf("K%d detected.\n", 4);
+                SACM_A1600_Resume();                    // playback resuem
+                break;
+
+            /* IOB4 + Vcc */    
+            case 0x10:
+                printf("K%d detected.\n", PB_K4);
+
                 printf("reserved.\n");
-				break;
+                break;
 
-			case 0x0020:	// IOB5 + Vcc
-                printf("K%d detected.\n", 5);
+            /* IOB5 + Vcc */
+            case 0x20:
+                printf("K%d detected.\n", PB_K5);
+
                 printf("reserved.\n");
-				break;
+                break;
 
-			case 0x0040:	// IOB6 + Vcc
-                printf("K%d detected.\n", 6);
-                printf("test item = %d.\n", test_item);
-                test_item = 0;
-				break;
+            /* IOB6 + Vcc */
+            case 0x40:
+                printf("K%d detected.\n", PB_K6);
+                reset = 1;
+                SACM_A1600_Stop();
+                break;
 
-			case 0x0080:	// IOB7 + Vcc
-                printf("K%d detected.\n", 7);
+            /* IOB7 + Vcc */
+            case 0x80:
+                printf("K%d detected.\n", PB_K7);
+
                 if(++DAC_FIR_Type > C_DAC_FIR_Type3)
-					DAC_FIR_Type = C_DAC_FIR_Type0;
+                    DAC_FIR_Type = C_DAC_FIR_Type0;
                 printf("select fir type %d.\n", DAC_FIR_Type);
-				SACM_A1600_DA_FIRType(DAC_FIR_Type);	// change DAC filter type
-				break;
+                SACM_A1600_DA_FIRType(DAC_FIR_Type);    // change DAC filter type
+                break;
 
-			default:
-				break;
-		} // end of switch
+            default:
+                break;
+        }
 
-        vTaskDelay( (1000UL) / portTICK_RATE_MS );
+        vTaskDelay( (500UL) / portTICK_RATE_MS );
+        portENABLE_INTERRUPTS();
     }
 
 done:
-
     while(1)
     {
-	    vTaskDelay( (1000UL) / portTICK_RATE_MS );
+        vTaskDelay( (5000UL) / portTICK_RATE_MS );
     }
 }
-void die (		/* Stop with dying message */
-	FRESULT rc	/* FatFs return value */
+void die (      /* Stop with dying message */
+    FRESULT rc  /* FatFs return value */
 )
 {
-	printf("Failed with rc=%u.\n", rc);
-	lcd7735_puts("SD OP Failed!\n");
+    printf("Failed with rc=%u.\n", rc);
+    lcd7735_puts("sd op failed!\n");
 
-    #if 0
-	for (;;)
-        reset_watch_dog();
-    #else
-    vTaskSuspend( NULL );
-    #endif
+    for(;;)
+        vTaskDelay( (1000UL) / portTICK_RATE_MS );
+
 }
 
 #ifdef USE_SFLASH_UPDATER
@@ -373,12 +293,12 @@ void sflash_updater(void *pvParameters)
     MTD_PARAMS param;
     uint32_t   addr = 0;
     FATFS fatfs;
-	WORD br, i;
-	BYTE rc;
+    WORD br, i;
+    BYTE rc;
     BYTE* buff;
     uint16_t crc16_sd = 0, crc16_sf = 0;
 
-    asm("FIQ ON");
+    //portENABLE_INTERRUPTS();
 
     printf("DRPM SFlash Updater\n");
 
@@ -403,7 +323,7 @@ void sflash_updater(void *pvParameters)
 
         printf("%u KB\n", (fatfs.fsize / 1024));
 
-        vTaskDelay( (5000UL) / portTICK_RATE_MS );
+        vTaskDelay( (2000UL) / portTICK_RATE_MS );
 
         buff = shared_buff;
 
@@ -414,7 +334,7 @@ void sflash_updater(void *pvParameters)
         if (rc || !br || (addr > 0x20)) break;           /* Error or end of file */
             for (i = 0; i < br; i++)      /* Type the data */
             {
-                if(MTD_OK !=mtd_read_data(addr, (uint8_t*)&rc, 1))
+                if(MTD_OK != mtd_read_data(addr, (uint8_t*)&rc, 1))
                     printf("failed %d, %X.\n", addr, buff[i]);
 
                 if(rc != buff[i])
@@ -428,8 +348,8 @@ void sflash_updater(void *pvParameters)
             goto done;
 
 update:
-        printf("flash.bin mismatched!!\n");
-
+        printf("new flash.bin !!\n");
+        printf("updating...\n");
         printf("erase spi flash..\n");
 
         mtd_chip_erase();
@@ -445,7 +365,7 @@ update:
             if (rc || !br) break;         /* Error or end of file */
 
             /* Do Page Program and Computer CRC */
-            if(MTD_OK !=mtd_page_program(addr, (uint8_t*)buff, br))
+            if(MTD_OK != mtd_page_program(addr, (uint8_t*)buff, br))
                     printf("failed in 0x%X.\n", addr);
 
             for (i = 0; i < br; i++)      /* Type the data */
@@ -454,7 +374,7 @@ update:
             }
 
             /* Read Back Data and Computer CRC */
-            if(MTD_OK !=mtd_read_data(addr, (uint8_t*)buff, br))
+            if(MTD_OK != mtd_read_data(addr, (uint8_t*)buff, br))
                     printf("failed in 0x%X.\n", addr);
 
             for (i = 0; i < br; i++)      /* Type the data */
@@ -468,16 +388,24 @@ update:
         printf("CRC16-SD 0x%X.\n", crc16_sd);
         printf("CRC16-SF 0x%X.\n", crc16_sf);
 
-        vTaskDelay( (5000UL) / portTICK_RATE_MS );
+        vTaskDelay( (3000UL) / portTICK_RATE_MS );
 done:
         if(crc16_sf == crc16_sd)
-            xTaskCreate(demo, "demo", configMINIMAL_STACK_SIZE, NULL, 3, NULL);
+        {
+            if( xSemaphore != NULL )
+            {
+                if( xSemaphoreGive( xSemaphore ) != pdTRUE )
+                {
+                     vTaskDelete( NULL );
+                }
+            }
+        }
         else
             printf("CRC is not match!!\n");
 
     }
 
-    vTaskSuspend( NULL );
+    vTaskDelete( NULL );
 }
 #endif
 
@@ -485,7 +413,11 @@ int bsp_init(void)
 {
     init_heap((size_t)stack,configTOTAL_HEAP_SIZE);
 
-    System_Initial();			// System initial
+    /* System Initialization */
+    System_Initial();
+    
+    /* Enable Interrupt AFTER Call System_Initial. */
+    portENABLE_INTERRUPTS(); 
 
     lcd7735_init();
     lcd7735_initR(INITR_REDTAB);
@@ -498,7 +430,7 @@ int bsp_init(void)
 #if ( configUSE_IDLE_HOOK > 0 )
 void vApplicationIdleHook( void )
 {
-    portENABLE_INTERRUPTS(); // This is very very IMPORTANT !! for  Scheduler
+    //portENABLE_INTERRUPTS(); // This is very very IMPORTANT !! for  Scheduler
     reset_watch_dog();
 
     #if 0
@@ -522,6 +454,7 @@ void vApplicationIdleHook( void )
 void vApplicationMallocFailedHook(void)
 {
     printf("vApplicationMallocFailedHook.\n");
+
     for(;;)
         reset_watch_dog();
 }
@@ -531,6 +464,7 @@ void vApplicationMallocFailedHook(void)
 void vApplicationStackOverflowHook(void)
 {
     printf("vApplicationStackOverflowHook.\n");
+
     for(;;)
         reset_watch_dog();
 }

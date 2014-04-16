@@ -1,8 +1,7 @@
 #include "platform.h"
 
 extern ringBufS rb;
-uint32_t addr = 0x64;
-uint8_t j = 0;
+extern uint32_t addr;
 
 /*
         dba : decode buffer address
@@ -10,9 +9,7 @@ uint8_t j = 0;
   */
 void USER_A1600_GetData(unsigned int *dba,unsigned int dbl)
 {
-    uint32_t i = 0;
-    uint8_t lb, hb;
-    uint8_t buff[2];
+    uint8_t i = 0, buff[2];
     
     for(i = 0 ; i < dbl ; i++)
     {
@@ -25,9 +22,9 @@ void USER_A1600_GetData(unsigned int *dba,unsigned int dbl)
             addr = addr + 2;
         }
 
-        hb = (uint8_t)ringBufS_get(&rb);
-        lb = (uint8_t)ringBufS_get(&rb);
-        *(dba++) = (uint16_t)(lb << 8) | hb;
+        buff[1] = (uint8_t)ringBufS_get(&rb);
+        buff[0] = (uint8_t)ringBufS_get(&rb);
+        *(dba++) = (uint16_t)(buff[1] << 8) | buff[0];
         #else
         mtd_read_data((uint32_t)addr, (uint8_t *)&buff, 2);
         addr = addr + 2;
@@ -35,6 +32,7 @@ void USER_A1600_GetData(unsigned int *dba,unsigned int dbl)
         #endif
     }
 }
+
 void USER_A1600_SetStartAddr(unsigned AddrLow, unsigned AddrHigh)
 {
 

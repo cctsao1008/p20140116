@@ -55,6 +55,9 @@
 #include "croutine.h"  
 #include "semphr.h"
 
+/* GPIO Driver */
+#include "drv_gpio.h"
+
 /* I2C Driver */
 #include "drv_i2c.h"
 

@@ -77,7 +77,7 @@ SOURCE=..\..\Platform\drivers\drv_gpio.c
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # End Group
 # Begin Group "modules"
@@ -223,7 +223,7 @@ SOURCE=..\..\Platform\modules\printf\printf.c
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # End Group
 # Begin Group "sacm"
@@ -449,14 +449,14 @@ SOURCE=..\..\Platform\drivers\drv_gpio.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\printf\printf.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\include\platform.h
@@ -491,7 +491,7 @@ SOURCE=..\..\Platform\modules\freertos\source\include\FreeRTOS.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=3877229
+EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\task.h
@@ -665,7 +665,7 @@ SOURCE=..\..\Platform\drivers\drv_gpio.c
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # End Group
 # Begin Group "modules"
@@ -811,7 +811,7 @@ SOURCE=..\..\Platform\modules\printf\printf.c
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # End Group
 # Begin Group "sacm"
@@ -1037,14 +1037,14 @@ SOURCE=..\..\Platform\drivers\drv_gpio.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\printf\printf.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\include\platform.h
@@ -1079,7 +1079,7 @@ SOURCE=..\..\Platform\modules\freertos\source\include\FreeRTOS.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=3877229
+EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\task.h
