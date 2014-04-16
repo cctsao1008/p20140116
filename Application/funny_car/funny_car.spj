@@ -145,20 +145,6 @@ EXPORT=3
 # End Source File
 # End Group
 # Begin Source File
-SOURCE=..\..\Platform\modules\freertos\source\croutine.c
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\freertos\source\list.c
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\queue.c
 USEPARAM=FALSE
 PARAM=
@@ -173,14 +159,7 @@ ID=
 EXPORT=3
 # End Source File
 # Begin Source File
-SOURCE=..\..\Platform\modules\freertos\source\timers.c
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\freertos\source\event_groups.c
+SOURCE=..\..\Platform\modules\freertos\source\list.c
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -264,6 +243,19 @@ USEPARAM=FALSE
 PARAM=
 ID=
 EXPORT=3
+# End Source File
+# End Group
+# Begin Group "date"
+#PROP Default_Filter=
+USEPARAM=FALSE
+PARAM=
+EXPORT=3
+# Begin Source File
+SOURCE=..\..\Platform\modules\date\date.c
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
 # End Source File
 # End Group
 # End Group
@@ -459,6 +451,20 @@ ID=
 EXPORT=3
 # End Source File
 # Begin Source File
+SOURCE=..\..\Platform\modules\date\date.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\date\bcd.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
 SOURCE=..\..\Platform\include\platform.h
 USEPARAM=FALSE
 PARAM=
@@ -579,13 +585,6 @@ EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\StackMacros.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\freertos\source\include\event_groups.h
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -733,20 +732,6 @@ EXPORT=3
 # End Source File
 # End Group
 # Begin Source File
-SOURCE=..\..\Platform\modules\freertos\source\croutine.c
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\freertos\source\list.c
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\queue.c
 USEPARAM=FALSE
 PARAM=
@@ -761,14 +746,7 @@ ID=
 EXPORT=3
 # End Source File
 # Begin Source File
-SOURCE=..\..\Platform\modules\freertos\source\timers.c
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\freertos\source\event_groups.c
+SOURCE=..\..\Platform\modules\freertos\source\list.c
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -852,6 +830,19 @@ USEPARAM=FALSE
 PARAM=
 ID=
 EXPORT=3
+# End Source File
+# End Group
+# Begin Group "date"
+#PROP Default_Filter=
+USEPARAM=FALSE
+PARAM=
+EXPORT=3
+# Begin Source File
+SOURCE=..\..\Platform\modules\date\date.c
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
 # End Source File
 # End Group
 # End Group
@@ -1047,6 +1038,20 @@ ID=
 EXPORT=3
 # End Source File
 # Begin Source File
+SOURCE=..\..\Platform\modules\date\date.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\date\bcd.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
 SOURCE=..\..\Platform\include\platform.h
 USEPARAM=FALSE
 PARAM=
@@ -1167,13 +1172,6 @@ EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\StackMacros.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\freertos\source\include\event_groups.h
 USEPARAM=FALSE
 PARAM=
 ID=

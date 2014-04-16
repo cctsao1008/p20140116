@@ -44,7 +44,9 @@ SemaphoreHandle_t xSemaphore;
 StackType_t stack[configTOTAL_HEAP_SIZE];
 SPEECH_TBL speech_addr[MaxSpeechNum];
 ringBufS rb;
+rtc_time tm = {0};
 
+uint32_t rtc_sec = 0;
 uint32_t addr;
 uint8_t shared_buff[shared_buff_size];
 
@@ -111,7 +113,17 @@ void demo(void *pvParameters)
 
     printf("start demo task >>>\n");
 
+    /* Gregorian date in seconds since 1970-01-01 00:00:00 */
+    to_tm(rtc_sec, &tm);
+    printf("%d/%d/%d (%s)\n%d:%d:%d\n",
+             tm.tm_year, tm.tm_mon, tm.tm_mday,str_day_of_week[tm.tm_wday],
+             tm.tm_hour, tm.tm_min, tm.tm_sec);
+
+    vTaskDelay( (1000UL) / portTICK_RATE_MS );
+
+    #ifdef USE_RINGBUFS
     ringBufS_init(&rb, shared_buff, shared_buff_size);
+    #endif
 
     mtd_read_data(0, (uint8_t *)&SpeechNum, 1);
 

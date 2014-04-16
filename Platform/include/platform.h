@@ -41,6 +41,7 @@
 /* HASH Module Configuration */
 #define CFG_MOD_CRC          1
 #define CFG_MOD_CRC16_CCITT  0
+#define CFG_MOD_RB           0
 
 /****************************************************************************
     Application Configuration
@@ -79,6 +80,7 @@
 #include "printf.h"
 #include "xprintf.h"
 #include "ringBufS.h"
+#include "date.h"
 
 /* Debug message output */
 //#define printf(str, ...)

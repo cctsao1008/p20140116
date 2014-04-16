@@ -13,6 +13,7 @@
 #include  "modulo.h"
 #include  "ringBufS.h"
 
+#if ( CFG_MOD_RB > 0 )
 void ringBufS_init (ringBufS *_this, unsigned char *buf, unsigned int buf_size)
 {
     /*****
@@ -76,4 +77,4 @@ void ringBufS_put (ringBufS *_this, const unsigned char c)
       ++_this->count;
     }
 }
-
+#endif
