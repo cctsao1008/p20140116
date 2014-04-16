@@ -1,5 +1,5 @@
 /****************************************************************************
- * app/funny_car/maim.c
+ * Application/funny_car/maim.c
  *
  *   Copyright (C) 2014  DRPM Development Team. All rights reserved.
  *   Author: TSAO, CHIA-CHENG <chiacheng.tsao@gmail.com>
@@ -47,9 +47,21 @@ ringBufS rb;
 
 uint32_t addr;
 uint8_t shared_buff[shared_buff_size];
-uint8_t playing = 0;
 
+void platform_init(void)
+{
+    init_heap((size_t)stack,configTOTAL_HEAP_SIZE);
 
+    /* System Initialization */
+    System_Initial();
+    
+    /* Enable Interrupt AFTER Call System_Initial. */
+    portENABLE_INTERRUPTS(); 
+
+    lcd7735_init();
+    lcd7735_initR(INITR_REDTAB);
+    lcd7735_init_screen((void *)&SmallFont[0],ST7735_BLACK,ST7735_WHITE,LANDSAPE);
+}
 
 int main()
 {
@@ -83,9 +95,9 @@ int main()
 
 void demo(void *pvParameters)
 {
-    unsigned SpeechIndex = 0, VolumeIndex = 9, SpeechNum = 0, i = 0;
-    unsigned DAC_FIR_Type = C_DAC_FIR_Type0;
-    uint8_t buff[4] = {0}, reset = 1;
+    uint8_t SpeechIndex = 0, VolumeIndex = 9, SpeechNum = 0, i = 0;
+    uint8_t DAC_FIR_Type = C_DAC_FIR_Type0;
+    uint8_t buff[4] = {0}, reset = 1, playing = 0;
     uint16_t  key = 0;
 
     portENABLE_INTERRUPTS();
@@ -291,6 +303,8 @@ done:
         vTaskDelay( (5000UL) / portTICK_RATE_MS );
     }
 }
+
+#ifdef USE_SFLASH_UPDATER
 void die (      /* Stop with dying message */
     FRESULT rc  /* FatFs return value */
 )
@@ -303,7 +317,6 @@ void die (      /* Stop with dying message */
 
 }
 
-#ifdef USE_SFLASH_UPDATER
 void sflash_updater(void *pvParameters)
 {
     MTD_PARAMS param;
@@ -424,21 +437,6 @@ done:
     vTaskDelete( NULL );
 }
 #endif
-
-void platform_init(void)
-{
-    init_heap((size_t)stack,configTOTAL_HEAP_SIZE);
-
-    /* System Initialization */
-    System_Initial();
-    
-    /* Enable Interrupt AFTER Call System_Initial. */
-    portENABLE_INTERRUPTS(); 
-
-    lcd7735_init();
-    lcd7735_initR(INITR_REDTAB);
-    lcd7735_init_screen((void *)&SmallFont[0],ST7735_BLACK,ST7735_WHITE,LANDSAPE);
-}
 
 /* FreeRTOS Hook Functions */
 #if ( configUSE_IDLE_HOOK > 0 )
