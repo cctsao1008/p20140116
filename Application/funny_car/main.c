@@ -5,7 +5,7 @@
  *   Author: TSAO, CHIA-CHENG <chiacheng.tsao@gmail.com>
  *
  *  GENERAL DESCRIPTION
- *  
+ *      Funny Car Main Control
  *
  ****************************************************************************/
 #include "platform.h"
@@ -35,39 +35,44 @@ typedef union tagSPEECH_TBL {
 } SPEECH_TBL;
 
 /* Function Call Publication Area */
-int bsp_init(void);
+void platform_init(void);
 void sflash_updater(void *pvParameters);
 void demo(void *pvParameters);
-/* Global Variable Defintion Area */
 
-portSTACK_TYPE stack[configTOTAL_HEAP_SIZE];
-uint8_t shared_buff[shared_buff_size];
+/* Global Variable Defintion Area */
+SemaphoreHandle_t xSemaphore;
+StackType_t stack[configTOTAL_HEAP_SIZE];
 SPEECH_TBL speech_addr[MaxSpeechNum];
 ringBufS rb;
-uint8_t playing = 0;
-uint32_t addr;
 
-SemaphoreHandle_t xSemaphore;
+uint32_t addr;
+uint8_t shared_buff[shared_buff_size];
+uint8_t playing = 0;
+
+
 
 int main()
 {
-    bsp_init();
+    platform_init();
 
     xSemaphore = xSemaphoreCreateBinary();
 
     /* Create the tasks defined within this file. */
-    //#ifdef USE_SFLASH_UPDATER
-    xTaskCreate(sflash_updater, "sflash_updater", ( ( unsigned short ) 384 ), NULL, 4, NULL );
-    //#else
-    xTaskCreate(demo, "demo", ( ( unsigned short ) 256 ), NULL, 3, NULL);
-    //#endif
+    #ifdef USE_SFLASH_UPDATER
+    xTaskCreate(sflash_updater,
+                "sflash_updater",
+                ( ( StackType_t ) 384 ), NULL, 4, NULL );
+    #endif
+    xTaskCreate(demo,
+                "demo",
+                ( ( StackType_t ) 256 ), NULL, 3, NULL );
     
     /* In this port, to use preemptive scheduler define configUSE_PREEMPTION
     as 1 in portmacro.h.  To use the cooperative scheduler define
     configUSE_PREEMPTION as 0. */
     vTaskStartScheduler();     
     
-    /* RunSchedular fail !!*/
+    /* RunSchedular Failed !!*/
     while(1)
     {
         reset_watch_dog();
@@ -85,10 +90,12 @@ void demo(void *pvParameters)
 
     portENABLE_INTERRUPTS();
 
+    #ifdef USE_SFLASH_UPDATER
     while( xSemaphoreTake( xSemaphore, ( TickType_t ) 0 ) != pdTRUE )
     {
         vTaskDelay( (2000UL) / portTICK_RATE_MS );
     }
+    #endif
 
     printf("start demo task >>>\n");
 
@@ -96,9 +103,10 @@ void demo(void *pvParameters)
 
     mtd_read_data(0, (uint8_t *)&SpeechNum, 1);
 
-    if( 0 != SpeechNum)
+    /* SpeechNum = 0x0 : No Speech File, 0xFF : Sflash is Blank or SPI Read ERROR */
+    if( (0x0 != SpeechNum) && (0xFF != SpeechNum))
     {
-        if( 0x1 == SpeechNum )
+        if( 0x01 == SpeechNum )
             printf("found 1 speech(sf).\n");
         else
         {
@@ -129,7 +137,7 @@ void demo(void *pvParameters)
         goto done; 
     }
 
-    /* A1600 Initial */
+    /* A1600 Initialization */
     SACM_A1600_Initial();
     USER_A1600_SetStartAddr(0, 0);
 
@@ -211,7 +219,9 @@ void demo(void *pvParameters)
                 if(++VolumeIndex >= MaxVolumeNum)
                     VolumeIndex = 0;
                 printf("set volume %d.\n", VolumeIndex);
-                USER_A1600_Volume(VolumeIndex);         // volume up
+
+                /* Volume Up */
+                USER_A1600_Volume(VolumeIndex);
                 break;
 
             /* IOB2 + Vcc */
@@ -219,7 +229,9 @@ void demo(void *pvParameters)
                 printf("K%d detected.\n", PB_K2);
 
                 printf("pause.\n");
-                SACM_A1600_Pause();                     // playback pause
+
+                /* Playback Pause */
+                SACM_A1600_Pause();
                 break;
 
             /* IOB3 + Vcc */
@@ -227,7 +239,9 @@ void demo(void *pvParameters)
                 printf("K%d detected.\n", PB_K3);
 
                 printf("resume.\n");
-                SACM_A1600_Resume();                    // playback resuem
+
+                /* Playback Resuem */
+                SACM_A1600_Resume();
                 break;
 
             /* IOB4 + Vcc */    
@@ -258,7 +272,9 @@ void demo(void *pvParameters)
                 if(++DAC_FIR_Type > C_DAC_FIR_Type3)
                     DAC_FIR_Type = C_DAC_FIR_Type0;
                 printf("select fir type %d.\n", DAC_FIR_Type);
-                SACM_A1600_DA_FIRType(DAC_FIR_Type);    // change DAC filter type
+
+                /* Change DAC Filter Type */
+                SACM_A1600_DA_FIRType(DAC_FIR_Type);
                 break;
 
             default:
@@ -409,7 +425,7 @@ done:
 }
 #endif
 
-int bsp_init(void)
+void platform_init(void)
 {
     init_heap((size_t)stack,configTOTAL_HEAP_SIZE);
 
@@ -422,8 +438,6 @@ int bsp_init(void)
     lcd7735_init();
     lcd7735_initR(INITR_REDTAB);
     lcd7735_init_screen((void *)&SmallFont[0],ST7735_BLACK,ST7735_WHITE,LANDSAPE);
-
-    return 0;
 }
 
 /* FreeRTOS Hook Functions */

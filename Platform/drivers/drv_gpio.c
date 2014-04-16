@@ -10,6 +10,7 @@
  ****************************************************************************/
 #include "drv_gpio.h"
 
+#if 0
 const GPIO_CFG gpio_init_tbl[] =
 {
     [INDEX(IOB, PIN_LCD_SCK)] = {
@@ -85,4 +86,4 @@ const GPIO_CFG gpio_init_tbl[] =
       .cfg = TYPE_OUTPUT_HIGH,
     },
 };
-
+#endif
