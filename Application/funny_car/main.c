@@ -1,5 +1,5 @@
 /****************************************************************************
- * Application/funny_car/maim.c
+ * Application/funny_car/main.c
  *
  *   Copyright (C) 2014  DRPM Development Team. All rights reserved.
  *   Author: TSAO, CHIA-CHENG <chiacheng.tsao@gmail.com>
