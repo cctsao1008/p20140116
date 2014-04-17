@@ -19,7 +19,7 @@
 //#define ServiceType       Foreground
 #define ServiceType         Background
 
-#define shared_buff_size 64
+#define shared_buff_size 128
 #define USE_SFLASH_UPDATER
 
 typedef union tagSPEECH_TBL {
@@ -112,13 +112,16 @@ void demo(void *pvParameters)
     printf("start demo task >>>\n");
 
     /* Gregorian date in seconds since 1970-01-01 00:00:00 */
-    to_tm(rtc_sec, &tm);
+    #if 0
+    //rtc_time_to_tm(rtc_sec, &tm);
+    rtc_sec2date(rtc_sec, &tm);
 
-    printf("%d/%d/%d %d:%d:%d\n",
+    printf("\n%d/%d/%d %d:%d:%d\n\n",
              tm.tm_year, tm.tm_mon, tm.tm_mday,
              tm.tm_hour, tm.tm_min, tm.tm_sec);
 
     vTaskDelay( (1000UL) / portTICK_RATE_MS );
+    #endif
 
     #ifdef USE_RINGBUFS
     ringBufS_init(&rb, shared_buff, shared_buff_size);
@@ -130,10 +133,10 @@ void demo(void *pvParameters)
     if( (0x0 != SpeechNum) && (0xFF != SpeechNum))
     {
         if( 0x01 == SpeechNum )
-            printf("found 1 speech(sf).\n");
+            printf("found 1 speech.\n");
         else
         {
-            printf("found %d speechs(sf).\n", SpeechNum);
+            printf("found %d speechs.\n", SpeechNum);
 
             if(SpeechNum > MaxSpeechNum)
             {
@@ -187,22 +190,19 @@ void demo(void *pvParameters)
         }
         #endif
 
-        if(reset == 1)
-        {
-            printf("\npaly all test >>>\n");
-            VolumeIndex = 2;
-            SpeechIndex = 0;
-            DAC_FIR_Type = C_DAC_FIR_Type0;
-            reset = 0;
-        }
 
         if(playing == 0)
         {
-            if(SpeechIndex == SpeechNum)
+            if(reset == 1)
             {
-                reset = 1;
+                printf("\npaly all test >>>\n");
+                VolumeIndex = 1;
+                SpeechIndex = 0;
+                DAC_FIR_Type = C_DAC_FIR_Type0;
+                reset = 0;
             }
-            else
+
+            if(SpeechIndex < SpeechNum)
             {
                 playing = 1;
                 addr = speech_addr[SpeechIndex].addr_32;
@@ -304,15 +304,12 @@ void demo(void *pvParameters)
                 break;
         }
 
-        vTaskDelay( (500UL) / portTICK_RATE_MS );
+        vTaskDelay( (1000UL) / portTICK_RATE_MS );
         portENABLE_INTERRUPTS();
     }
-
 done:
-    while(1)
-    {
+    for(;;)
         vTaskDelay( (5000UL) / portTICK_RATE_MS );
-    }
 }
 
 #ifdef USE_SFLASH_UPDATER
@@ -453,7 +450,7 @@ done:
 #if ( configUSE_IDLE_HOOK > 0 )
 void vApplicationIdleHook( void )
 {
-    //portENABLE_INTERRUPTS(); // This is very very IMPORTANT !! for  Scheduler
+    portENABLE_INTERRUPTS(); // This is very very IMPORTANT !! for  Scheduler
     reset_watch_dog();
 
     #if 0

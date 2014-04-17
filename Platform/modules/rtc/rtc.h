@@ -16,6 +16,7 @@
 #define _RTC_H_
 #include"platform.h"
 
+#if 0
 /* bcd<->bin functions are needed by almost all the RTC drivers, let's include
  * it there instead of in every single driver */
 
@@ -34,7 +35,7 @@
  * tm_year  years since 1900    years since 0
  */
 
-typedef struct _rtc_time {
+typedef struct {
     /* seconds after the minute (0 to 61) */
     uint16_t tm_sec;
     /* minutes after the hour (0 to 59) */
@@ -66,6 +67,32 @@ uint32_t mktime (uint16_t year, uint16_t mon, uint16_t day,
 
 //extern const char *str_day_of_week[];
 //extern const char *str_mounth_of_year[];
-
+void rtc_time_to_tm(uint32_t time, rtc_time *tm);
+#else
+typedef struct  {
+    /* seconds after the minute (0 to 61) */
+    uint16_t tm_sec;
+    /* minutes after the hour (0 to 59) */
+    uint16_t tm_min;
+    /* hours since midnight (0 to 23) */
+    uint16_t tm_hour;
+    /* day of the month (1 to 31) */
+    uint16_t tm_mday;
+    /* months since January (0 to 11) */
+    uint16_t tm_mon;
+    /* years since 1900 */
+    uint16_t tm_year;
+    /* days since Sunday (0 to 6 Sunday=0) */
+    uint16_t tm_wday;
+    /* days since January 1 (0 to 365) */
+    uint16_t tm_yday;
+    /* Daylight Savings Time */
+    uint16_t tm_isdst;
+}rtc_time;
+    
+uint32_t rtc_date2sec(rtc_time *tm);
+void rtc_sec2date(uint32_t tim, rtc_time * tm);
+void rtc_add_sec(rtc_time* pTime);
+#endif
 
 #endif  /* _RTC_H_ */
