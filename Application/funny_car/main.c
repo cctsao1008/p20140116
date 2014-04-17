@@ -20,7 +20,9 @@
 #define ServiceType         Background
 
 #define shared_buff_size 128
-#define USE_SFLASH_UPDATER
+//#define USE_SFLASH_UPDATER
+
+#define PRIORITY_0        0
 
 typedef union tagSPEECH_TBL {
 
@@ -37,7 +39,12 @@ typedef union tagSPEECH_TBL {
 /* Function Call Publication Area */
 void platform_init(void);
 void updater(void *pvParameters);
+
+#if 0
 void demo(void *pvParameters);
+#else
+void demo( CoRoutineHandle_t xHandle, unsigned BaseType_t uxIndex );
+#endif
 
 /* Global Variable Defintion Area */
 SemaphoreHandle_t xSemaphore;
@@ -67,6 +74,7 @@ int main()
 {
     platform_init();
 
+    #if 0
     xSemaphore = xSemaphoreCreateBinary();
 
     /* Create the tasks defined within this file. */
@@ -78,11 +86,13 @@ int main()
     xTaskCreate(demo,
                 "demo",
                 ( ( StackType_t ) 256 ), NULL, 3, NULL );
+
+    #endif
+
+    xCoRoutineCreate( demo, PRIORITY_0, 0 );
     
-    /* In this port, to use preemptive scheduler define configUSE_PREEMPTION
-    as 1 in portmacro.h.  To use the cooperative scheduler define
-    configUSE_PREEMPTION as 0. */
-    vTaskStartScheduler();     
+    /* Start the RTOS Scheduler */
+    vTaskStartScheduler();   
     
     /* RunSchedular Failed !!*/
     while(1)
@@ -93,19 +103,25 @@ int main()
     return 0;
 }
 
+#if 0
 void demo(void *pvParameters)
+#else
+void demo( CoRoutineHandle_t xHandle, unsigned BaseType_t uxIndex )
+#endif
 {
     uint8_t SpeechIndex = 0, VolumeIndex = 9, SpeechNum = 0, i = 0;
     uint8_t DAC_FIR_Type = C_DAC_FIR_Type0;
     uint8_t buff[4] = {0}, reset = 1, playing = 0;
     uint16_t  key = 0;
 
+    crSTART( xHandle );
+
     portENABLE_INTERRUPTS();
 
     #ifdef USE_SFLASH_UPDATER
     while( xSemaphoreTake( xSemaphore, ( TickType_t ) 0 ) != pdTRUE )
     {
-        vTaskDelay( (2000UL) / portTICK_RATE_MS );
+        //vTaskDelay( (2000UL) / portTICK_RATE_MS );
     }
     #endif
 
@@ -140,7 +156,7 @@ void demo(void *pvParameters)
                 speech_addr[i].addr_3 = buff[3];
             }
 
-            vTaskDelay( (2000UL) / portTICK_RATE_MS );
+            //vTaskDelay( (2000UL) / portTICK_RATE_MS );
         }
     }
     else
@@ -292,7 +308,7 @@ void demo(void *pvParameters)
         vTaskDelay( (500UL) / portTICK_RATE_MS );
         portENABLE_INTERRUPTS();
     }
-
+    crEND();
 done:
     while(1)
     {
@@ -438,8 +454,9 @@ done:
 #if ( configUSE_IDLE_HOOK > 0 )
 void vApplicationIdleHook( void )
 {
-    //portENABLE_INTERRUPTS(); // This is very very IMPORTANT !! for  Scheduler
-    reset_watch_dog();
+    //portENABLE_INTERRUPTS(); 
+    //reset_watch_dog();
+    vCoRoutineSchedule();
 
     #if 0
     asm("INT OFF");

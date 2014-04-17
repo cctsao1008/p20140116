@@ -104,4 +104,4 @@ void spi_skip_bytes (uint8_t n);
 uint8_t spi_rcvr(void);
 uint16_t spi_set_divisor(const uint16_t clkdivider);
 
-#endif /*DRV_SPI_H_*/
+#endif /* DRV_SPI_H_ */

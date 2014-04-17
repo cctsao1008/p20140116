@@ -32,6 +32,6 @@ typedef long			LONG;
 typedef unsigned long	ULONG;
 typedef unsigned long	DWORD;
 
-#endif
+#endif /* _INTEGER */
 
 #endif

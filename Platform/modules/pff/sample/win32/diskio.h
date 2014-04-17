@@ -2,7 +2,7 @@
 /  PFF - Low level disk interface modlue include file    (C)ChaN, 2009
 /-----------------------------------------------------------------------*/
 
-#ifndef _DISKIO
+#ifndef _DISKIO_H_
 
 #include "integer.h"
 
@@ -32,5 +32,5 @@ BOOL assign_drives (int argc, char *argv[]);
 #define STA_NOINIT		0x01	/* Drive not initialized */
 #define STA_NODISK		0x02	/* No medium in the drive */
 
-#define _DISKIO
+#define _DISKIO_H_
 #endif

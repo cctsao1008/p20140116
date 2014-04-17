@@ -1,8 +1,8 @@
 /*----------------------------------------------------------------------------/
 / TJpgDec - Tiny JPEG Decompressor include file               (C)ChaN, 2012
 /----------------------------------------------------------------------------*/
-#ifndef _TJPGDEC
-#define _TJPGDEC
+#ifndef TJPGDEC_H_
+#define TJPGDEC_H_
 /*---------------------------------------------------------------------------*/
 /* System Configurations */
 
@@ -78,4 +78,4 @@ JRESULT jd_decomp (JDEC*, UINT(*)(JDEC*,void*,JRECT*), BYTE);
 }
 #endif
 
-#endif /* _TJPGDEC */
+#endif /* TJPGDEC_H_ */

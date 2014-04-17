@@ -8,8 +8,8 @@
  *      This is a driver for General Purpose I/O (GPIO).
  *
  ****************************************************************************/
-#ifndef DRV_GPIO_H
-#define DRV_GPIO_H
+#ifndef DRV_GPIO_H_
+#define DRV_GPIO_H_
 
 #include "platform.h"
 
@@ -115,5 +115,4 @@ extern const GPIO_CFG gpio_init_tbl[];
 #define PIN_K5          PIN05
 #define PIN_K6          PIN06
 #define PIN_K7          PIN07
-#endif DRV_GPIO_H
-
+#endif /* DRV_GPIO_H_ */

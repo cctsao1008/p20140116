@@ -8,8 +8,8 @@
  *      Simple File Allocation Table using Linked List.
  *
  ****************************************************************************/
-#ifndef SFAT_H
-#define SFAT_H
+#ifndef SFAT_H_
+#define SFAT_H_
 #include "platform.h"
 
 typedef struct {
@@ -26,4 +26,4 @@ extern unsigned long LocatePreFile(unsigned long);
 extern unsigned long LocateLastFile(void);
 extern unsigned long LocateBlankSector(unsigned long);
 
-#endif SFAT_H
+#endif /* SFAT_H_ */

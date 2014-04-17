@@ -8,8 +8,8 @@
  *      This module performs Memory Technology Device (MTD) functionality.
  *
  ****************************************************************************/
-#ifndef DRV_MTD_H
-#define DRV_MTD_H
+#ifndef DRV_MTD_H_
+#define DRV_MTD_H_
 
 #include "platform.h"
 #include "stddef.h"
@@ -128,4 +128,4 @@ MTD_RESULT mtd_read_data(uint32_t addr,uint8_t *buf, uint32_t size);
 
 extern uint32_t mtd_curr_addr;
 
-#endif DRV_MTD_H
+#endif /* DRV_MTD_H_ */

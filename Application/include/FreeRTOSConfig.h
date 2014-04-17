@@ -63,8 +63,8 @@
     1 tab == 4 spaces!
 */
 
-#ifndef FREERTOS_CONFIG_H
-#define FREERTOS_CONFIG_H
+#ifndef FREERTOS_CONFIG_H_
+#define FREERTOS_CONFIG_H_
 
 /* THE VALUE FOR configSTACK_START MUST BE OBTAINED FROM THE .MEM FILE. */
 #define configSTACK_START                  0
@@ -93,7 +93,7 @@
 #define configIDLE_SHOULD_YIELD             1
 
 /* Co-routine definitions. */
-#define configUSE_CO_ROUTINES               0
+#define configUSE_CO_ROUTINES               1
 #define configMAX_CO_ROUTINE_PRIORITIES     ( 1 )
 
 /* Set the following definitions to 1 to include the API function, or zero
@@ -113,5 +113,4 @@ to exclude the API function. */
 #define configCHECK_FOR_STACK_OVERFLOW      0
 #define configUSE_MALLOC_FAILED_HOOK        0
 
-#endif /* FREERTOS_CONFIG_H */
-
+#endif /* FREERTOS_CONFIG_H_ */

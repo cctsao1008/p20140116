@@ -1,5 +1,5 @@
-#ifndef __JSMN_H_
-#define __JSMN_H_
+#ifndef JSMN_H_
+#define JSMN_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -70,4 +70,4 @@ jsmnerr_t jsmn_parse(jsmn_parser *parser, const char *js, size_t len,
 }
 #endif
 
-#endif /* __JSMN_H_ */
+#endif /* JSMN_H_ */

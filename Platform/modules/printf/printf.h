@@ -79,8 +79,8 @@ regs Kusti, 26.2.2008
 */
 
 
-#ifndef __TFP_PRINTF__
-#define __TFP_PRINTF__
+#ifndef TFP_PRINTF_
+#define TFP_PRINTF_
 
 #include <stdarg.h>
 
@@ -88,7 +88,4 @@ void tfp_printf(char *fmt, ...);
 
 //#define printf tfp_printf
 
-#endif
-
-
-
+#endif /* TFP_PRINTF_ */

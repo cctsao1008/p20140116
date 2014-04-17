@@ -1,3 +1,5 @@
+#ifndef XPRINTF_H_
+#define XPRINTF_H_
 /*------------------------------------------------------------------------*/
 /* Universal string handler for user console interface  (C)ChaN, 2011     */
 /*------------------------------------------------------------------------*/
@@ -40,3 +42,5 @@ int xatoi (char** str, long* res);
 #endif
 
 #endif
+
+#endif /* XPRINTF_H_ */

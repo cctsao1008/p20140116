@@ -36,4 +36,4 @@ DRESULT disk_readp (BYTE*, DWORD, WORD, WORD);
 DRESULT disk_writep (const BYTE*, DWORD);
 #endif
 
-#endif
+#endif /* _DISKIO */

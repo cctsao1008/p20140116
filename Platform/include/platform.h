@@ -8,12 +8,11 @@
  *   
  *
  ****************************************************************************/
-#ifndef _PLATFORM_H
-#define _PLATFORM_H
+#ifndef _PLATFORM_H_
+#define _PLATFORM_H_
 
 #include "GPCE206x.h"
 #include "SACM.h"
-#include "stdint.h"
 
 /****************************************************************************
     Driver Configuration
@@ -51,12 +50,13 @@
 
 /* FreeRTOS head  files */
 #include "FreeRTOS.h" 
-#include "semphr.h"
 #include "task.h"
 
 #if ( configUSE_CO_ROUTINES > 0 )
 #include "croutine.h"
 #endif
+
+#include "semphr.h"
   
 /* GPIO Driver */
 #include "drv_gpio.h"
@@ -94,4 +94,4 @@ typedef struct _mtd_data_buff
     char data[ 8 ];
 } mtd_data_buff;
 
-#endif _PLATFORM_H
+#endif /* _PLATFORM_H_ */

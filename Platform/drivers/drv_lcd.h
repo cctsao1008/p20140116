@@ -8,8 +8,8 @@
  *      This is a driver for the 1.8" SPI display.
  *
  ****************************************************************************/
-#ifndef DRV_LCD_H
-#define DRV_LCD_H
+#ifndef DRV_LCD_H_
+#define DRV_LCD_H_
 
 #include "platform.h"
 
@@ -164,5 +164,4 @@ void lcd7735_putc(char c);
 void lcd7735_puts(char *s);
 #endif
 
-#endif DRV_LCD_H
-
+#endif /* DRV_LCD_H_ */

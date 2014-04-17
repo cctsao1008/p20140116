@@ -480,6 +480,13 @@ ID=
 EXPORT=0
 # End Source File
 # Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\include\semphr.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\task.h
 USEPARAM=FALSE
 PARAM=
@@ -488,13 +495,6 @@ EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\croutine.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\freertos\source\include\semphr.h
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -529,14 +529,14 @@ ID=
 EXPORT=0
 # End Source File
 # Begin Source File
-SOURCE=..\..\Platform\modules\freertos\source\include\list.h
+SOURCE=..\..\Platform\modules\freertos\source\include\queue.h
 USEPARAM=FALSE
 PARAM=
 ID=
 EXPORT=0
 # End Source File
 # Begin Source File
-SOURCE=..\..\Platform\modules\freertos\source\include\queue.h
+SOURCE=..\..\Platform\modules\freertos\source\include\list.h
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -1047,6 +1047,13 @@ ID=
 EXPORT=0
 # End Source File
 # Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\include\semphr.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\task.h
 USEPARAM=FALSE
 PARAM=
@@ -1055,13 +1062,6 @@ EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\croutine.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\freertos\source\include\semphr.h
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -1096,14 +1096,14 @@ ID=
 EXPORT=0
 # End Source File
 # Begin Source File
-SOURCE=..\..\Platform\modules\freertos\source\include\list.h
+SOURCE=..\..\Platform\modules\freertos\source\include\queue.h
 USEPARAM=FALSE
 PARAM=
 ID=
 EXPORT=0
 # End Source File
 # Begin Source File
-SOURCE=..\..\Platform\modules\freertos\source\include\queue.h
+SOURCE=..\..\Platform\modules\freertos\source\include\list.h
 USEPARAM=FALSE
 PARAM=
 ID=
