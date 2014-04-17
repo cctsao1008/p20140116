@@ -172,20 +172,6 @@ PARAM=
 ID=
 EXPORT=3
 # End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\freertos\source\timers.c
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\freertos\source\event_groups.c
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
 # End Group
 # Begin Group "hash"
 #PROP Default_Filter=
@@ -579,13 +565,6 @@ EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\StackMacros.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\freertos\source\include\event_groups.h
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -760,20 +739,6 @@ PARAM=
 ID=
 EXPORT=3
 # End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\freertos\source\timers.c
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\freertos\source\event_groups.c
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
 # End Group
 # Begin Group "hash"
 #PROP Default_Filter=
@@ -1167,13 +1132,6 @@ EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\StackMacros.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\freertos\source\include\event_groups.h
 USEPARAM=FALSE
 PARAM=
 ID=

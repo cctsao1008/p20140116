@@ -36,7 +36,7 @@ typedef union tagSPEECH_TBL {
 
 /* Function Call Publication Area */
 void platform_init(void);
-void sflash_updater(void *pvParameters);
+void updater(void *pvParameters);
 void demo(void *pvParameters);
 
 /* Global Variable Defintion Area */
@@ -71,8 +71,8 @@ int main()
 
     /* Create the tasks defined within this file. */
     #ifdef USE_SFLASH_UPDATER
-    xTaskCreate(sflash_updater,
-                "sflash_updater",
+    xTaskCreate(updater,
+                "updater",
                 ( ( StackType_t ) 384 ), NULL, 4, NULL );
     #endif
     xTaskCreate(demo,
@@ -119,10 +119,10 @@ void demo(void *pvParameters)
     if( (0x0 != SpeechNum) && (0xFF != SpeechNum))
     {
         if( 0x01 == SpeechNum )
-            printf("found 1 speech(sf).\n");
+            printf("found 1 speech.\n");
         else
         {
-            printf("found %d speechs(sf).\n", SpeechNum);
+            printf("found %d speechs.\n", SpeechNum);
 
             if(SpeechNum > MaxSpeechNum)
             {
@@ -187,11 +187,7 @@ void demo(void *pvParameters)
 
         if(playing == 0)
         {
-            if(SpeechIndex == SpeechNum)
-            {
-                reset = 1;
-            }
-            else
+            if(SpeechIndex < SpeechNum)
             {
                 playing = 1;
                 addr = speech_addr[SpeechIndex].addr_32;
@@ -317,7 +313,7 @@ void die (      /* Stop with dying message */
 
 }
 
-void sflash_updater(void *pvParameters)
+void updater(void *pvParameters)
 {
     MTD_PARAMS param;
     uint32_t   addr = 0;

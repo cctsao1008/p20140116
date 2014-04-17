@@ -1,5 +1,6 @@
-#ifndef __RINGBUFS_H
-    #define __RINGBUFS_H
+#ifndef _RINGBUFS_H
+#define _RINGBUFS_H
+#include "platform.h"
 /****************************************************************************/
 /*    FILE: ringBufS.h                                                      */
 /*                                                                          */

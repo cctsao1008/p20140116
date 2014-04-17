@@ -51,10 +51,13 @@
 
 /* FreeRTOS head  files */
 #include "FreeRTOS.h" 
-#include "task.h" 
-#include "croutine.h"  
 #include "semphr.h"
+#include "task.h"
 
+#if ( configUSE_CO_ROUTINES > 0 )
+#include "croutine.h"
+#endif
+  
 /* GPIO Driver */
 #include "drv_gpio.h"
 
