@@ -52,8 +52,12 @@
 
 /* FreeRTOS head  files */
 #include "FreeRTOS.h" 
-#include "task.h" 
-#include "croutine.h"  
+#include "task.h"
+
+#if ( configUSE_CO_ROUTINES > 0 )
+#include "croutine.h" 
+#endif
+ 
 #include "semphr.h"
 
 /* GPIO Driver */
@@ -80,7 +84,7 @@
 #include "printf.h"
 #include "xprintf.h"
 #include "ringBufS.h"
-#include "date.h"
+#include "rtc.h"
 
 /* Debug message output */
 //#define printf(str, ...)

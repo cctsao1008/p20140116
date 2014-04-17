@@ -1,5 +1,6 @@
-#ifndef __RINGBUFS_H
-    #define __RINGBUFS_H
+#ifndef _RINGBUFS_H
+#define _RINGBUFS_H
+#include "platform.h"
 /****************************************************************************/
 /*    FILE: ringBufS.h                                                      */
 /*                                                                          */
@@ -42,4 +43,3 @@ void  ringBufS_put   (ringBufS *_this, const unsigned char c);
 void  ringBufS_flush (ringBufS *_this, const int clearBuffer);
 
 #endif
-

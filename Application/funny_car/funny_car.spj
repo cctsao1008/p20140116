@@ -165,6 +165,13 @@ PARAM=
 ID=
 EXPORT=3
 # End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\croutine.c
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=2496906
+# End Source File
 # End Group
 # Begin Group "hash"
 #PROP Default_Filter=
@@ -245,13 +252,13 @@ ID=
 EXPORT=3
 # End Source File
 # End Group
-# Begin Group "date"
+# Begin Group "rtc"
 #PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
 EXPORT=3
 # Begin Source File
-SOURCE=..\..\Platform\modules\date\date.c
+SOURCE=..\..\Platform\modules\rtc\rtc.c
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -451,14 +458,14 @@ ID=
 EXPORT=3
 # End Source File
 # Begin Source File
-SOURCE=..\..\Platform\modules\date\date.h
+SOURCE=..\..\Platform\modules\rtc\rtc.h
 USEPARAM=FALSE
 PARAM=
 ID=
 EXPORT=3
 # End Source File
 # Begin Source File
-SOURCE=..\..\Platform\modules\date\bcd.h
+SOURCE=..\..\Platform\modules\rtc\bcd.h
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -483,7 +490,7 @@ SOURCE=..\..\Platform\modules\sacm\SACM.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=115332656
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\include\stdint.h
@@ -504,7 +511,7 @@ SOURCE=..\..\Platform\modules\freertos\source\include\task.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=115279536
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\croutine.h
@@ -546,21 +553,21 @@ SOURCE=..\..\Platform\modules\freertos\source\include\portable.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=115332656
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\list.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=115290304
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\queue.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=115290304
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\mpu_wrappers.h
@@ -588,7 +595,7 @@ SOURCE=..\..\Platform\modules\freertos\source\include\StackMacros.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=7274513
 # End Source File
 # End Group
 # End SubItem
@@ -752,6 +759,13 @@ PARAM=
 ID=
 EXPORT=3
 # End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\croutine.c
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=2496906
+# End Source File
 # End Group
 # Begin Group "hash"
 #PROP Default_Filter=
@@ -832,13 +846,13 @@ ID=
 EXPORT=3
 # End Source File
 # End Group
-# Begin Group "date"
+# Begin Group "rtc"
 #PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
 EXPORT=3
 # Begin Source File
-SOURCE=..\..\Platform\modules\date\date.c
+SOURCE=..\..\Platform\modules\rtc\rtc.c
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -1038,14 +1052,14 @@ ID=
 EXPORT=3
 # End Source File
 # Begin Source File
-SOURCE=..\..\Platform\modules\date\date.h
+SOURCE=..\..\Platform\modules\rtc\rtc.h
 USEPARAM=FALSE
 PARAM=
 ID=
 EXPORT=3
 # End Source File
 # Begin Source File
-SOURCE=..\..\Platform\modules\date\bcd.h
+SOURCE=..\..\Platform\modules\rtc\bcd.h
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -1070,7 +1084,7 @@ SOURCE=..\..\Platform\modules\sacm\SACM.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=115332656
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\include\stdint.h
@@ -1091,7 +1105,7 @@ SOURCE=..\..\Platform\modules\freertos\source\include\task.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=115279536
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\croutine.h
@@ -1133,21 +1147,21 @@ SOURCE=..\..\Platform\modules\freertos\source\include\portable.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=115332656
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\list.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=115290304
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\queue.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=115290304
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\mpu_wrappers.h
@@ -1175,7 +1189,7 @@ SOURCE=..\..\Platform\modules\freertos\source\include\StackMacros.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=7274513
 # End Source File
 # End Group
 # End SubItem

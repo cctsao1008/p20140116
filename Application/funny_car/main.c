@@ -11,7 +11,7 @@
 #include "platform.h"
 
 /* Contant Defintion Are */
-#define MaxSpeechNum        30      // Max. of speech in resource
+#define MaxSpeechNum        15      // Max. of speech in resource
 #define MaxVolumeNum        16      // Max. of volume settings
 
 #define Foreground          0
@@ -19,7 +19,7 @@
 //#define ServiceType       Foreground
 #define ServiceType         Background
 
-#define shared_buff_size 128
+#define shared_buff_size 64
 #define USE_SFLASH_UPDATER
 
 typedef union tagSPEECH_TBL {
@@ -36,7 +36,7 @@ typedef union tagSPEECH_TBL {
 
 /* Function Call Publication Area */
 void platform_init(void);
-void sflash_updater(void *pvParameters);
+void updater(void *pvParameters);
 void demo(void *pvParameters);
 
 /* Global Variable Defintion Area */
@@ -73,17 +73,15 @@ int main()
 
     /* Create the tasks defined within this file. */
     #ifdef USE_SFLASH_UPDATER
-    xTaskCreate(sflash_updater,
-                "sflash_updater",
-                ( ( StackType_t ) 384 ), NULL, 4, NULL );
+    xTaskCreate(updater,
+                "updater",
+                ( ( StackType_t ) 384 ), NULL, 2, NULL );
     #endif
     xTaskCreate(demo,
                 "demo",
-                ( ( StackType_t ) 256 ), NULL, 3, NULL );
+                ( ( StackType_t ) 256 ), NULL, 1, NULL );
     
-    /* In this port, to use preemptive scheduler define configUSE_PREEMPTION
-    as 1 in portmacro.h.  To use the cooperative scheduler define
-    configUSE_PREEMPTION as 0. */
+    /* Start the RTOS Scheduler */
     vTaskStartScheduler();     
     
     /* RunSchedular Failed !!*/
@@ -115,8 +113,9 @@ void demo(void *pvParameters)
 
     /* Gregorian date in seconds since 1970-01-01 00:00:00 */
     to_tm(rtc_sec, &tm);
-    printf("%d/%d/%d (%s)\n%d:%d:%d\n",
-             tm.tm_year, tm.tm_mon, tm.tm_mday,str_day_of_week[tm.tm_wday],
+
+    printf("%d/%d/%d %d:%d:%d\n",
+             tm.tm_year, tm.tm_mon, tm.tm_mday,
              tm.tm_hour, tm.tm_min, tm.tm_sec);
 
     vTaskDelay( (1000UL) / portTICK_RATE_MS );
@@ -329,7 +328,7 @@ void die (      /* Stop with dying message */
 
 }
 
-void sflash_updater(void *pvParameters)
+void updater(void *pvParameters)
 {
     MTD_PARAMS param;
     uint32_t   addr = 0;
