@@ -10,7 +10,6 @@
  ****************************************************************************/
 #ifndef DRV_SPI_H_
 #define DRV_SPI_H_
-
 #include "platform.h"
 
 #define USE_BIT_BANGING_SPI

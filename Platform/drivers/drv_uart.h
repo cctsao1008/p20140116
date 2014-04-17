@@ -10,7 +10,6 @@
  ****************************************************************************/
 #ifndef DRV_UART_H_
 #define DRV_UART_H_
-
 #include "platform.h"
 
 #endif /* DRV_UART_H_ */

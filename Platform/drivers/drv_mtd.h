@@ -10,9 +10,7 @@
  ****************************************************************************/
 #ifndef DRV_MTD_H_
 #define DRV_MTD_H_
-
 #include "platform.h"
-#include "stddef.h"
 
 /* JEDEC Device ID: Memory type and Capacity */
 #define MF_ID_WINBOND               (0xEF)  /* Winbond*/

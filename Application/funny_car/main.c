@@ -43,8 +43,10 @@ void updater(void *pvParameters);
 #if 0
 void demo(void *pvParameters);
 #else
-void demo( CoRoutineHandle_t xHandle, unsigned BaseType_t uxIndex );
+void demo( CoRoutineHandle_t xHandle, UBaseType_t uxIndex );
 #endif
+
+BaseType_t test___ = 0 ;
 
 /* Global Variable Defintion Area */
 SemaphoreHandle_t xSemaphore;
@@ -106,7 +108,7 @@ int main()
 #if 0
 void demo(void *pvParameters)
 #else
-void demo( CoRoutineHandle_t xHandle, unsigned BaseType_t uxIndex )
+void demo( CoRoutineHandle_t xHandle, UBaseType_t uxIndex )
 #endif
 {
     uint8_t SpeechIndex = 0, VolumeIndex = 9, SpeechNum = 0, i = 0;

@@ -1,3 +1,13 @@
+/****************************************************************************
+ * Platform/modules/sacm/SACM_A1600_User_c.c
+ *
+ *   Copyright (C) 2014  DRPM Development Team. All rights reserved.
+ *   Author: TSAO, CHIA-CHENG <chiacheng.tsao@gmail.com>
+ *
+ *   GENERAL DESCRIPTION
+ *  
+ *
+ ****************************************************************************/
 #include "platform.h"
 
 extern ringBufS rb;

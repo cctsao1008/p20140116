@@ -55,11 +55,11 @@ Output: "D:\funny_car\p20140116\Application\funny_car\Debug\funny_car.S37"
 ;Align: IRAM in "printf.obj" with 0 
 ;Locate: IRAM in "main.obj" at EA3F  linkat 275 
 ;Align: IRAM in "main.obj" with 0 
-;Locate: IRAM in "ParTest.obj" at EF83  linkat 7B9 
+;Locate: IRAM in "ParTest.obj" at EF84  linkat 7BA 
 ;Align: IRAM in "ParTest.obj" with 0 
-;Locate: IRAM in "./memory/malloc" of "Libmem.lib"  at EF85  linkat 7BB 
+;Locate: IRAM in "./memory/malloc" of "Libmem.lib"  at EF86  linkat 7BC 
 ;Align: IRAM in "./memory/malloc" of "Libmem.lib"  with 0 
-;Locate: IRAM in "./memory/init_heap" of "Libmem.lib"  at EF86  linkat 7BC 
+;Locate: IRAM in "./memory/init_heap" of "Libmem.lib"  at EF87  linkat 7BD 
 ;Align: IRAM in "./memory/init_heap" of "Libmem.lib"  with 0 
 ;Locate: RAM in "SACM_A1600_User_a.obj" at 1E0 
 ;Align: RAM in "SACM_A1600_User_a.obj" with 0 

@@ -1,6 +1,5 @@
 #ifndef CRC_H_
 #define CRC_H_
-
 #include "platform.h"
 
 uint16_t crc16_update(uint16_t crc, uint8_t data);

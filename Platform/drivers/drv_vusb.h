@@ -11,7 +11,6 @@
  ****************************************************************************/
 #ifndef DRV_VUSB_H_
 #define DRV_VUSB_H_
-
 #include "platform.h"
 
 #endif /* DRV_VUSB_H_ */

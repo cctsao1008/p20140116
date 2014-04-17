@@ -10,7 +10,6 @@
  ****************************************************************************/
 #ifndef DRV_LCD_H_
 #define DRV_LCD_H_
-
 #include "platform.h"
 
 /* Example codes */

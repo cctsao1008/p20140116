@@ -3,10 +3,6 @@
 /*------------------------------------------------------------------------*/
 /* Universal string handler for user console interface  (C)ChaN, 2011     */
 /*------------------------------------------------------------------------*/
-
-#ifndef _STRFUNC
-#define _STRFUNC
-
 #define _USE_XFUNC_OUT	1	/* 1: Use output functions */
 #define	_CR_CRLF		0	/* 1: Convert \n ==> \r\n in the output char */
 
@@ -39,8 +35,6 @@ extern unsigned char (*xfunc_in)(void);
 int xgets (char* buff, int len);
 int xfgets (unsigned char (*func)(void), char* buff, int len);
 int xatoi (char** str, long* res);
-#endif
-
 #endif
 
 #endif /* XPRINTF_H_ */

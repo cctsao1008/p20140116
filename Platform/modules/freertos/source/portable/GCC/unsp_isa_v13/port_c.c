@@ -19,7 +19,6 @@
 /*-----------------------------------------------------------
  * Implementation of functions defined in portable.h for the unSP ISA V1.3 port.
  *----------------------------------------------------------*/
-
 #include "platform.h"
 
 /* Each task maintains its own interrupt status in the critical nesting variable. */

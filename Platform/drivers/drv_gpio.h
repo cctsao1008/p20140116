@@ -10,7 +10,6 @@
  ****************************************************************************/
 #ifndef DRV_GPIO_H_
 #define DRV_GPIO_H_
-
 #include "platform.h"
 
 #define USE_FULL_TAG
