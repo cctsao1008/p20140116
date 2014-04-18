@@ -39,8 +39,9 @@ SemaphoreHandle_t xSemaphore;
 StackType_t stack[configTOTAL_HEAP_SIZE];
 U32B4 speech_addr[MaxSpeechNum];
 ringBufS rb;
+rtc_time tm;
 
-uint32_t addr;
+uint32_t addr, sec;
 uint8_t shared_buff[shared_buff_size];
 
 void platform_init(void)
@@ -112,6 +113,14 @@ void demo( CoRoutineHandle_t xHandle, UBaseType_t uxIndex )
     #endif
 
     printf("start demo task >>>\n");
+
+    sec = sec + mktime(2014, 4, 18, 13, 0, 0);
+    rtc_time_to_tm(sec, &tm);
+    //rtc_tm_to_time(&tm, &sec);
+
+    printf("%u/%u/%u %u:%u:%u\n",
+             tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday + 1,
+             tm.tm_hour, tm.tm_min, tm.tm_sec);
 
     ringBufS_init(&rb, shared_buff, shared_buff_size);
 
@@ -225,7 +234,7 @@ void demo( CoRoutineHandle_t xHandle, UBaseType_t uxIndex )
 
             /* IOB1 + Vcc */
             case 0x02:
-                printf("K%d detected.\n", PB_K1);
+                printf("K%d\n", PB_K1);
 
                 if(++VolumeIndex >= MaxVolumeNum)
                     VolumeIndex = 0;
@@ -237,7 +246,7 @@ void demo( CoRoutineHandle_t xHandle, UBaseType_t uxIndex )
 
             /* IOB2 + Vcc */
             case 0x04:
-                printf("K%d detected.\n", PB_K2);
+                printf("K%d\n", PB_K2);
                 printf("pause.\n");
 
                 /* Playback Pause */
@@ -246,7 +255,7 @@ void demo( CoRoutineHandle_t xHandle, UBaseType_t uxIndex )
 
             /* IOB3 + Vcc */
             case 0x08:
-                printf("K%d detected.\n", PB_K3);
+                printf("K%d\n", PB_K3);
                 printf("resume.\n");
 
                 /* Playback Resuem */
@@ -255,28 +264,32 @@ void demo( CoRoutineHandle_t xHandle, UBaseType_t uxIndex )
 
             /* IOB4 + Vcc */    
             case 0x10:
-                printf("K%d detected.\n", PB_K4);
-                printf("reserved.\n");
-                lcd7735_lcd_off();
+                printf("K%d\n", PB_K4);
+                //printf("reserved.\n");
+                //lcd7735_lcd_off();
+                rtc_time_to_tm(sec, &tm);
+                printf("%u/%u/%u %u:%u:%u\n",
+                tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday + 1,
+                tm.tm_hour, tm.tm_min, tm.tm_sec);
                 break;
 
             /* IOB5 + Vcc */
             case 0x20:
-                printf("K%d detected.\n", PB_K5);
+                printf("K%d\n", PB_K5);
                 printf("reserved.\n");
-                lcd7735_lcd_on();
+                //lcd7735_lcd_on();
                 break;
 
             /* IOB6 + Vcc */
             case 0x40:
-                printf("K%d detected.\n", PB_K6);
+                printf("K%d\n", PB_K6);
                 reset = 1;
                 SACM_A1600_Stop();
                 break;
 
             /* IOB7 + Vcc */
             case 0x80:
-                printf("K%d detected.\n", PB_K7);
+                printf("K%d\n", PB_K7);
 
                 if(++DAC_FIR_Type > C_DAC_FIR_Type3)
                     DAC_FIR_Type = C_DAC_FIR_Type0;

@@ -56,6 +56,9 @@ void portRESTORE_CONTEXT( void );
 
 volatile StackType_t SAVED_FR = 0;
 
+extern sec;
+uint8_t count = 0;
+
 /* 
  * Initialise the stack of a task to look exactly as if a call to 
  * portSAVE_CONTEXT had been called.
@@ -203,6 +206,12 @@ void IRQ7(void)
     #else
     P_Int_Status = C_IRQ7_64Hz;
     #endif
+
+    if(count++ > 64)
+    {
+        count = 0;
+        sec++;
+    }
     
     #if( configUSE_PREEMPTION == 1 )
     portENABLE_INTERRUPTS();

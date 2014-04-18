@@ -25,6 +25,7 @@ Obj: "D:\funny_car\p20140116\Application\funny_car\Debug\SACM_A1600_User_a.obj"
 Obj: "D:\funny_car\p20140116\Application\funny_car\Debug\SACM_A1600_User_c.obj"
 Obj: "D:\funny_car\p20140116\Application\funny_car\Debug\modulo.obj"
 Obj: "D:\funny_car\p20140116\Application\funny_car\Debug\ringBufS.obj"
+Obj: "D:\funny_car\p20140116\Application\funny_car\Debug\rtclib.obj"
 Obj: "D:\funny_car\p20140116\Application\funny_car\Debug\main.obj"
 Obj: "D:\funny_car\p20140116\Application\funny_car\Debug\System.obj"
 Obj: "D:\funny_car\p20140116\Application\funny_car\Debug\isr_c.obj"
@@ -37,29 +38,29 @@ Lib: "D:\funny_car\p20140116\Application\funny_car\.\lib\SACM_A1600_V41b_Beta03.
 Output: "D:\funny_car\p20140116\Application\funny_car\Debug\funny_car.S37"
 ;Locate: unSP_StartUp in "startupD.obj" at 8009 
 ;Align: unSP_StartUp in "startupD.obj" with 0 
-;Locate: IRAM in "drv_lcd.obj" at E674  linkat 1E8 
+;Locate: IRAM in "drv_lcd.obj" at EDC7  linkat 1E8 
 ;Align: IRAM in "drv_lcd.obj" with 0 
-;Locate: IRAM in "drv_mtd.obj" at E686  linkat 1FA 
+;Locate: IRAM in "drv_mtd.obj" at EDD9  linkat 1FA 
 ;Align: IRAM in "drv_mtd.obj" with 0 
-;Locate: IRAM in "mmcbb.obj" at E688  linkat 1FC 
+;Locate: IRAM in "mmcbb.obj" at EDDB  linkat 1FC 
 ;Align: IRAM in "mmcbb.obj" with 0 
-;Locate: IRAM in "pff.obj" at E689  linkat 1FD 
+;Locate: IRAM in "pff.obj" at EDDC  linkat 1FD 
 ;Align: IRAM in "pff.obj" with 0 
-;Locate: IRAM in "port_c.obj" at E68A  linkat 1FE 
+;Locate: IRAM in "port_c.obj" at EDDD  linkat 1FE 
 ;Align: IRAM in "port_c.obj" with 0 
-;Locate: IRAM in "croutine.obj" at E68C  linkat 200 
+;Locate: IRAM in "croutine.obj" at EDE0  linkat 201 
 ;Align: IRAM in "croutine.obj" with 0 
-;Locate: IRAM in "tasks.obj" at E6A7  linkat 21B 
+;Locate: IRAM in "tasks.obj" at EDFB  linkat 21C 
 ;Align: IRAM in "tasks.obj" with 0 
-;Locate: IRAM in "printf.obj" at E6F1  linkat 265 
+;Locate: IRAM in "printf.obj" at EE45  linkat 266 
 ;Align: IRAM in "printf.obj" with 0 
-;Locate: IRAM in "main.obj" at E701  linkat 275 
+;Locate: IRAM in "main.obj" at EE55  linkat 276 
 ;Align: IRAM in "main.obj" with 0 
-;Locate: IRAM in "ParTest.obj" at EAC5  linkat 639 
+;Locate: IRAM in "ParTest.obj" at F324  linkat 745 
 ;Align: IRAM in "ParTest.obj" with 0 
-;Locate: IRAM in "./memory/malloc" of "Libmem.lib"  at EAC7  linkat 63B 
+;Locate: IRAM in "./memory/malloc" of "Libmem.lib"  at F326  linkat 747 
 ;Align: IRAM in "./memory/malloc" of "Libmem.lib"  with 0 
-;Locate: IRAM in "./memory/init_heap" of "Libmem.lib"  at EAC8  linkat 63C 
+;Locate: IRAM in "./memory/init_heap" of "Libmem.lib"  at F327  linkat 748 
 ;Align: IRAM in "./memory/init_heap" of "Libmem.lib"  with 0 
 ;Locate: RAM in "SACM_A1600_User_a.obj" at 1E0 
 ;Align: RAM in "SACM_A1600_User_a.obj" with 0 
@@ -71,92 +72,102 @@ Output: "D:\funny_car\p20140116\Application\funny_car\Debug\funny_car.S37"
 ;Align: OVERLAP_A1600_RAM_BLOCK in "SACM_A1600_Decode" of "SACM_A1600_V41b_Beta03.lib"  with 0 
 ;Locate: OVERLAP_A1600_DM_BLOCKL in "A1600_~1" of "SACM_A1600_V41b_Beta03.lib"  at 158 
 ;Align: OVERLAP_A1600_DM_BLOCKL in "A1600_~1" of "SACM_A1600_V41b_Beta03.lib"  with 0 
-;Locate: CODE in "drv_lcd.obj" at B4CA 
+;Locate: CODE in "drv_lcd.obj" at B50E 
 ;Align: CODE in "drv_lcd.obj" with 0 
-;Locate: CODE in "drv_mtd.obj" at C734 
+;Locate: CODE in "drv_mtd.obj" at D0B7 
 ;Align: CODE in "drv_mtd.obj" with 0 
-;Locate: CODE in "drv_spi.obj" at CADD 
+;Locate: CODE in "drv_spi.obj" at D460 
 ;Align: CODE in "drv_spi.obj" with 0 
-;Locate: CODE in "mmcbb.obj" at C349 
+;Locate: CODE in "mmcbb.obj" at CCCC 
 ;Align: CODE in "mmcbb.obj" with 0 
-;Locate: CODE in "pff.obj" at 8CC7 
+;Locate: CODE in "pff.obj" at 8D0B 
 ;Align: CODE in "pff.obj" with 0 
-;Locate: CODE in "port_a.obj" at E5B9 
+;Locate: CODE in "port_a.obj" at ED04 
 ;Align: CODE in "port_a.obj" with 0 
-;Locate: CODE in "port_c.obj" at DF4A 
+;Locate: CODE in "port_c.obj" at E554 
 ;Align: CODE in "port_c.obj" with 0 
-;Locate: CODE in "heap_3.obj" at E55D 
+;Locate: CODE in "heap_3.obj" at ECA8 
 ;Align: CODE in "heap_3.obj" with 0 
-;Locate: CODE in "hook.obj" at E62B 
+;Locate: CODE in "hook.obj" at ED76 
 ;Align: CODE in "hook.obj" with 0 
-;Locate: CODE in "croutine.obj" at D1E2 
+;Locate: CODE in "croutine.obj" at D7EC 
 ;Align: CODE in "croutine.obj" with 0 
-;Locate: CODE in "list.obj" at D9E3 
+;Locate: CODE in "list.obj" at DFED 
 ;Align: CODE in "list.obj" with 0 
-;Locate: CODE in "queue.obj" at A03E 
+;Locate: CODE in "queue.obj" at A082 
 ;Align: CODE in "queue.obj" with 0 
-;Locate: CODE in "tasks.obj" at ABA8 
+;Locate: CODE in "tasks.obj" at ABEC 
 ;Align: CODE in "tasks.obj" with 0 
-;Locate: CODE in "crc.obj" at E51F 
+;Locate: CODE in "crc.obj" at EC6A 
 ;Align: CODE in "crc.obj" with 0 
-;Locate: CODE in "printf.obj" at D52F 
+;Locate: CODE in "printf.obj" at DB39 
 ;Align: CODE in "printf.obj" with 0 
-;Locate: CODE in "SACM_A1600_User_a.obj" at E385 
+;Locate: CODE in "SACM_A1600_User_a.obj" at EA73 
 ;Align: CODE in "SACM_A1600_User_a.obj" with 0 
-;Locate: CODE in "SACM_A1600_User_c.obj" at E3EC 
+;Locate: CODE in "SACM_A1600_User_c.obj" at EB37 
 ;Align: CODE in "SACM_A1600_User_c.obj" with 0 
-;Locate: CODE in "modulo.obj" at E4E0 
+;Locate: CODE in "modulo.obj" at EC2B 
 ;Align: CODE in "modulo.obj" with 0 
-;Locate: CODE in "ringBufS.obj" at DCF8 
+;Locate: CODE in "ringBufS.obj" at E302 
 ;Align: CODE in "ringBufS.obj" with 0 
-;Locate: CODE in "main.obj" at CE69 
+;Locate: CODE in "rtclib.obj" at C38D 
+;Align: CODE in "rtclib.obj" with 0 
+;Locate: CODE in "main.obj" at C8D6 
 ;Align: CODE in "main.obj" with 0 
-;Locate: demo_ptsec in "main.obj" at 8CC5 
+;Locate: demo_ptsec in "main.obj" at 8D09 
 ;Align: demo_ptsec in "main.obj" with 0 
-;Locate: CODE in "System.obj" at DE39 
+;Locate: CODE in "System.obj" at E443 
 ;Align: CODE in "System.obj" with 0 
-;Locate: CODE in "ParTest.obj" at E155 
+;Locate: CODE in "ParTest.obj" at E75F 
 ;Align: CODE in "ParTest.obj" with 0 
-;Locate: CODE in "./string/strlen" of "CLib.lib"  at E637 
+;Locate: CODE in "./string/strlen" of "CLib.lib"  at ED82 
 ;Align: CODE in "./string/strlen" of "CLib.lib"  with 0 
-;Locate: CODE in "./string/memset" of "CLib.lib"  at E602 
+;Locate: CODE in "./string/memset" of "CLib.lib"  at ED4D 
 ;Align: CODE in "./string/memset" of "CLib.lib"  with 0 
-;Locate: CODE in "./memory/malloc" of "Libmem.lib"  at E217 
+;Locate: CODE in "./memory/malloc" of "Libmem.lib"  at E821 
 ;Align: CODE in "./memory/malloc" of "Libmem.lib"  with 0 
-;Locate: CODE in "./divu1" of "CMacro1216.lib"  at E442 
+;Locate: CODE in "./divu1" of "CMacro1216.lib"  at EB8D 
 ;Align: CODE in "./divu1" of "CMacro1216.lib"  with 0 
-;Locate: CODE in "./lshiu1" of "CMacro1216.lib"  at E66C 
+;Locate: CODE in "./lshiu1" of "CMacro1216.lib"  at EDB7 
 ;Align: CODE in "./lshiu1" of "CMacro1216.lib"  with 0 
-;Locate: CODE in "./lshiu2" of "CMacro1216.lib"  at E658 
+;Locate: CODE in "./lshiu2" of "CMacro1216.lib"  at EDAD 
 ;Align: CODE in "./lshiu2" of "CMacro1216.lib"  with 0 
-;Locate: CODE in "./rshu2" of "CMacro1216.lib"  at E662 
+;Locate: CODE in "./rshu2" of "CMacro1216.lib"  at EDA3 
 ;Align: CODE in "./rshu2" of "CMacro1216.lib"  with 0 
-;Locate: CODE in "./divu2" of "CMacro1216.lib"  at E30E 
+;Locate: CODE in "./divu2" of "CMacro1216.lib"  at E918 
 ;Align: CODE in "./divu2" of "CMacro1216.lib"  with 0 
-;Locate: CODE in "./muliu2" of "CMacro1216.lib"  at E5F0 
+;Locate: CODE in "./muliu2" of "CMacro1216.lib"  at ED3B 
 ;Align: CODE in "./muliu2" of "CMacro1216.lib"  with 0 
-;Locate: CODE in "./memory/free" of "Libmem.lib"  at E495 
+;Locate: CODE in "./memory/free" of "Libmem.lib"  at EBE0 
 ;Align: CODE in "./memory/free" of "Libmem.lib"  with 0 
-;Locate: CODE in "./blockcopy" of "CMacro1216.lib"  at E61F 
+;Locate: CODE in "./blockcopy" of "CMacro1216.lib"  at ED6A 
 ;Align: CODE in "./blockcopy" of "CMacro1216.lib"  with 0 
-;Locate: CODE in "SACM_A1600_API" of "SACM_A1600_V41b_Beta03.lib"  at E293 
+;Locate: CODE in "SACM_A1600_API" of "SACM_A1600_V41b_Beta03.lib"  at E89D 
 ;Align: CODE in "SACM_A1600_API" of "SACM_A1600_V41b_Beta03.lib"  with 0 
-;Locate: SACM_A1600_ROM_BLOCK in "SACM_A1600_API" of "SACM_A1600_V41b_Beta03.lib"  at DB83 
+;Locate: SACM_A1600_ROM_BLOCK in "SACM_A1600_API" of "SACM_A1600_V41b_Beta03.lib"  at E18D 
 ;Align: SACM_A1600_ROM_BLOCK in "SACM_A1600_API" of "SACM_A1600_V41b_Beta03.lib"  with 0 
-;Locate: CODE in "./memory/init_heap" of "Libmem.lib"  at E612 
+;Locate: CODE in "./divi1" of "CMacro1216.lib"  at EA04 
+;Align: CODE in "./divi1" of "CMacro1216.lib"  with 0 
+;Locate: CODE in "./modi1" of "CMacro1216.lib"  at E98F 
+;Align: CODE in "./modi1" of "CMacro1216.lib"  with 0 
+;Locate: CODE in "./modu1" of "CMacro1216.lib"  at EADA 
+;Align: CODE in "./modu1" of "CMacro1216.lib"  with 0 
+;Locate: CODE in "./memory/init_heap" of "Libmem.lib"  at ED5D 
 ;Align: CODE in "./memory/init_heap" of "Libmem.lib"  with 0 
-;Locate: CODE in "./__clz16" of "CMacro1216.lib"  at E643 
+;Locate: CODE in "./__clz16" of "CMacro1216.lib"  at ED8E 
 ;Align: CODE in "./__clz16" of "CMacro1216.lib"  with 0 
-;Locate: CODE in "./__divi16_n" of "CMacro1216.lib"  at E64E 
+;Locate: CODE in "./__divi16_n" of "CMacro1216.lib"  at ED99 
 ;Align: CODE in "./__divi16_n" of "CMacro1216.lib"  with 0 
-;Locate: CODE in "./__clz32" of "CMacro1216.lib"  at E5DC 
+;Locate: CODE in "./__clz32" of "CMacro1216.lib"  at ED27 
 ;Align: CODE in "./__clz32" of "CMacro1216.lib"  with 0 
-;Locate: CODE in "./__divi32_n" of "CMacro1216.lib"  at E591 
+;Locate: CODE in "./__divi32_n" of "CMacro1216.lib"  at ECDC 
 ;Align: CODE in "./__divi32_n" of "CMacro1216.lib"  with 0 
-;Locate: SACM_A1600_DECODE_ROM_BLOCK in "SACM_A1600_Decode" of "SACM_A1600_V41b_Beta03.lib"  at E055 
+;Locate: SACM_A1600_DECODE_ROM_BLOCK in "SACM_A1600_Decode" of "SACM_A1600_V41b_Beta03.lib"  at E65F 
 ;Align: SACM_A1600_DECODE_ROM_BLOCK in "SACM_A1600_Decode" of "SACM_A1600_V41b_Beta03.lib"  with 0 
-;Locate: CODE in "A1600_~1" of "SACM_A1600_V41b_Beta03.lib"  at BD72 
+;Locate: CODE in "./rshu1" of "CMacro1216.lib"  at EDBF 
+;Align: CODE in "./rshu1" of "CMacro1216.lib"  with 0 
+;Locate: CODE in "A1600_~1" of "SACM_A1600_V41b_Beta03.lib"  at BDB6 
 ;Align: CODE in "A1600_~1" of "SACM_A1600_V41b_Beta03.lib"  with 0 
-;Locate: CODE in "fft64" of "SACM_A1600_V41b_Beta03.lib"  at D80C 
+;Locate: CODE in "fft64" of "SACM_A1600_V41b_Beta03.lib"  at DE16 
 ;Align: CODE in "fft64" of "SACM_A1600_V41b_Beta03.lib"  with 0 
 ;Locate: __sn_init_table at 8000 

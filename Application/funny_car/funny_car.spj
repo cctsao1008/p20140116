@@ -252,6 +252,19 @@ ID=
 EXPORT=3
 # End Source File
 # End Group
+# Begin Group "rtclib"
+#PROP Default_Filter=
+USEPARAM=FALSE
+PARAM=
+EXPORT=3
+# Begin Source File
+SOURCE=..\..\Platform\modules\rtclib\rtclib.c
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# End Group
 # End Group
 # End Group
 # Begin Group "Application"
@@ -565,6 +578,13 @@ EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\include\GPCE206x.inc
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\rtclib\rtclib.h
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -819,6 +839,19 @@ ID=
 EXPORT=3
 # End Source File
 # End Group
+# Begin Group "rtclib"
+#PROP Default_Filter=
+USEPARAM=FALSE
+PARAM=
+EXPORT=3
+# Begin Source File
+SOURCE=..\..\Platform\modules\rtclib\rtclib.c
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# End Group
 # End Group
 # End Group
 # Begin Group "Application"
@@ -1132,6 +1165,13 @@ EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\include\GPCE206x.inc
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\rtclib\rtclib.h
 USEPARAM=FALSE
 PARAM=
 ID=

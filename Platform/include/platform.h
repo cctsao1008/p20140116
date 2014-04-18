@@ -82,6 +82,7 @@
 #include "printf.h"
 #include "xprintf.h"
 #include "ringBufS.h"
+#include "rtclib.h"
 
 /* Debug message output */
 //#define printf(str, ...)
