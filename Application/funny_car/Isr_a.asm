@@ -9,15 +9,15 @@
 // 2. For FIQ, IRQ1 ~ IRQ7, user needs to clear P_INT_Clear before 
 //    exiting interrupt routine
 // 3. 
-//  _FIQ:	FIQ			    // Fast interrupt entry
-//  _IRQ0:	TimerA			    // interrupt entry
-//  _IRQ1:	TimerB			    // interrupt entry
-//  _IRQ2:	TimerC			    // interrupt entry
-//  _IRQ3:	UART, SPI, SIO		    // interrupt entry
-//  _IRQ4:	SPU			    // interrupt entry
-//  _IRQ5:	KEY, EXT1, EXT2		    // interrupt entry
-//  _IRQ6:	512Hz, 2KHz, 4KHz	    // interrupt entry     
-//  _IRQ7:	2Hz, 16Hz, 64Hz		    // interrupt entry
+//  _FIQ:       FIQ                         // Fast interrupt entry
+//  _IRQ0:      TimerA                      // interrupt entry
+//  _IRQ1:      TimerB                      // interrupt entry
+//  _IRQ2:      TimerC                      // interrupt entry
+//  _IRQ3:      UART, SPI, SIO              // interrupt entry
+//  _IRQ4:      SPU                         // interrupt entry
+//  _IRQ5:      KEY, EXT1, EXT2             // interrupt entry
+//  _IRQ6:      512Hz, 2KHz, 4KHz           // interrupt entry     
+//  _IRQ7:      2Hz, 16Hz, 64Hz             // interrupt entry
 //  _Break:     Software interrupt          // interrupt entry
 //==========================================================================
 //**************************************************************************
@@ -29,10 +29,10 @@
 //**************************************************************************
 // Contant Defintion Area
 //**************************************************************************
-.define Foreground		0
-.define Background		1
-//.define ServiceType		Foreground
-.define ServiceType		Background
+.define Foreground              0
+.define Background              1
+//.define ServiceType           Foreground
+.define ServiceType             Background
 .define ASM_IRQ         0
 
 //**************************************************************************
@@ -71,11 +71,11 @@
 _FIQ:
     push R1, R5 to [SP];
 
-	R1 = [P_INT_Status];
-	test R1, C_IRQ1_TMB;
-	jnz L_FIQ_TimerB;
-	test R1, C_IRQ2_TMC;
-	jnz L_FIQ_TimerC;
+    R1 = [P_INT_Status];
+    test R1, C_IRQ1_TMB;
+    jnz L_FIQ_TimerB;
+    test R1, C_IRQ2_TMC;
+    jnz L_FIQ_TimerC;
 
 L_FIQ_TimerA:
     //------------------------------------------------------------------
@@ -85,42 +85,42 @@ L_FIQ_TimerA:
 
 // For Background Play
 .if ServiceType == Background
-	test R1, 0x0001;
-	jnz ?L_BackgroundService;
-	
-	R2 = C_IRQ0_TMA;
-	[P_INT_Status] = R2;
+    test R1, 0x0001;
+    jnz ?L_BackgroundService;
+        
+    R2 = C_IRQ0_TMA;
+    [P_INT_Status] = R2;
 
-	pop R1, R5 from [SP];
-	reti;					// jump to L_ForBackgroundUsage
+    pop R1, R5 from [SP];
+    reti;                                       // jump to L_ForBackgroundUsage
 
 ?L_BackgroundService:
-	R2 = offset L_ForBackgroundUsage
-	push R2	to [SP];		// push PC
-	push SR	to [SP];		// push CS
-	R2 = FR;
-	R2 |= 0x0040;
-	push R2 to [SP];		// push FR
-	
-	R2 = C_IRQ0_TMA;
-	[P_INT_Status] = R2;
-	
-	reti;					// jump to L_ForBackgroundUsage
+    R2 = offset L_ForBackgroundUsage
+    push R2     to [SP];                // push PC
+    push SR     to [SP];                // push CS
+    R2 = FR;
+    R2 |= 0x0040;
+    push R2 to [SP];            // push FR
+        
+    R2 = C_IRQ0_TMA;
+    [P_INT_Status] = R2;
+        
+    reti;                                       // jump to L_ForBackgroundUsage
 
 L_ForBackgroundUsage:
-	////////////////////////////////////////////////////////////
-	call F_SACM_A1600_ServiceLoop;	// SACM Service Loop
-	////////////////////////////////////////////////////////////
-	pop R1, R5 from [SP];
-	reti;
+    ////////////////////////////////////////////////////////////
+    call F_SACM_A1600_ServiceLoop;      // SACM Service Loop
+    ////////////////////////////////////////////////////////////
+    pop R1, R5 from [SP];
+    reti;
 .endif
 
 .if ServiceType == Foreground
 L_ForForegroundUsage:
-	R1 = C_IRQ0_TMA;
-	[P_INT_Status] = R1;
-	pop R1, R5 from [SP];
-	reti;
+    R1 = C_IRQ0_TMA;
+    [P_INT_Status] = R1;
+    pop R1, R5 from [SP];
+    reti;
 .endif
 
 L_FIQ_TimerB:
@@ -129,7 +129,7 @@ L_FIQ_TimerB:
     //------------------------------------------------------------------
     R1 = C_IRQ1_TMB;
     [P_INT_Status] = R1;
-    pop R1, R5 from [sp];
+    pop R1, R5 from [SP];
     reti;
 
 L_FIQ_TimerC:
@@ -138,7 +138,7 @@ L_FIQ_TimerC:
     //------------------------------------------------------------------
     R1 = C_IRQ2_TMC;
     [P_INT_Status] = R1;
-    pop R1, R5 from [sp];
+    pop R1, R5 from [SP];
     reti;
 
 //****************************************************************
@@ -146,54 +146,55 @@ L_FIQ_TimerC:
 _BREAK:        
     push R1, R5 to [SP];
 
-	pop R1, R5 from [SP];
-	reti; 
+    pop R1, R5 from [SP];
+    reti; 
         
 _IRQ0:        
     push R1, R5 to [SP];
 
-	pop R1, R5 from [SP];
-	reti; 
+    pop R1, R5 from [SP];
+    reti; 
         
 _IRQ1:        
     push R1, R5 to [SP];
 
-	pop R1, R5 from [SP];
-	reti;  
+    pop R1, R5 from [SP];
+    reti;  
         
 _IRQ2:        
     push R1, R5 to [SP];
 
-	pop R1, R5 from [SP];
-	reti;         
+    pop R1, R5 from [SP];
+    reti;         
         
 _IRQ3:        
     push R1, R5 to [SP];
 
-	pop R1, R5 from [SP];
-	reti;         
+    pop R1, R5 from [SP];
+    reti;         
         
 _IRQ4:        
     push R1, R5 to [SP];
 
-	pop R1, R5 from [SP];
-	reti;  
+    pop R1, R5 from [SP];
+    reti;  
         
 _IRQ5:        
     push R1, R5 to [SP];
 
-	pop R1, R5 from [SP];
-	reti;         
+    pop R1, R5 from [SP];
+    reti;         
         
 _IRQ6:        
     push R1, R5 to [SP];
 
-	pop R1, R5 from [SP];
-	reti;         
+    pop R1, R5 from [SP];
+    reti;         
         
 _IRQ7:        
     push R1, R5 to [SP];
 
-	pop R1, R5 from [SP];
-	reti;
+    pop R1, R5 from [SP];
+    reti;
 .endif
+

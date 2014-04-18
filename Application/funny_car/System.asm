@@ -111,6 +111,11 @@ F_SP_SwitchChannel:
 F_System_Initial:
 	int off;
 	fir_mov off;
+	// cctsao++ : 2014_0418
+	// Note : that this instruction does not work in ISA 1.3,
+	// because IRQ NEST mode is always on in ISA 1.3.
+	irqnest off;
+	// cctsao--
 
 //	R1 = C_FOSC_24576KHz | C_Sleep_RTC_SLP_Off | C_RTC_Mode_Weak | C_CPU_CLK_FOSC;
 //	R1 = C_FOSC_20480KHz | C_Sleep_RTC_SLP_Off | C_RTC_Mode_Weak | C_CPU_CLK_FOSC;
@@ -191,7 +196,7 @@ _WatchdogClear:	.proc
 F_WatchdogClear:
 
 	R1 = C_Watchdog_Clear;
-	[P_Watchdog_Clear] = R1
+	[P_Watchdog_Clear] = R1;
 
 	retf;
 	.endp

@@ -21,99 +21,72 @@
 
 // Macro Definition
 PUSH_ALL: .MACRO
-
-    PUSH R1,R5 TO [SP]
-
+    PUSH R1,R5 TO [SP];
 .ENDM
 
 POP_ALL: .MACRO
-
-    POP R1,R5 FROM [SP]
-
+    POP R1,R5 FROM [SP];
 .ENDM
 
 PUSH_FR: .MACRO
-
-    SECBANK ON
-    R1 = FR
-    R2 = 0x1FFF
-    R1 = R1 & R2
-    PUSH R1 TO [SP]
-    SECBANK OFF
-
+    SECBANK ON;
+    R1 = FR;
+    R2 = 0x1FFF;
+    R1 = R1 & R2;
+    PUSH R1 TO [SP];
+    SECBANK OFF;
 .ENDM
 
 POP_FR: .MACRO
-
-    SECBANK ON
-    POP R1 FROM [SP]
-    R2 = 0x1FFF
-    R1 = R1 & R2
+    SECBANK ON;
+    POP R1 FROM [SP];
+    R2 = 0x1FFF;
+    R1 = R1 & R2;
     FR = R1
-    SECBANK OFF
-
+    SECBANK OFF;
 .ENDM
 
 // Code Section
 .CODE
 
 _portSAVE_CONTEXT: .PROC
-
-    SECBANK ON 
-    POP R3,R4 FROM [SP]
-    PUSH R3,R4 TO [SP]
-    SECBANK OFF
-
+    //SECBANK ON;
+    POP R3,R4 FROM [SP];
+    PUSH R3,R4 TO [SP];
+    //SECBANK OFF;
     PUSH_FR
     PUSH_ALL
-
-    R1 = [_pxCurrentTCB]
-    [R1] = SP
-
-    SECBANK ON 
-    PUSH R3,R4 TO [SP]
-    SECBANK OFF
-
+    R1 = [_pxCurrentTCB];
+    [R1] = SP;
+    //SECBANK ON;
+    PUSH R3,R4 TO [SP];
+    //SECBANK OFF;
     RETF
-
 .ENDP
 
 _portRESTORE_CONTEXT: .PROC
-
-    R1 = [_pxCurrentTCB]
-    SP = [R1]
-
+    R1 = [_pxCurrentTCB];
+    SP = [R1];
     POP_ALL
-
     RETI
-
 .ENDP
 
 _uxPortReadFlagRegister: .PROC
-
-    R1 = FR
-    R2 = 0x1FFF
-    R1 = R1 & R2
-
+    R1 = FR;
+    R2 = 0x1FFF;
+    R1 = R1 & R2;
     RETF
-
 .ENDP
 
 _vPortWriteFlagRegister: .PROC
-
     PUSH_ALL
-
-    BP = SP + 5
-    R1 = [BP + 3]
-
-    R2 = 0x1FFF
-    R1 = R1 & R2
-    FR = R1
-
+    BP = SP + 5;
+    R1 = [BP + 3];
+    R2 = 0x1FFF;
+    R1 = R1 & R2;
+    FR = R1;
     POP_ALL
-
     RETF
-
 .ENDP
 
 // Text Section

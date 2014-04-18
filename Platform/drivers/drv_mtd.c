@@ -14,7 +14,7 @@
 #if ( CFG_DRV_MTD > 0 )
 uint32_t mtd_curr_addr = 0;
 
-static const struct mtd_spi_flash_params mtd_flash_table[] = {
+static const MTD_PARAMS mtd_flash_table[] = {
 	{
 		.id			        = WINBOND_ID_W25Q16B,
 		.l2_page_size		= 8,
@@ -25,7 +25,13 @@ static const struct mtd_spi_flash_params mtd_flash_table[] = {
 	},
 };
 
-void mtd_select(uint8_t high);
+void mtd_select(uint8_t high)
+{
+    if(high)
+        spi_select(CS_SFLASH, 1);
+    else
+        spi_select(CS_SFLASH, 0);
+}
 
 MTD_RESULT mtd_probe(MTD_PARAMS *param)
 {
@@ -122,6 +128,7 @@ MTD_RESULT mtd_write_enable(void)
     return rc;
 }
 
+#if 0
 MTD_RESULT mtd_write_disable(void)
 {
     MTD_RESULT rc = MTD_OK;
@@ -143,6 +150,7 @@ MTD_RESULT mtd_write_disable(void)
 
     return rc;
 }
+#endif
 
 MTD_RESULT mtd_write_status(uint8_t data)
 {
@@ -185,10 +193,12 @@ MTD_RESULT mtd_read_data(uint32_t addr,uint8_t *buf, uint32_t size)
     {    rc = MTD_FAILED; goto error;}
 
     /* Is Flash in busy mode ? */
+    #if 0
     while(mtd_read_status_1(B_BUSY))
     {
         reset_watch_dog();
     }
+    #endif
 
     /* Chip select go low to start a flash command */
     mtd_select(0);
@@ -303,14 +313,6 @@ MTD_RESULT mtd_chip_erase(void)
     mtd_select(1);
 
     return rc;
-}
-
-void mtd_select(uint8_t high)
-{
-    if(high)
-        spi_select(CS_SFLASH, 1);
-    else
-        spi_select(CS_SFLASH, 0);
 }
 
 void mtd_open(void)

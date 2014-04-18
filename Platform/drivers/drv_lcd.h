@@ -152,9 +152,9 @@ extern const unsigned char SmallFont[];
 int putchar (int c);
 
 void lcd7735_init(void);
-void lcd7735_initR(uint8_t options);
+void lcd7735_init_r(uint8_t options);
 void lcd7735_init_screen(void *font,uint16_t fg, uint16_t bg, uint8_t orientation);
-void lcd7735_fillScreen(uint16_t color);
+void lcd7735_fill_screen(uint16_t color);
 #if 0
 void lcd7735_cursor_set(uint16_t row, uint16_t col);
 void lcd7735_cursor_get(uint16_t *row, uint16_t *col);
@@ -162,5 +162,8 @@ void lcd7735_cursor_get(uint16_t *row, uint16_t *col);
 void lcd7735_putc(char c);
 void lcd7735_puts(char *s);
 #endif
+
+void lcd7735_lcd_on(void);
+void lcd7735_lcd_off(void);
 
 #endif /* DRV_LCD_H_ */

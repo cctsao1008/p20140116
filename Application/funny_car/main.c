@@ -24,18 +24,6 @@
 
 #define PRIORITY_0        0
 
-typedef union tagSPEECH_TBL {
-
-    uint32_t addr_32;
-
-    struct {
-        uint8_t addr_0 : 8;
-        uint8_t addr_1 : 8;
-        uint8_t addr_2 : 8;
-        uint8_t addr_3 : 8;
-    };
-} SPEECH_TBL;
-
 /* Function Call Publication Area */
 void platform_init(void);
 void updater(void *pvParameters);
@@ -46,12 +34,10 @@ void demo(void *pvParameters);
 void demo( CoRoutineHandle_t xHandle, UBaseType_t uxIndex );
 #endif
 
-BaseType_t test___ = 0 ;
-
 /* Global Variable Defintion Area */
 SemaphoreHandle_t xSemaphore;
 StackType_t stack[configTOTAL_HEAP_SIZE];
-SPEECH_TBL speech_addr[MaxSpeechNum];
+U32B4 speech_addr[MaxSpeechNum];
 ringBufS rb;
 
 uint32_t addr;
@@ -68,8 +54,8 @@ void platform_init(void)
     portENABLE_INTERRUPTS(); 
 
     lcd7735_init();
-    lcd7735_initR(INITR_REDTAB);
-    lcd7735_init_screen((void *)&SmallFont[0],ST7735_BLACK,ST7735_WHITE,LANDSAPE);
+    lcd7735_init_r(INITR_REDTAB);
+    lcd7735_init_screen((void *)&SmallFont[0],ST7735_WHITE,ST7735_BLACK,LANDSAPE);
 }
 
 int main()
@@ -116,9 +102,7 @@ void demo( CoRoutineHandle_t xHandle, UBaseType_t uxIndex )
     uint8_t buff[4] = {0}, reset = 1, playing = 0;
     uint16_t  key = 0;
 
-    crSTART( xHandle );
-
-    portENABLE_INTERRUPTS();
+    //portENABLE_INTERRUPTS();
 
     #ifdef USE_SFLASH_UPDATER
     while( xSemaphoreTake( xSemaphore, ( TickType_t ) 0 ) != pdTRUE )
@@ -175,6 +159,7 @@ void demo( CoRoutineHandle_t xHandle, UBaseType_t uxIndex )
 
     printf("playing >>>\n");
 
+    crSTART( xHandle );
     for(;;)
     {
         #ifdef USE_RINGBUFS
@@ -233,7 +218,7 @@ void demo( CoRoutineHandle_t xHandle, UBaseType_t uxIndex )
 
             /* IOB0 + Vcc */
             case 0x01:
-                printf("K%d detected.\n", PB_K0);
+                //printf("K%d detected.\n", PB_K0);
 
                 SACM_A1600_Stop();
                 break;
@@ -253,7 +238,6 @@ void demo( CoRoutineHandle_t xHandle, UBaseType_t uxIndex )
             /* IOB2 + Vcc */
             case 0x04:
                 printf("K%d detected.\n", PB_K2);
-
                 printf("pause.\n");
 
                 /* Playback Pause */
@@ -263,7 +247,6 @@ void demo( CoRoutineHandle_t xHandle, UBaseType_t uxIndex )
             /* IOB3 + Vcc */
             case 0x08:
                 printf("K%d detected.\n", PB_K3);
-
                 printf("resume.\n");
 
                 /* Playback Resuem */
@@ -273,15 +256,15 @@ void demo( CoRoutineHandle_t xHandle, UBaseType_t uxIndex )
             /* IOB4 + Vcc */    
             case 0x10:
                 printf("K%d detected.\n", PB_K4);
-
                 printf("reserved.\n");
+                lcd7735_lcd_off();
                 break;
 
             /* IOB5 + Vcc */
             case 0x20:
                 printf("K%d detected.\n", PB_K5);
-
                 printf("reserved.\n");
+                lcd7735_lcd_on();
                 break;
 
             /* IOB6 + Vcc */
@@ -307,8 +290,10 @@ void demo( CoRoutineHandle_t xHandle, UBaseType_t uxIndex )
                 break;
         }
 
-        vTaskDelay( (500UL) / portTICK_RATE_MS );
-        portENABLE_INTERRUPTS();
+        //vTaskDelay( (500UL) / portTICK_RATE_MS );
+        //crDELAY( xHandle, (5000UL) / portTICK_RATE_MS );
+        //portENABLE_INTERRUPTS();
+        //reset_watch_dog();
     }
     crEND();
 done:
@@ -449,51 +434,6 @@ done:
     }
 
     vTaskDelete( NULL );
-}
-#endif
-
-/* FreeRTOS Hook Functions */
-#if ( configUSE_IDLE_HOOK > 0 )
-void vApplicationIdleHook( void )
-{
-    //portENABLE_INTERRUPTS(); 
-    //reset_watch_dog();
-    vCoRoutineSchedule();
-
-    #if 0
-    asm("INT OFF");
-    P_System_Clock &= ~C_Sleep_RTC_Status;
-    asm("IRQ ON");
-    P_IOA_Data->data = P_IOA_Data->data;
-    // Ready to enter  sleep mode
-    P_System_Clock = 0x0087;
-    P_System_Sleep = C_System_Sleep;
-    asm("NOP");
-
-    P_System_Clock = 0x0080;
-
-    vTaskResume( xHandle[key_task] ); // To resume key scan function.
-    #endif
-}
-#endif
-
-#if( configUSE_MALLOC_FAILED_HOOK > 0 )
-void vApplicationMallocFailedHook(void)
-{
-    printf("vApplicationMallocFailedHook.\n");
-
-    for(;;)
-        reset_watch_dog();
-}
-#endif
-
-#if configCHECK_FOR_STACK_OVERFLOW > 0
-void vApplicationStackOverflowHook(void)
-{
-    printf("vApplicationStackOverflowHook.\n");
-
-    for(;;)
-        reset_watch_dog();
 }
 #endif
 

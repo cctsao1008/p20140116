@@ -66,13 +66,6 @@ ID=
 EXPORT=3
 # End Source File
 # Begin Source File
-SOURCE=..\..\Platform\drivers\SPI_Flash_CE063.asm
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
 SOURCE=..\..\Platform\drivers\drv_gpio.c
 USEPARAM=FALSE
 PARAM=
@@ -142,6 +135,13 @@ USEPARAM=FALSE
 PARAM=
 ID=
 EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\portable\GCC\unsp_isa_v13\hook.c
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=707406378
 # End Source File
 # End Group
 # Begin Source File
@@ -466,21 +466,7 @@ ID=
 EXPORT=0
 # End Source File
 # Begin Source File
-SOURCE=..\..\Platform\include\stdint.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\FreeRTOS.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\freertos\source\include\semphr.h
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -501,7 +487,21 @@ ID=
 EXPORT=0
 # End Source File
 # Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\include\semphr.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
 SOURCE=..\..\Platform\modules\xprintf\xprintf.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\include\stdint.h
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -529,13 +529,6 @@ ID=
 EXPORT=0
 # End Source File
 # Begin Source File
-SOURCE=..\..\Platform\modules\freertos\source\include\queue.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\list.h
 USEPARAM=FALSE
 PARAM=
@@ -543,14 +536,14 @@ ID=
 EXPORT=0
 # End Source File
 # Begin Source File
-SOURCE=..\..\Platform\modules\freertos\source\include\mpu_wrappers.h
+SOURCE=..\..\Platform\modules\freertos\source\include\queue.h
 USEPARAM=FALSE
 PARAM=
 ID=
 EXPORT=0
 # End Source File
 # Begin Source File
-SOURCE=..\..\Platform\include\GPCE206x.inc
+SOURCE=..\..\Platform\modules\freertos\source\include\mpu_wrappers.h
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -565,6 +558,13 @@ EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\StackMacros.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\include\GPCE206x.inc
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -633,13 +633,6 @@ ID=
 EXPORT=3
 # End Source File
 # Begin Source File
-SOURCE=..\..\Platform\drivers\SPI_Flash_CE063.asm
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
 SOURCE=..\..\Platform\drivers\drv_gpio.c
 USEPARAM=FALSE
 PARAM=
@@ -709,6 +702,13 @@ USEPARAM=FALSE
 PARAM=
 ID=
 EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\portable\GCC\unsp_isa_v13\hook.c
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=707406378
 # End Source File
 # End Group
 # Begin Source File
@@ -1033,21 +1033,7 @@ ID=
 EXPORT=0
 # End Source File
 # Begin Source File
-SOURCE=..\..\Platform\include\stdint.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\FreeRTOS.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\freertos\source\include\semphr.h
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -1068,7 +1054,21 @@ ID=
 EXPORT=0
 # End Source File
 # Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\include\semphr.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
 SOURCE=..\..\Platform\modules\xprintf\xprintf.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\include\stdint.h
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -1096,13 +1096,6 @@ ID=
 EXPORT=0
 # End Source File
 # Begin Source File
-SOURCE=..\..\Platform\modules\freertos\source\include\queue.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\list.h
 USEPARAM=FALSE
 PARAM=
@@ -1110,14 +1103,14 @@ ID=
 EXPORT=0
 # End Source File
 # Begin Source File
-SOURCE=..\..\Platform\modules\freertos\source\include\mpu_wrappers.h
+SOURCE=..\..\Platform\modules\freertos\source\include\queue.h
 USEPARAM=FALSE
 PARAM=
 ID=
 EXPORT=0
 # End Source File
 # Begin Source File
-SOURCE=..\..\Platform\include\GPCE206x.inc
+SOURCE=..\..\Platform\modules\freertos\source\include\mpu_wrappers.h
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -1132,6 +1125,13 @@ EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\StackMacros.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\include\GPCE206x.inc
 USEPARAM=FALSE
 PARAM=
 ID=

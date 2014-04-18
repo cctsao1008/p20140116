@@ -18,19 +18,24 @@
 #include <stdlib.h>
 #include <string.h>
 
-void lcd7735_invertDisplay(const uint8_t mode);
-void lcd7735_setRotation(uint8_t m);
+void lcd7735_invert_display(const uint8_t mode);
+void lcd7735_set_rotation(uint8_t m);
 void lcd7735_xmit(const uint8_t tb);
-void lcd7735_sendCmd(const uint8_t c);
-void lcd7735_sendData(const uint8_t d);
+void lcd7735_send_cmd(const uint8_t c);
+void lcd7735_send_data(const uint8_t d);
 static void _putch(uint8_t c);
 
 #define DELAY 0x80
 #define putpix(c) { lcd7735_xmit(c >> 8); lcd7735_xmit(c & 0xFF); }
 #define _scr(r,c) ((char *)(_screen.scr + ((r) * _screen.ncol) + (c)))
 
-#define cursor_draw		cursor_expose(1)
-#define cursor_erase	cursor_expose(0)
+#ifdef USE_CURSOR_EXPORSE
+#define cursor_draw   cursor_expose(1)
+#define cursor_erase  cursor_expose(0)
+#else
+#define cursor_draw
+#define cursor_erase
+#endif
 
 static uint16_t _width = ST7735_TFTWIDTH;
 static uint16_t _height = ST7735_TFTHEIGHT;
@@ -141,111 +146,111 @@ const unsigned char SmallFont[] = {
 
 // Init for 7735R, part 1 (red or green tab)
 static const uint8_t  Rcmd1[] = {                 
-	15,							// 15 commands in list:
-	ST7735_SWRESET,   DELAY,	//  1: Software reset, 0 args, w/delay
-	150,						//     150 ms delay
-	ST7735_SLPOUT ,   DELAY,	//  2: Out of sleep mode, 0 args, w/delay
-	255,						//     500 ms delay
-	ST7735_FRMCTR1, 3      ,	//  3: Frame rate ctrl - normal mode, 3 args:
-	0x01, 0x2C, 0x2D,			//     Rate = fosc/(1x2+40) * (LINE+2C+2D)
-	ST7735_FRMCTR2, 3      ,	//  4: Frame rate control - idle mode, 3 args:
-	0x01, 0x2C, 0x2D,			//     Rate = fosc/(1x2+40) * (LINE+2C+2D)
-	ST7735_FRMCTR3, 6      ,	//  5: Frame rate ctrl - partial mode, 6 args:
-	0x01, 0x2C, 0x2D,			//     Dot inversion mode
-	0x01, 0x2C, 0x2D,			//     Line inversion mode
-	ST7735_INVCTR , 1      ,	//  6: Display inversion ctrl, 1 arg, no delay:
-	0x07,						//     No inversion
-	ST7735_PWCTR1 , 3      ,	//  7: Power control, 3 args, no delay:
-	0xA2,
-	0x02,						//     -4.6V
-	0x84,						//     AUTO mode
-	ST7735_PWCTR2 , 1      ,	//  8: Power control, 1 arg, no delay:
-	0xC5,						//     VGH25 = 2.4C VGSEL = -10 VGH = 3 * AVDD
-	ST7735_PWCTR3 , 2      ,	//  9: Power control, 2 args, no delay:
-	0x0A,						//     Opamp current small
-	0x00,						//     Boost frequency
-	ST7735_PWCTR4 , 2      ,	// 10: Power control, 2 args, no delay:
-	0x8A,						//     BCLK/2, Opamp current small & Medium low
-	0x2A,  
-	ST7735_PWCTR5 , 2      ,	// 11: Power control, 2 args, no delay:
-	0x8A, 0xEE,
-	ST7735_VMCTR1 , 1      ,	// 12: Power control, 1 arg, no delay:
-	0x0E,
-	ST7735_INVOFF , 0      ,	// 13: Don't invert display, no args, no delay
-	ST7735_MADCTL , 1      ,	// 14: Memory access control (directions), 1 arg:
-	0xC0,						//     row addr/col addr, bottom to top refresh, RGB order
-	ST7735_COLMOD , 1+DELAY,	//  15: Set color mode, 1 arg + delay:
-	0x05,						//     16-bit color 5-6-5 color format
-	10							//     10 ms delay
+    15,                         // 15 commands in list:
+    ST7735_SWRESET,   DELAY,    //  1: Software reset, 0 args, w/delay
+    150,                        //     150 ms delay
+    ST7735_SLPOUT ,   DELAY,    //  2: Out of sleep mode, 0 args, w/delay
+    255,                        //     500 ms delay
+    ST7735_FRMCTR1, 3      ,    //  3: Frame rate ctrl - normal mode, 3 args:
+    0x01, 0x2C, 0x2D,           //     Rate = fosc/(1x2+40) * (LINE+2C+2D)
+    ST7735_FRMCTR2, 3      ,    //  4: Frame rate control - idle mode, 3 args:
+    0x01, 0x2C, 0x2D,           //     Rate = fosc/(1x2+40) * (LINE+2C+2D)
+    ST7735_FRMCTR3, 6      ,    //  5: Frame rate ctrl - partial mode, 6 args:
+    0x01, 0x2C, 0x2D,           //     Dot inversion mode
+    0x01, 0x2C, 0x2D,           //     Line inversion mode
+    ST7735_INVCTR , 1      ,    //  6: Display inversion ctrl, 1 arg, no delay:
+    0x07,                       //     No inversion
+    ST7735_PWCTR1 , 3      ,    //  7: Power control, 3 args, no delay:
+    0xA2,
+    0x02,                       //     -4.6V
+    0x84,                       //     AUTO mode
+    ST7735_PWCTR2 , 1      ,    //  8: Power control, 1 arg, no delay:
+    0xC5,                       //     VGH25 = 2.4C VGSEL = -10 VGH = 3 * AVDD
+    ST7735_PWCTR3 , 2      ,    //  9: Power control, 2 args, no delay:
+    0x0A,                       //     Opamp current small
+    0x00,                       //     Boost frequency
+    ST7735_PWCTR4 , 2      ,    // 10: Power control, 2 args, no delay:
+    0x8A,                       //     BCLK/2, Opamp current small & Medium low
+    0x2A,  
+    ST7735_PWCTR5 , 2      ,    // 11: Power control, 2 args, no delay:
+    0x8A, 0xEE,
+    ST7735_VMCTR1 , 1      ,    // 12: Power control, 1 arg, no delay:
+    0x0E,
+    ST7735_INVOFF , 0      ,    // 13: Don't invert display, no args, no delay
+    ST7735_MADCTL , 1      ,    // 14: Memory access control (directions), 1 arg:
+    0xC0,                       //     row addr/col addr, bottom to top refresh, RGB order
+    ST7735_COLMOD , 1+DELAY,    //  15: Set color mode, 1 arg + delay:
+    0x05,                       //     16-bit color 5-6-5 color format
+    10                          //     10 ms delay
 };
 // Init for 7735R, part 2 (green tab only)
 static const uint8_t Rcmd2green[] = {
-	2,							//  2 commands in list:
-	ST7735_CASET  , 4      ,	//  1: Column addr set, 4 args, no delay:
-	0x00, 0x02,					//     XSTART = 0
-	0x00, 0x7F+0x02,			//     XEND = 129
-	ST7735_RASET  , 4      ,	//  2: Row addr set, 4 args, no delay:
-	0x00, 0x01,					//     XSTART = 0
-	0x00, 0x9F+0x01				//     XEND = 160
+    2,                          //  2 commands in list:
+    ST7735_CASET  , 4      ,    //  1: Column addr set, 4 args, no delay:
+    0x00, 0x02,                 //     XSTART = 0
+    0x00, 0x7F+0x02,            //     XEND = 129
+    ST7735_RASET  , 4      ,    //  2: Row addr set, 4 args, no delay:
+    0x00, 0x01,                 //     XSTART = 0
+    0x00, 0x9F+0x01             //     XEND = 160
 };
 // Init for 7735R, part 2 (red tab only)
 static const uint8_t Rcmd2red[] = {
-	2,							//  2 commands in list:
-	ST7735_CASET  , 4      ,	//  1: Column addr set, 4 args, no delay:
-	0x00, 0x00,					//     XSTART = 0
-	0x00, 0x7F,					//     XEND = 127
-	ST7735_RASET  , 4      ,	//  2: Row addr set, 4 args, no delay:
-	0x00, 0x00,					//     XSTART = 0
-	0x00, 0x9F				//     XEND = 159
+    2,                          //  2 commands in list:
+    ST7735_CASET  , 4      ,    //  1: Column addr set, 4 args, no delay:
+    0x00, 0x00,                 //     XSTART = 0
+    0x00, 0x7F,                 //     XEND = 127
+    ST7735_RASET  , 4      ,    //  2: Row addr set, 4 args, no delay:
+    0x00, 0x00,                 //     XSTART = 0
+    0x00, 0x9F              //     XEND = 159
 };
 // Init for 7735R, part 3 (red or green tab)
 static const uint8_t Rcmd3[] = {
-	4,							//  4 commands in list:
-	ST7735_GMCTRP1, 16      ,	//  1: Magical unicorn dust, 16 args, no delay:
-	0x02, 0x1c, 0x07, 0x12,
-	0x37, 0x32, 0x29, 0x2d,
-	0x29, 0x25, 0x2B, 0x39,
-	0x00, 0x01, 0x03, 0x10,
-	ST7735_GMCTRN1, 16      ,	//  2: Sparkles and rainbows, 16 args, no delay:
-	0x03, 0x1d, 0x07, 0x06,
-	0x2E, 0x2C, 0x29, 0x2D,
-	0x2E, 0x2E, 0x37, 0x3F,
-	0x00, 0x00, 0x02, 0x10,
-	ST7735_NORON  ,    DELAY,	//  3: Normal display on, no args, w/delay
-	10,							//     10 ms delay
-	ST7735_DISPON ,    DELAY,	//  4: Main screen turn on, no args w/delay
-	100							//     100 ms delay
+    4,                          //  4 commands in list:
+    ST7735_GMCTRP1, 16      ,   //  1: Magical unicorn dust, 16 args, no delay:
+    0x02, 0x1c, 0x07, 0x12,
+    0x37, 0x32, 0x29, 0x2d,
+    0x29, 0x25, 0x2B, 0x39,
+    0x00, 0x01, 0x03, 0x10,
+    ST7735_GMCTRN1, 16      ,   //  2: Sparkles and rainbows, 16 args, no delay:
+    0x03, 0x1d, 0x07, 0x06,
+    0x2E, 0x2C, 0x29, 0x2D,
+    0x2E, 0x2E, 0x37, 0x3F,
+    0x00, 0x00, 0x02, 0x10,
+    ST7735_NORON  ,    DELAY,   //  3: Normal display on, no args, w/delay
+    10,                         //     10 ms delay
+    ST7735_DISPON ,    DELAY,   //  4: Main screen turn on, no args w/delay
+    100                         //     100 ms delay
 };
 
 static int colstart = 0;
 static int rowstart = 0; // May be overridden in init func
-//static uint8_t tabcolor	= 0;
+//static uint8_t tabcolor   = 0;
 static uint8_t orientation = PORTRAIT;
 
 /* ASCII green-screen terminal emulator */
 
 typedef struct _cursor {
-	uint16_t	row;
-	uint16_t	col;
-	uint8_t		*bitmap; // not used yet
+    uint16_t    row;
+    uint16_t    col;
+    uint8_t     *bitmap; // not used yet
 } Cursor;
 
 typedef struct _font {
-	uint8_t 	*font;
-	uint8_t 	x_size;
-	uint8_t 	y_size;
-	uint8_t		offset;
-	uint16_t	numchars;
+    uint8_t     *font;
+    uint8_t     x_size;
+    uint8_t     y_size;
+    uint8_t     offset;
+    uint16_t    numchars;
 } Font;
 
 static struct __screen {
-	Cursor 		c;
-	uint8_t 	nrow;
-	uint8_t 	ncol;
-	Font 		fnt;
-	uint16_t 	fg;
-	uint16_t 	bg;
-	char		*scr;
+    Cursor      c;
+    uint8_t     nrow;
+    uint8_t     ncol;
+    Font        fnt;
+    uint16_t    fg;
+    uint16_t    bg;
+    char        *scr;
 } _screen;
 
 //static Font cfont;
@@ -284,322 +289,324 @@ void delay_ms(uint32_t ms)
 
 // Companion code to the above tables.  Reads and issues
 // a series of LCD commands stored in PROGMEM byte array.
-static void commandList(const uint8_t *addr) {
-	uint8_t  numCommands, numArgs;
-	uint16_t ms;
+static void command_list(const uint8_t *addr) {
+    uint8_t  numCommands, numArgs;
+    uint16_t ms;
 
-	numCommands = *addr++;   // Number of commands to follow
-	while(numCommands--) {                 // For each command...
-		lcd7735_sendCmd(*addr++); //   Read, issue command
-		numArgs  = *addr++;    //   Number of args to follow
-		ms       = numArgs & DELAY;          //   If hibit set, delay follows args
-		numArgs &= ~DELAY;                   //   Mask out delay bit
-		while(numArgs--) {                   //   For each argument...
-			lcd7735_sendData(*addr++);  //     Read, issue argument
-		}
+    numCommands = *addr++;   // Number of commands to follow
+    while(numCommands--) {                 // For each command...
+        lcd7735_send_cmd(*addr++); //   Read, issue command
+        numArgs  = *addr++;    //   Number of args to follow
+        ms       = numArgs & DELAY;          //   If hibit set, delay follows args
+        numArgs &= ~DELAY;                   //   Mask out delay bit
+        while(numArgs--) {                   //   For each argument...
+            lcd7735_send_data(*addr++);  //     Read, issue argument
+        }
 
-		if(ms) {
-			ms = *addr++; // Read post-command delay time (ms)
-			if(ms == 255) ms = 500;     // If 255, delay for 500 ms
-			delay_ms(ms);
-		}
-	}
+        if(ms) {
+            ms = *addr++; // Read post-command delay time (ms)
+            if(ms == 255) ms = 500;     // If 255, delay for 500 ms
+            delay_ms(ms);
+        }
+    }
 }
 
 // Initialization code common to both 'B' and 'R' type displays
-static void commonInit(const uint8_t *cmdList) {
-	// toggle RST low to reset; CS low so it'll listen to us
-	LCD_CS_L();
+static void common_init(const uint8_t *cmdList) {
+    // toggle RST low to reset; CS low so it'll listen to us
+    LCD_CS_L();
 #ifdef LCD_SOFT_RESET
-	lcd7735_sendCmd(ST7735_SWRESET);
-	delay_ms(500);
+    lcd7735_send_cmd(ST7735_SWRESET);
+    delay_ms(500);
 #else
-	LCD_RST_H();
-	delay_ms(500);
-	LCD_RST_L();
-	delay_ms(500);
-	LCD_RST_H();
-	delay_ms(500);
+    LCD_RST_H();
+    delay_ms(500);
+    LCD_RST_L();
+    delay_ms(500);
+    LCD_RST_H();
+    delay_ms(500);
 #endif    
-	if(cmdList) commandList(cmdList);
+    if(cmdList) command_list(cmdList);
 }
 
 // Initialization for ST7735R screens (green or red tabs)
-void lcd7735_initR(uint8_t options) {
-	delay_ms(50);
-	commonInit(Rcmd1);
-	if(options == INITR_GREENTAB) {
-		commandList(Rcmd2green);
-		colstart = 2;
-		rowstart = 1;
-	} else {
-		// colstart, rowstart left at default '0' values
-		commandList(Rcmd2red);
-	}
-	commandList(Rcmd3);
+void lcd7735_init_r(uint8_t options) {
+    delay_ms(50);
+    common_init(Rcmd1);
+    if(options == INITR_GREENTAB) {
+        command_list(Rcmd2green);
+        colstart = 2;
+        rowstart = 1;
+    } else {
+        // colstart, rowstart left at default '0' values
+        command_list(Rcmd2red);
+    }
+    command_list(Rcmd3);
 
-	// if black, change MADCTL color filter
-	if (options == INITR_BLACKTAB) {
-		lcd7735_sendCmd(ST7735_MADCTL);
-		lcd7735_sendData(0xC0);
-	}
+    // if black, change MADCTL color filter
+    if (options == INITR_BLACKTAB) {
+        lcd7735_send_cmd(ST7735_MADCTL);
+        lcd7735_send_data(0xC0);
+    }
 
-	//  tabcolor = options;
+    //  tabcolor = options;
 }
 
-void lcd7735_setAddrWindow(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1) {
-	lcd7735_sendCmd(ST7735_CASET);		// Column addr set
-	lcd7735_sendData(0x00);
-	lcd7735_sendData(x0+colstart);     // XSTART 
-	lcd7735_sendData(0x00);
-	lcd7735_sendData(x1+colstart);     // XEND
+void lcd7735_set_addr_window(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1) {
+    lcd7735_send_cmd(ST7735_CASET);     // Column addr set
+    lcd7735_send_data(0x00);
+    lcd7735_send_data(x0+colstart);     // XSTART 
+    lcd7735_send_data(0x00);
+    lcd7735_send_data(x1+colstart);     // XEND
 
-	lcd7735_sendCmd(ST7735_RASET); // Row addr set
-	lcd7735_sendData(0x00);
-	lcd7735_sendData(y0+rowstart);     // YSTART
-	lcd7735_sendData(0x00);
-	lcd7735_sendData(y1+rowstart);     // YEND
+    lcd7735_send_cmd(ST7735_RASET); // Row addr set
+    lcd7735_send_data(0x00);
+    lcd7735_send_data(y0+rowstart);     // YSTART
+    lcd7735_send_data(0x00);
+    lcd7735_send_data(y1+rowstart);     // YEND
 
-	lcd7735_sendCmd(ST7735_RAMWR); // write to RAM
+    lcd7735_send_cmd(ST7735_RAMWR); // write to RAM
 }
 
 void lcd7735_pushColor(uint16_t color) {
-	LCD_A0_H();  
-	putpix(color);
+    LCD_A0_H();  
+    putpix(color);
 }
 
 // draw color pixel on screen
 void lcd7735_drawPixel(int16_t x, int16_t y, uint16_t color) {
 
-	if((x < 0) ||(x >= _width) || (y < 0) || (y >= _height)) return;
+    if((x < 0) ||(x >= _width) || (y < 0) || (y >= _height)) return;
 
-	lcd7735_setAddrWindow(x,y,x+1,y+1);
-	lcd7735_pushColor(color);
+    lcd7735_set_addr_window(x,y,x+1,y+1);
+    lcd7735_pushColor(color);
 }
 
 // fill a rectangle
-void lcd7735_fillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color) {	
-	// rudimentary clipping (drawChar w/big text requires this)
-	if((x >= _width) || (y >= _height)) return;
-	if((x + w - 1) >= _width)  w = _width  - x;
-	if((y + h - 1) >= _height) h = _height - y;
+void lcd7735_fill_rect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color) {    
+    // rudimentary clipping (drawChar w/big text requires this)
+    if((x >= _width) || (y >= _height)) return;
+    if((x + w - 1) >= _width)  w = _width  - x;
+    if((y + h - 1) >= _height) h = _height - y;
 
-	lcd7735_setAddrWindow(x, y, x+w-1, y+h-1);
+    lcd7735_set_addr_window(x, y, x+w-1, y+h-1);
 
-	LCD_A0_H();
-	for(y=h; y>0; y--) {
-		for(x=w; x>0; x--) {
-			putpix(color);
-		}
-	}
+    LCD_A0_H();
+    for(y=h; y>0; y--) {
+        for(x=w; x>0; x--) {
+            putpix(color);
+        }
+    }
 }
 
 /* Private functions */
 static void _scrollup() {
-	int r,c;
-	_screen.c.row = 0;
-	_screen.c.col = 0;
-	for(r=1;r<_screen.nrow;r++)
-		for(c=0;c<_screen.ncol;c++) {
-			_putch(*_scr(r,c));
-			_screen.c.col++;
-			if( _screen.c.col == _screen.ncol ) {			
-				_screen.c.col = 0;
-				_screen.c.row++;
-			}
-		}
-		for(c=0;c<_screen.ncol;c++) {
-			_putch(' ');
-			_screen.c.col++;
-		}
-		_screen.c.row = _screen.nrow - 1;
-		_screen.c.col = 0;
+    int r,c;
+    _screen.c.row = 0;
+    _screen.c.col = 0;
+    for(r=1;r<_screen.nrow;r++)
+        for(c=0;c<_screen.ncol;c++) {
+            _putch(*_scr(r,c));
+            _screen.c.col++;
+            if( _screen.c.col == _screen.ncol ) {           
+                _screen.c.col = 0;
+                _screen.c.row++;
+            }
+        }
+        for(c=0;c<_screen.ncol;c++) {
+            _putch(' ');
+            _screen.c.col++;
+        }
+        _screen.c.row = _screen.nrow - 1;
+        _screen.c.col = 0;
 }
 
+#ifdef USE_CURSOR_EXPORSE
 static void cursor_expose(int flg) {
-	uint8_t i,fz;
-	uint16_t j;
-	int x,y;
+    uint8_t i,fz;
+    uint16_t j;
+    int x,y;
 
-	fz = _screen.fnt.x_size/8;
-	x = _screen.c.col * _screen.fnt.x_size;
-	y = _screen.c.row * _screen.fnt.y_size;
-	lcd7735_setAddrWindow(x,y,x+_screen.fnt.x_size-1,y+_screen.fnt.y_size-1);
-	for(j=0;j<((fz)*_screen.fnt.y_size);j++) {
-		for(i=0;i<8;i++) {
-			if( flg )
-				lcd7735_pushColor(_screen.fg);
-			else
-				lcd7735_pushColor(_screen.bg);
-		}
-	}
+    fz = _screen.fnt.x_size/8;
+    x = _screen.c.col * _screen.fnt.x_size;
+    y = _screen.c.row * _screen.fnt.y_size;
+    lcd7735_set_addr_window(x,y,x+_screen.fnt.x_size-1,y+_screen.fnt.y_size-1);
+    for(j=0;j<((fz)*_screen.fnt.y_size);j++) {
+        for(i=0;i<8;i++) {
+            if( flg )
+                lcd7735_pushColor(_screen.fg);
+            else
+                lcd7735_pushColor(_screen.bg);
+        }
+    }
 }
+#endif
 
 static void cursor_nl() {
-	_screen.c.col = 0;
-	_screen.c.row++;
-	if( _screen.c.row == _screen.nrow ) {
-		_scrollup();
-	}
+    _screen.c.col = 0;
+    _screen.c.row++;
+    if( _screen.c.row == _screen.nrow ) {
+        _scrollup();
+    }
 }
 
 static void cursor_fwd() {
-	_screen.c.col++; 
-	if( _screen.c.col == _screen.ncol ) {
-		cursor_nl();
-	}
+    _screen.c.col++; 
+    if( _screen.c.col == _screen.ncol ) {
+        cursor_nl();
+    }
 }
 
 
 static void cursor_init() {
-	_screen.c.row = 0;
-	_screen.c.col = 0;
+    _screen.c.row = 0;
+    _screen.c.col = 0;
 }
 
 static void _putch(uint8_t c) {
-	uint8_t i,ch,fz;
-	uint16_t j;
-	uint16_t temp; 
-	int x,y;
+    uint8_t i,ch,fz;
+    uint16_t j;
+    uint16_t temp; 
+    int x,y;
 
-	fz = _screen.fnt.x_size/8;
-	x = _screen.c.col * _screen.fnt.x_size;
-	y = _screen.c.row * _screen.fnt.y_size;
-	lcd7735_setAddrWindow(x,y,x+_screen.fnt.x_size-1,y+_screen.fnt.y_size-1);
-	temp=((c-_screen.fnt.offset)*((fz)*_screen.fnt.y_size))+4;
-	for(j=0;j<((fz)*_screen.fnt.y_size);j++) {
-		ch = _screen.fnt.font[temp];
-		for(i=0;i<8;i++) {   
-			if((ch&(1<<(7-i)))!=0) {
-				lcd7735_pushColor(_screen.fg);
-			} else {
-				lcd7735_pushColor(_screen.bg);
-			}   
-		}
-		temp++;
-	}
-	*_scr(_screen.c.row, _screen.c.col) = c;
+    fz = _screen.fnt.x_size/8;
+    x = _screen.c.col * _screen.fnt.x_size;
+    y = _screen.c.row * _screen.fnt.y_size;
+    lcd7735_set_addr_window(x,y,x+_screen.fnt.x_size-1,y+_screen.fnt.y_size-1);
+    temp=((c-_screen.fnt.offset)*((fz)*_screen.fnt.y_size))+4;
+    for(j=0;j<((fz)*_screen.fnt.y_size);j++) {
+        ch = _screen.fnt.font[temp];
+        for(i=0;i<8;i++) {   
+            if((ch&(1<<(7-i)))!=0) {
+                lcd7735_pushColor(_screen.fg);
+            } else {
+                lcd7735_pushColor(_screen.bg);
+            }   
+        }
+        temp++;
+    }
+    *_scr(_screen.c.row, _screen.c.col) = c;
 }
 
 /* Public functions */
 void lcd7735_init_screen(void *font,uint16_t fg, uint16_t bg, uint8_t orientation) {
-	lcd7735_setRotation(orientation);
-	lcd7735_fillScreen(bg);
-	_screen.fg = fg;
-	_screen.bg = bg;
-	_screen.fnt.font = (uint8_t *)font;
-	_screen.fnt.x_size = _screen.fnt.font[0];
-	_screen.fnt.y_size = _screen.fnt.font[1];
-	_screen.fnt.offset = _screen.fnt.font[2];
-	_screen.fnt.numchars = _screen.fnt.font[3];
-	_screen.nrow = _height / _screen.fnt.y_size;
-	_screen.ncol = _width  / _screen.fnt.x_size;
-	_screen.scr = malloc(_screen.nrow * _screen.ncol);
-	memset((void*)_screen.scr,' ',_screen.nrow * _screen.ncol);
-	cursor_init();
-	cursor_draw;
+    lcd7735_set_rotation(orientation);
+    lcd7735_fill_screen(bg);
+    _screen.fg = fg;
+    _screen.bg = bg;
+    _screen.fnt.font = (uint8_t *)font;
+    _screen.fnt.x_size = _screen.fnt.font[0];
+    _screen.fnt.y_size = _screen.fnt.font[1];
+    _screen.fnt.offset = _screen.fnt.font[2];
+    _screen.fnt.numchars = _screen.fnt.font[3];
+    _screen.nrow = _height / _screen.fnt.y_size;
+    _screen.ncol = _width  / _screen.fnt.x_size;
+    _screen.scr = malloc(_screen.nrow * _screen.ncol);
+    memset((void*)_screen.scr,' ',_screen.nrow * _screen.ncol);
+    cursor_init();
+    cursor_draw;
     delay_ms(100);
 }
 
 void lcd7735_putc(char c) {
-	if( c != '\n' && c != '\r' ) {
-		_putch(c);
-		cursor_fwd();
-	} else {
-		cursor_erase;
-		cursor_nl();
-	}
-	cursor_draw;
+    if( c != '\n' && c != '\r' ) {
+        _putch(c);
+        cursor_fwd();
+    } else {
+        cursor_erase;
+        cursor_nl();
+    }
+    cursor_draw;
 }
 
 void lcd7735_puts(char *s) {
-	int i;
-	for(i=0;i<strlen(s);i++) {
-		if( s[i] != '\n' && s[i] != '\r' ) {
-			_putch(s[i]);
-			cursor_fwd();
-		} else {
-			cursor_erase;
-			cursor_nl();
-		}
-	}
-	cursor_draw;
+    int i;
+    for(i=0;i<strlen(s);i++) {
+        if( s[i] != '\n' && s[i] != '\r' ) {
+            _putch(s[i]);
+            cursor_fwd();
+        } else {
+            cursor_erase;
+            cursor_nl();
+        }
+    }
+    cursor_draw;
 }
 
 #if 0
 void lcd7735_cursor_set(uint16_t row, uint16_t col) {
-	if( row < _screen.nrow && col < _screen.ncol ) {
-		_screen.c.row = row;
-		_screen.c.col = col;
-	}
-	cursor_draw;
+    if( row < _screen.nrow && col < _screen.ncol ) {
+        _screen.c.row = row;
+        _screen.c.col = col;
+    }
+    cursor_draw;
 }
 
 void lcd7735_cursor_get(uint16_t *row, uint16_t *col) {
-		*row = _screen.c.row;
-		*col = _screen.c.col;
+        *row = _screen.c.row;
+        *col = _screen.c.col;
 }
 #endif
 
 /* Service functions */
-void lcd7735_fillScreen(uint16_t color) {
-	lcd7735_fillRect(0, 0,  _width, _height, color);
+void lcd7735_fill_screen(uint16_t color) {
+    lcd7735_fill_rect(0, 0,  _width, _height, color);
 }
 
 // Pass 8-bit (each) R,G,B, get back 16-bit packed color
-uint16_t lcd7735_Color565(uint8_t r, uint8_t g, uint8_t b) {
-	return ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3);
+uint16_t lcd7735_color_565(uint8_t r, uint8_t g, uint8_t b) {
+    return ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3);
 }
 
-void lcd7735_setRotation(uint8_t m) {
-	uint8_t rotation = m % 4; // can't be higher than 3
+void lcd7735_set_rotation(uint8_t m) {
+    uint8_t rotation = m % 4; // can't be higher than 3
 
-	lcd7735_sendCmd(ST7735_MADCTL);
-	switch (rotation) {
+    lcd7735_send_cmd(ST7735_MADCTL);
+    switch (rotation) {
    case PORTRAIT:
-	   lcd7735_sendData(MADCTL_MX | MADCTL_MY | MADCTL_RGB);
-	   _width  = ST7735_TFTWIDTH;
-	   _height = ST7735_TFTHEIGHT;
-	   break;
+       lcd7735_send_data(MADCTL_MX | MADCTL_MY | MADCTL_RGB);
+       _width  = ST7735_TFTWIDTH;
+       _height = ST7735_TFTHEIGHT;
+       break;
    case LANDSAPE:
-	   lcd7735_sendData(MADCTL_MY | MADCTL_MV | MADCTL_RGB);
-	   _width  = ST7735_TFTHEIGHT;
-	   _height = ST7735_TFTWIDTH;
-	   break;
+       lcd7735_send_data(MADCTL_MY | MADCTL_MV | MADCTL_RGB);
+       _width  = ST7735_TFTHEIGHT;
+       _height = ST7735_TFTWIDTH;
+       break;
    case PORTRAIT_FLIP:
-	   lcd7735_sendData(MADCTL_RGB);
-	   _width  = ST7735_TFTWIDTH;
-	   _height = ST7735_TFTHEIGHT;
-	   break;
+       lcd7735_send_data(MADCTL_RGB);
+       _width  = ST7735_TFTWIDTH;
+       _height = ST7735_TFTHEIGHT;
+       break;
    case LANDSAPE_FLIP:
-	   lcd7735_sendData(MADCTL_MX | MADCTL_MV | MADCTL_RGB);
-	   _width  = ST7735_TFTHEIGHT;
-	   _height = ST7735_TFTWIDTH;
-	   break;
+       lcd7735_send_data(MADCTL_MX | MADCTL_MV | MADCTL_RGB);
+       _width  = ST7735_TFTHEIGHT;
+       _height = ST7735_TFTWIDTH;
+       break;
    default:
-	   return;
-	}
-	orientation = m;
+       return;
+    }
+    orientation = m;
 }
 
 void lcd7735_invertDisplay(const uint8_t mode) {
-	if( mode == INVERT_ON ) lcd7735_sendCmd(ST7735_INVON);
-	else if( mode == INVERT_OFF ) lcd7735_sendCmd(ST7735_INVOFF);
+    if( mode == INVERT_ON ) lcd7735_send_cmd(ST7735_INVON);
+    else if( mode == INVERT_OFF ) lcd7735_send_cmd(ST7735_INVOFF);
 }
 
-void lcd7735_lcdOff() {
-	lcd7735_sendCmd(ST7735_DISPOFF);
+void lcd7735_lcd_off(void) {
+    lcd7735_send_cmd(ST7735_DISPOFF);
 }
 
-void lcd7735_lcdOn() {
-	lcd7735_sendCmd(ST7735_DISPON);
+void lcd7735_lcd_on(void) {
+    lcd7735_send_cmd(ST7735_DISPON);
 }
 
 uint8_t lcd7735_getWidth() {
-	return(_width);
+    return(_width);
 }
 uint8_t lcd7735_getHeight() {
-	return(_height);
+    return(_height);
 }
 
 void lcd7735_init(void) {
@@ -621,27 +628,27 @@ void lcd7735_xmit(const uint8_t tb) {
     }
 #else
     reset_watch_dog();
-    if (tb & 0x80) LCD_SDA_H(); else LCD_SDA_L();	/* bit7 */
+    if (tb & 0x80) LCD_SDA_H(); else LCD_SDA_L();   /* bit7 */
     LCD_SCK_L(); LCD_SCK_H();
-    if (tb & 0x40) LCD_SDA_H(); else LCD_SDA_L();	/* bit6 */
+    if (tb & 0x40) LCD_SDA_H(); else LCD_SDA_L();   /* bit6 */
     LCD_SCK_L(); LCD_SCK_H();
-    if (tb & 0x20) LCD_SDA_H(); else LCD_SDA_L();	/* bit5 */
+    if (tb & 0x20) LCD_SDA_H(); else LCD_SDA_L();   /* bit5 */
     LCD_SCK_L(); LCD_SCK_H();
-    if (tb & 0x10) LCD_SDA_H(); else LCD_SDA_L();	/* bit4 */
+    if (tb & 0x10) LCD_SDA_H(); else LCD_SDA_L();   /* bit4 */
     LCD_SCK_L(); LCD_SCK_H();
-    if (tb & 0x08) LCD_SDA_H(); else LCD_SDA_L();	/* bit3 */
+    if (tb & 0x08) LCD_SDA_H(); else LCD_SDA_L();   /* bit3 */
     LCD_SCK_L(); LCD_SCK_H();
-    if (tb & 0x04) LCD_SDA_H(); else LCD_SDA_L();	/* bit2 */
+    if (tb & 0x04) LCD_SDA_H(); else LCD_SDA_L();   /* bit2 */
     LCD_SCK_L(); LCD_SCK_H();
-    if (tb & 0x02) LCD_SDA_H(); else LCD_SDA_L();	/* bit1 */
+    if (tb & 0x02) LCD_SDA_H(); else LCD_SDA_L();   /* bit1 */
     LCD_SCK_L(); LCD_SCK_H();
-    if (tb & 0x01) LCD_SDA_H(); else LCD_SDA_L();	/* bit0 */
+    if (tb & 0x01) LCD_SDA_H(); else LCD_SDA_L();   /* bit0 */
     LCD_SCK_L(); LCD_SCK_H();
 #endif
 }
 
 // Send control command to controller
-void lcd7735_sendCmd(const uint8_t c) {
+void lcd7735_send_cmd(const uint8_t c) {
     LCD_A0_L();
     //LCD_CS_L();
     lcd7735_xmit(c);
@@ -649,7 +656,7 @@ void lcd7735_sendCmd(const uint8_t c) {
 }
 
 // Send parameters o command to controller
-void lcd7735_sendData(const uint8_t d) {
+void lcd7735_send_data(const uint8_t d) {
     LCD_A0_H();
     //LCD_CS_L();
     lcd7735_xmit(d);
@@ -658,15 +665,15 @@ void lcd7735_sendData(const uint8_t d) {
 
 #if 0
 void test_ascii_screen(void) {
-	unsigned char x;
-	int i;
+    unsigned char x;
+    int i;
 
     lcd7735_init_screen((void *)&SmallFont[0],ST7735_WHITE,ST7735_BLACK,PORTRAIT);
     x = 0x20;
 
-	for(i=0;i<95;i++) {
-		lcd7735_putc(x+i);
-	}
+    for(i=0;i<95;i++) {
+        lcd7735_putc(x+i);
+    }
 }
 #endif
 #endif

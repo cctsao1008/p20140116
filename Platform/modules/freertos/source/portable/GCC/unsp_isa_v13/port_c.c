@@ -205,7 +205,9 @@ void IRQ7(void)
     #endif
     
     #if( configUSE_PREEMPTION == 1 )
+    portENABLE_INTERRUPTS();
     portSAVE_CONTEXT();
+    portDISABLE_INTERRUPTS();
     xTaskIncrementTick();
     vTaskSwitchContext();
     portRESTORE_CONTEXT();

@@ -102,7 +102,7 @@ static inline int mtd_spi_flash_erase(struct mtd_spi_flash_op *flash, uint32_t o
 }
 #endif
 
-typedef struct mtd_spi_flash_params {
+typedef struct _mtd_params {
 	uint16_t	id;
 	/* Log2 of page size in power-of-two mode */
 	uint8_t		l2_page_size;
@@ -111,6 +111,18 @@ typedef struct mtd_spi_flash_params {
 	uint8_t		nr_blocks;
 	const char	*name;
 }MTD_PARAMS;
+
+typedef union _u32b4 {
+
+    uint32_t addr_32;
+
+    struct {
+        uint8_t addr_0 : 8;
+        uint8_t addr_1 : 8;
+        uint8_t addr_2 : 8;
+        uint8_t addr_3 : 8;
+    };
+} U32B4;
 
 #if 0
 struct mtd_spi_flash {
