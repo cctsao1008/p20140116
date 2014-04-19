@@ -1,0 +1,3 @@
+
+test_prog = Program('test.exe', ['../../src/hfsm.c', 'usb_fsm.c', 'test_usb.c', 'test_usb_helper.c'], CCFLAGS='-I../../src -g')
+
