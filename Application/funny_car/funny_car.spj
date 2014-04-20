@@ -29,7 +29,7 @@ EXPORT=3
 #PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
-EXPORT=3
+EXPORT=0
 # Begin Source File
 SOURCE=..\..\Platform\drivers\drv_i2c.c
 USEPARAM=FALSE
@@ -66,18 +66,11 @@ ID=
 EXPORT=3
 # End Source File
 # Begin Source File
-SOURCE=..\..\Platform\drivers\SPI_Flash_CE063.asm
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
 SOURCE=..\..\Platform\drivers\drv_gpio.c
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # End Group
 # Begin Group "modules"
@@ -217,13 +210,13 @@ EXPORT=3
 #PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
-EXPORT=3
+EXPORT=0
 # Begin Source File
 SOURCE=..\..\Platform\modules\printf\printf.c
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # End Group
 # Begin Group "sacm"
@@ -449,14 +442,14 @@ SOURCE=..\..\Platform\drivers\drv_gpio.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\printf\printf.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\include\platform.h
@@ -491,7 +484,7 @@ SOURCE=..\..\Platform\modules\freertos\source\include\FreeRTOS.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=3877229
+EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\task.h
@@ -617,7 +610,7 @@ EXPORT=3
 #PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
-EXPORT=3
+EXPORT=0
 # Begin Source File
 SOURCE=..\..\Platform\drivers\drv_i2c.c
 USEPARAM=FALSE
@@ -654,18 +647,11 @@ ID=
 EXPORT=3
 # End Source File
 # Begin Source File
-SOURCE=..\..\Platform\drivers\SPI_Flash_CE063.asm
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
 SOURCE=..\..\Platform\drivers\drv_gpio.c
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # End Group
 # Begin Group "modules"
@@ -805,13 +791,13 @@ EXPORT=3
 #PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
-EXPORT=3
+EXPORT=0
 # Begin Source File
 SOURCE=..\..\Platform\modules\printf\printf.c
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # End Group
 # Begin Group "sacm"
@@ -1037,14 +1023,14 @@ SOURCE=..\..\Platform\drivers\drv_gpio.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\printf\printf.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\include\platform.h
@@ -1079,7 +1065,7 @@ SOURCE=..\..\Platform\modules\freertos\source\include\FreeRTOS.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=3877229
+EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\task.h

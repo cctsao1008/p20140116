@@ -60,8 +60,8 @@
 //**************************************************************************
 // External Function Declaration
 //**************************************************************************
-.external F_SPI_ReadAWord
-.external F_SPI_ReadNWords
+//.external F_SPI_ReadAWord
+//.external F_SPI_ReadNWords
 .external F_SACM_Delay
 
 
@@ -263,12 +263,12 @@ F_USER_A1600_SetStartAddr:
 	R1 += C_SpeechNumberLength;
 	push R1 to [SP];
 	R2 = 0x0000;
-	call F_SPI_ReadAWord;
+	//call F_SPI_ReadAWord;
 	[R_ExtMem_Low] = R1;
 	
 	pop R1 from [SP];
 	R1 += 2;
-	call F_SPI_ReadAWord;	
+	//call F_SPI_ReadAWord;	
 	[R_ExtMem_High] = R1;
 
 	pop R2 from [SP];
@@ -341,12 +341,12 @@ F_USER_A1600_SetStartAddr_Con:
 	R1 += C_SpeechNumberLength;
 	push R1 to [SP];
 	R2 = 0x0000;
-	call F_SPI_ReadAWord;
+	//call F_SPI_ReadAWord;
 	[R_ExtMem_Low_Con] = R1;
 	
 	pop R1 from [SP];
 	R1 += 2;
-	call F_SPI_ReadAWord;	
+	//call F_SPI_ReadAWord;	
 	[R_ExtMem_High_Con] = R1;
 
 	pop R2 from [SP];
@@ -431,7 +431,7 @@ F_USER_A1600_GetData:	.proc
 F_USER_A1600_GetData:	.proc
 	R3 = [R_ExtMem_Low];
 	R4 = [R_ExtMem_High];
-	call F_SPI_ReadNWords;
+	//call F_SPI_ReadNWords;
 	R3 += R2 lsl 1;
 	R4 += 0, carry;
 	[R_ExtMem_Low] = R3;
