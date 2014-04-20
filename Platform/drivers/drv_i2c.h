@@ -12,8 +12,8 @@
 #define DRV_I2C_H_
 #include "platform.h"
 
-#define  false           0
-#define  true            1
+//#define  false           0
+//#define  true            1
 #define  I2C_Direction_Xmit      ((uint8_t)0x00)
 #define  I2C_Direction_Rcvr      ((uint8_t)0x01)
 

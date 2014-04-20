@@ -85,8 +85,8 @@
 #define configCPU_CLOCK_HZ                  ( ( unsigned long ) 49152000 ) // 49.152MHz
 #define configTICK_RATE_HZ                  ( ( portTickType ) 64 ) //64 Hz
 #define configMAX_PRIORITIES		        ( 8 )
-#define configMINIMAL_STACK_SIZE            ( ( unsigned short ) 768 )
-#define configTOTAL_HEAP_SIZE               ( ( size_t ) ( 1024) )
+#define configMINIMAL_STACK_SIZE            ( ( unsigned short ) 128 )
+#define configTOTAL_HEAP_SIZE               ( ( size_t ) ( 256) )
 #define configMAX_TASK_NAME_LEN	         	( 16 )
 #define configUSE_TRACE_FACILITY            0
 #define configUSE_16_BIT_TICKS              1
@@ -94,7 +94,7 @@
 
 /* Co-routine definitions. */
 #define configUSE_CO_ROUTINES               1
-#define configMAX_CO_ROUTINE_PRIORITIES     ( 1 )
+#define configMAX_CO_ROUTINE_PRIORITIES     ( 6 )
 
 /* Set the following definitions to 1 to include the API function, or zero
 to exclude the API function. */

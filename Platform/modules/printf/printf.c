@@ -33,11 +33,8 @@ File: printf.c
  ----------------------------------------------------------------------
 
 */
-//putchar#include <stdio.h>
 
 #include "printf.h"
-
-void putchar(char c);
 
 static char* bf;
 static char buf[12];
@@ -65,7 +62,7 @@ static void divOut(unsigned int div) {
         outDgt(dgt);
 }   
 
-void tfp_printf(char *fmt, ...)
+void tfp_printf(const char *fmt, ...)
 {
     va_list va;
     char ch;

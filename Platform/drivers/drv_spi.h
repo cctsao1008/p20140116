@@ -34,26 +34,26 @@
 
 #define SPI_DEFAULT_SPEED SPI_8MHz
 
-#define CK_H()      (P_IOA_DA->b_13) = 0x1  /* Set MMC SCLK "high" */
-#define	CK_L()      (P_IOA_DA->b_13) = 0x0  /* Set MMC SCLK "low" */
-#define DI_H()      (P_IOA_DA->b_14) = 0x1  /* Set MMC DI "high" */
-#define DI_L()      (P_IOA_DA->b_14) = 0x0  /* Set MMC DI "low" */
-#define DO          (P_IOA_DA->b_15)        /* Get MMC DO value (high:true, low:false) */
+#define CK_H()      (PS_IOA_DA->b_13) = 0x1  /* Set MMC SCLK "high" */
+#define	CK_L()      (PS_IOA_DA->b_13) = 0x0  /* Set MMC SCLK "low" */
+#define DI_H()      (PS_IOA_DA->b_14) = 0x1  /* Set MMC DI "high" */
+#define DI_L()      (PS_IOA_DA->b_14) = 0x0  /* Set MMC DI "low" */
+#define DO          (PS_IOA_DA->b_15)        /* Get MMC DO value (high:true, low:false) */
 
-//#define CS_H()      (P_IOA_BU->bit_12) = 0x1  /* Set MMC CS "high" */
-//#define CS_L()      (P_IOA_BU->bit_12) = 0x0  /* Set MMC CS "low" */
+//#define CS_H()      (PS_IOA_BU->bit_12) = 0x1  /* Set MMC CS "high" */
+//#define CS_L()      (PS_IOA_BU->bit_12) = 0x0  /* Set MMC CS "low" */
 
 #define CS_SDCARD     1
-#define CS_SDCARD_H() (P_IOA_DA->b_12) = 0x1
-#define CS_SDCARD_L() (P_IOA_DA->b_12) = 0x0
+#define CS_SDCARD_H() (PS_IOA_DA->b_12) = 0x1
+#define CS_SDCARD_L() (PS_IOA_DA->b_12) = 0x0
 
 #define CS_SFLASH     2
-#define CS_SFLASH_H() (P_IOA_DA->b_11) = 0x1
-#define CS_SFLASH_L() (P_IOA_DA->b_11) = 0x0
+#define CS_SFLASH_H() (PS_IOA_DA->b_11) = 0x1
+#define CS_SFLASH_L() (PS_IOA_DA->b_11) = 0x0
 
 #define CS_LCDMOD     3
-#define CS_LCDMOD_H() (P_IOA_DA->b_10) = 0x1
-#define CS_LCDMOD_L() (P_IOA_DA->b_10) = 0x0
+#define CS_LCDMOD_H() (PS_IOA_DA->b_10) = 0x1
+#define CS_LCDMOD_L() (PS_IOA_DA->b_10) = 0x0
 
 /**
  * Flags for various the SPI MODEs
@@ -78,17 +78,17 @@
  * spi_initialize() - Configure Registers for SPI mode
  */
 
-#define MISO_INIT() P_IOA_DA->b_15 = 0x0; P_IOA_AT->b_15 = 0x0; P_IOA_DI->b_15 = 0x0
-#define MOSI_INIT() P_IOA_DA->b_14 = 0x0; P_IOA_AT->b_14 = 0x1; P_IOA_DI->b_14 = 0x1
-#define SCLK_INIT() P_IOA_DA->b_13 = 0x0; P_IOA_AT->b_13 = 0x1; P_IOA_DI->b_13 = 0x1
+#define MISO_INIT() PS_IOA_DA->b_15 = 0x0; PS_IOA_AT->b_15 = 0x0; PS_IOA_DI->b_15 = 0x0
+#define MOSI_INIT() PS_IOA_DA->b_14 = 0x0; PS_IOA_AT->b_14 = 0x1; PS_IOA_DI->b_14 = 0x1
+#define SCLK_INIT() PS_IOA_DA->b_13 = 0x0; PS_IOA_AT->b_13 = 0x1; PS_IOA_DI->b_13 = 0x1
 
 #ifdef USE_HW_CS_CTRL
-#define CS_HWCTRL_INIT() P_IOX_CT->bit_10 = 0x01
+#define CS_HWCTRL_INIT() PS_IOX_CT->bit_10 = 0x01
 #endif
 
-#define CS_SDCARD_INIT() P_IOA_DA->b_12 = 0x0; P_IOA_AT->b_12 = 0x1; P_IOA_DI->b_12 = 0x1
-#define CS_SFLASH_INIT() P_IOA_DA->b_11 = 0x0; P_IOA_AT->b_11 = 0x1; P_IOA_DI->b_11 = 0x1
-#define CS_LCDMOD_INIT() P_IOA_DA->b_10 = 0x0; P_IOA_AT->b_10 = 0x1; P_IOA_DI->b_10 = 0x1
+#define CS_SDCARD_INIT() PS_IOA_DA->b_12 = 0x0; PS_IOA_AT->b_12 = 0x1; PS_IOA_DI->b_12 = 0x1
+#define CS_SFLASH_INIT() PS_IOA_DA->b_11 = 0x0; PS_IOA_AT->b_11 = 0x1; PS_IOA_DI->b_11 = 0x1
+#define CS_LCDMOD_INIT() PS_IOA_DA->b_10 = 0x0; PS_IOA_AT->b_10 = 0x1; PS_IOA_DI->b_10 = 0x1
 
 
 

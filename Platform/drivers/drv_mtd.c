@@ -193,7 +193,7 @@ MTD_RESULT mtd_read_data(uint32_t addr,uint8_t *buf, uint32_t size)
     {    rc = MTD_FAILED; goto error;}
 
     /* Is Flash in busy mode ? */
-    #if 0
+    #if 1
     while(mtd_read_status_1(B_BUSY))
     {
         reset_watch_dog();

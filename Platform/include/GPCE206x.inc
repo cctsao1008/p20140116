@@ -72,32 +72,32 @@
 .define P_Reset_LVD_Ctrl		0x2032
 .define P_TimeBase_Clear		0x2033
 .define P_Watchdog_Clear		0x2034
-.define P_Wait_Ctrl				0x2035
+.define P_Wait_Ctrl			0x2035
 .define P_System_Sleep			0x2036
 
 //---------------------------------------------------
-.define P_DAC_Ctrl				0x2040		// Modified
+.define P_DAC_Ctrl			0x2040		// Modified
 .define P_DAC_CH1_Data			0x2041		// Modified
 .define P_DAC_CH2_Data			0x2042		// New Register
 .define P_PPAMP_Ctrl			0x2043		// New Register
 
 //---------------------------------------------------
-.define P_INT_Ctrl				0x2050
+.define P_INT_Ctrl			0x2050
 .define P_INT_Status			0x2051
-.define P_FIQ_Sel				0x2052
+.define P_FIQ_Sel			0x2052
 
 //---------------------------------------------------
-.define P_SPI_Ctrl				0x2060
+.define P_SPI_Ctrl			0x2060
 .define P_SPI_TX_Status			0x2061
 .define P_SPI_TX_Data			0x2062
 .define P_SPI_RX_Status			0x2063
 .define P_SPI_RX_Data			0x2064
-.define P_SPI_Misc				0x2065
+.define P_SPI_Misc			0x2065
 
 //---------------------------------------------------
-.define P_ADC_Ctrl				0x2070
-.define P_ADC_Data				0x2071
-.define P_ADC_LineIn_BitCtrl	0x2072
+.define P_ADC_Ctrl			0x2070
+.define P_ADC_Data			0x2071
+.define P_ADC_LineIn_BitCtrl		0x2072
 .define P_ADC_PGA_Ctrl			0x2073		// New Register
 
 //---------------------------------------------------

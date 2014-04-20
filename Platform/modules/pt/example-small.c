@@ -10,7 +10,7 @@
 #include <stdio.h> /* For printf(). */
 
 /* Two flags that the two protothread functions use. */
-static int protothread1_flag, protothread2_flag;
+static int protothread1_flag = false, protothread2_flag = false;
 
 /**
  * The first protothread function. A protothread function must always

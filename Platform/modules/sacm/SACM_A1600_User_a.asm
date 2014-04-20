@@ -108,8 +108,9 @@ T_SACM_A1600_Volume_Level:
 //****************************************************************
 F_SACM_A1600_Init_:     .proc
     FIR_MOV OFF;
-        
-    R1 = C_TimerA_FPLL;                             // TimerA CKA=Fosc/2 CKB=1 Tout:off
+
+    R1 = [P_Timer_Ctrl]
+    R1 |= C_TimerA_FPLL;                             // TimerA CKA=Fosc/2 CKB=1 Tout:off
     [P_Timer_Ctrl] = R1;
     R1= C_A1600_Timer_Setting_X1;   // TimerA setting
     [P_TimerA_Data] = R1;

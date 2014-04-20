@@ -56,8 +56,10 @@ void portRESTORE_CONTEXT( void );
 
 volatile StackType_t SAVED_FR = 0;
 
-extern sec;
+extern uint32_t sec;
 uint8_t count = 0;
+
+cbfun irq6_4096hz_cbfun = NULL;
 
 /* 
  * Initialise the stack of a task to look exactly as if a call to 
@@ -156,11 +158,7 @@ void vPortYield( void )
 static void prvSetupTimerInterrupt( void )
 {
     // Config Interrupt
-    #ifdef GPCE206x_H_
     P_INT_Ctrl |= C_IRQ7_64Hz;
-    #else
-    P_Int_Ctrl |= C_IRQ7_64Hz;
-    #endif
 
     portENABLE_INTERRUPTS();
 }
@@ -198,29 +196,47 @@ void vPortExitCritical( void )
 }
 
 // Interrupt
+void IRQ6(void) __attribute__ ((ISR));
+void IRQ6(void)
+{
+    if((P_INT_Status & C_IRQ6_4096Hz) == C_IRQ6_4096Hz)
+    {
+        P_INT_Status = C_IRQ6_4096Hz;
+
+        timer_isr();
+
+        portENABLE_INTERRUPTS();
+    }
+}
+
 void IRQ7(void) __attribute__ ((ISR));
 void IRQ7(void)
 {
-    #ifdef GPCE206x_H_
-    P_INT_Status = C_IRQ7_64Hz;
-    #else
-    P_Int_Status = C_IRQ7_64Hz;
-    #endif
-
-    if(count++ > 64)
+    if((P_INT_Status & C_IRQ7_2Hz) == C_IRQ7_2Hz)
     {
-        count = 0;
-        sec++;
+        P_INT_Status = C_IRQ7_2Hz;
+
+        if(++count == 2)
+        {
+            count = 0;
+            sec++;
+        }
     }
-    
-    #if( configUSE_PREEMPTION == 1 )
-    portENABLE_INTERRUPTS();
-    portSAVE_CONTEXT();
-    portDISABLE_INTERRUPTS();
-    xTaskIncrementTick();
-    vTaskSwitchContext();
-    portRESTORE_CONTEXT();
-    #else
-    xTaskIncrementTick();
-    #endif
+
+    if((P_INT_Status & C_IRQ7_64Hz) == C_IRQ7_64Hz)
+    {
+        P_INT_Status = C_IRQ7_64Hz;
+
+        #if( configUSE_PREEMPTION == 1 )
+        portENABLE_INTERRUPTS();
+        portSAVE_CONTEXT();
+        portDISABLE_INTERRUPTS();
+        xTaskIncrementTick();
+        vTaskSwitchContext();
+        portRESTORE_CONTEXT();
+        #else
+        xTaskIncrementTick();
+        #endif
+    }
 }
+

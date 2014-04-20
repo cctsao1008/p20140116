@@ -19,34 +19,32 @@
 #endif
 #define CODE_1  /*  https://github.com/OlegUA/ST7735 */
 
-
-#ifdef CODE_1
 #define LCD_CS_L()  spi_select(CS_LCDMOD, 0)
 #define LCD_CS_H()  spi_select(CS_LCDMOD, 1)
 
-#define LCD_SCK_INIT()  P_IOA_DA->b_1  = 0x0; P_IOA_AT->b_1 = 0x1; P_IOA_DI->b_1 = 0x1
-#define LCD_SCK_H()    (P_IOA_DA->b_1) = 0x1
-#define LCD_SCK_L()    (P_IOA_DA->b_1) = 0x0
+#define LCD_SCK_INIT()  PS_IOA_DA->b_1  = 0x0; PS_IOA_AT->b_1 = 0x1; PS_IOA_DI->b_1 = 0x1
+#define LCD_SCK_H()    (PS_IOA_DA->b_1) = 0x1
+#define LCD_SCK_L()    (PS_IOA_DA->b_1) = 0x0
 
-#define LCD_SDA_INIT()  P_IOA_DA->b_2  = 0x0; P_IOA_AT->b_2 = 0x1; P_IOA_DI->b_2 = 0x1
-#define LCD_SDA_H()    (P_IOA_DA->b_2) = 0x1
-#define LCD_SDA_L()    (P_IOA_DA->b_2) = 0x0
+#define LCD_SDA_INIT()  PS_IOA_DA->b_2  = 0x0; PS_IOA_AT->b_2 = 0x1; PS_IOA_DI->b_2 = 0x1
+#define LCD_SDA_H()    (PS_IOA_DA->b_2) = 0x1
+#define LCD_SDA_L()    (PS_IOA_DA->b_2) = 0x0
 
 // A0 (DC, R/S)
-#define LCD_A0_INIT()   P_IOA_DA->b_3  = 0x0; P_IOA_AT->b_3 = 0x1; P_IOA_DI->b_3 = 0x1
-#define LCD_A0_H()     (P_IOA_BU->b_3) = 0x1
-#define LCD_A0_L()     (P_IOA_BU->b_3) = 0x0
+#define LCD_A0_INIT()   PS_IOA_DA->b_3  = 0x0; PS_IOA_AT->b_3 = 0x1; PS_IOA_DI->b_3 = 0x1
+#define LCD_A0_H()     (PS_IOA_BU->b_3) = 0x1
+#define LCD_A0_L()     (PS_IOA_BU->b_3) = 0x0
 
 /* The pin LCD_RST_PIN is not used if defined */
 //#define LCD_SOFT_RESET
 
 #ifndef LCD_SOFT_RESET
-#define LCD_RST_INIT()   P_IOA_DA->b_4  = 0x0; P_IOA_AT->b_4 = 0x1; P_IOA_DI->b_4 = 0x1
-#define LCD_RST_H()     (P_IOA_DA->b_4) = 0x1
-#define LCD_RST_L()     (P_IOA_DA->b_4) = 0x0
+#define LCD_RST_INIT()   PS_IOA_DA->b_4  = 0x0; PS_IOA_AT->b_4 = 0x1; PS_IOA_DI->b_4 = 0x1
+#define LCD_RST_H()     (PS_IOA_DA->b_4) = 0x1
+#define LCD_RST_L()     (PS_IOA_DA->b_4) = 0x0
 #endif
 
-//#define CK_H()      (P_IOA_BU->bit_13) = 0x1  /* Set MMC SCLK "high" */
+//#define CK_H()      (PS_IOA_BU->bit_13) = 0x1  /* Set MMC SCLK "high" */
 
 #define WHITE            0xFFFF
 #define BLACK            0x0000	  
@@ -93,6 +91,7 @@
 
 #define ST7735_PTLAR     0x30
 #define ST7735_COLMOD    0x3A
+
 #define ST7735_MADCTL    0x36
 
 #define ST7735_FRMCTR1   0xB1
@@ -147,22 +146,42 @@
 #define CENTER          -1
 #define RIGHT           -2
 
-extern const unsigned char SmallFont[]; 
+/* ASCII green-screen terminal emulator */
 
-int putchar (int c);
+typedef struct _cursor {
+    uint16_t    row;
+    uint16_t    col;
+    uint8_t     *bitmap; // not used yet
+} lcd_cursor;
 
+typedef struct _font {
+    uint8_t     *font;
+    uint8_t     x_size;
+    uint8_t     y_size;
+    uint8_t     offset;
+    uint16_t    numchars;
+} lcd_font;
+
+typedef struct _screen {
+    lcd_cursor  c;
+    uint8_t     nrow;
+    uint8_t     ncol;
+    lcd_font    fnt;
+    uint16_t    fg;
+    uint16_t    bg;
+    char        *scr;
+} screen;
+
+extern screen g_screen;
+extern const unsigned char FONT_ASCII_8X12[]; 
+
+uint8_t lcd7735_putchar (uint8_t c);
+uint16_t lcd7735_color_565(uint8_t r, uint8_t g, uint8_t b);
+void lcd7735_draw_pixel(int16_t x, int16_t y, uint16_t color);
 void lcd7735_init(void);
 void lcd7735_init_r(uint8_t options);
 void lcd7735_init_screen(void *font,uint16_t fg, uint16_t bg, uint8_t orientation);
 void lcd7735_fill_screen(uint16_t color);
-#if 0
-void lcd7735_cursor_set(uint16_t row, uint16_t col);
-void lcd7735_cursor_get(uint16_t *row, uint16_t *col);
-#endif
-void lcd7735_putc(char c);
-void lcd7735_puts(char *s);
-#endif
-
 void lcd7735_lcd_on(void);
 void lcd7735_lcd_off(void);
 

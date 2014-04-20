@@ -113,7 +113,6 @@ typedef struct _mtd_params {
 }MTD_PARAMS;
 
 typedef union _u32b4 {
-
     uint32_t addr_32;
 
     struct {
@@ -123,6 +122,10 @@ typedef union _u32b4 {
         uint8_t addr_3 : 8;
     };
 } U32B4;
+
+typedef struct _mtd_data_buff {
+    char data[ 8 ];
+} mtd_data_buff;
 
 #if 0
 struct mtd_spi_flash {

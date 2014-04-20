@@ -3,6 +3,8 @@
    User don't want to hook "printf" when __OPTIMIZE__.
    function prototype:
      void printf_hook (unsigned long lptr, unsigned int size); */
+     
+#include "platform.h"
 #ifndef __OPTIMIZE__
 asm (".code
 .public _SemiPrintf
@@ -31,12 +33,13 @@ void printf_end (void)
 	return;
 }
 
-#if 0
+#if 1
 /* printf in "CLib" will call putchar.
    user can implement this function -- send a char to UART? */
 int putchar (int c)
 {
-	return c;
+	return _putchar(c);
+	//return c;
 }
 #endif
 

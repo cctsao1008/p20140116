@@ -36,21 +36,21 @@ void init_port(void)
 {
     // Config SPI port
     // MISO
-    P_IOA_DA->bit_15 = 0x0;
-    P_IOA_AT->bit_15 = 0x0;
-    P_IOA_DI->bit_15 = 0x0;
+    PS_IOA_DA->bit_15 = 0x0;
+    PS_IOA_AT->bit_15 = 0x0;
+    PS_IOA_DI->bit_15 = 0x0;
     //MOSI
-    P_IOA_DA->bit_14 = 0x0;
-    P_IOA_AT->bit_14 = 0x1;
-    P_IOA_DI->bit_14 = 0x1;
+    PS_IOA_DA->bit_14 = 0x0;
+    PS_IOA_AT->bit_14 = 0x1;
+    PS_IOA_DI->bit_14 = 0x1;
     //SCLK
-    P_IOA_DA->bit_13 = 0x0;
-    P_IOA_AT->bit_13 = 0x1;
-    P_IOA_DI->bit_13 = 0x1;
+    PS_IOA_DA->bit_13 = 0x0;
+    PS_IOA_AT->bit_13 = 0x1;
+    PS_IOA_DI->bit_13 = 0x1;
     //CS
-    P_IOA_DA->bit_12 = 0x0;
-    P_IOA_AT->bit_12 = 0x1;
-    P_IOA_DI->bit_12 = 0x1;
+    PS_IOA_DA->bit_12 = 0x0;
+    PS_IOA_AT->bit_12 = 0x1;
+    PS_IOA_DI->bit_12 = 0x1;
 }
 #endif
 
@@ -79,13 +79,13 @@ void dly_us(unsigned long n)
 #define DLY_US(n)   dly_us(n)    /* Delay n microseconds */
 #define	FORWARD(d)  forward(d)   /* Data in-time processing function (depends on the project) */
 
-#define	CS_H()      (P_IOA_BU->bit_12) = 0x1  /* Set MMC CS "high" */
-#define CS_L()      (P_IOA_BU->bit_12) = 0x0  /* Set MMC CS "low" */
-#define CK_H()      (P_IOA_BU->bit_13) = 0x1  /* Set MMC SCLK "high" */
-#define	CK_L()      (P_IOA_BU->bit_13) = 0x0  /* Set MMC SCLK "low" */
-#define DI_H()      (P_IOA_BU->bit_14) = 0x1  /* Set MMC DI "high" */
-#define DI_L()      (P_IOA_BU->bit_14) = 0x0  /* Set MMC DI "low" */
-#define DO          (P_IOA_DA->bit_15)        /* Get MMC DO value (high:true, low:false) */
+#define	CS_H()      (PS_IOA_BU->bit_12) = 0x1  /* Set MMC CS "high" */
+#define CS_L()      (PS_IOA_BU->bit_12) = 0x0  /* Set MMC CS "low" */
+#define CK_H()      (PS_IOA_BU->bit_13) = 0x1  /* Set MMC SCLK "high" */
+#define	CK_L()      (PS_IOA_BU->bit_13) = 0x0  /* Set MMC SCLK "low" */
+#define DI_H()      (PS_IOA_BU->bit_14) = 0x1  /* Set MMC DI "high" */
+#define DI_L()      (PS_IOA_BU->bit_14) = 0x0  /* Set MMC DI "low" */
+#define DO          (PS_IOA_DA->bit_15)        /* Get MMC DO value (high:true, low:false) */
 #else
 #define	INIT_PORT() spi_initialize()
 #define DLY_US(n)   dly_us(n)    /* Delay n microseconds */

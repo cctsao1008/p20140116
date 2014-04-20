@@ -81,11 +81,9 @@ regs Kusti, 26.2.2008
 
 #ifndef TFP_PRINTF_
 #define TFP_PRINTF_
-
+#include "platform.h"
 #include <stdarg.h>
 
-void tfp_printf(char *fmt, ...);
-
-//#define printf tfp_printf
+void tfp_printf(const char *fmt, ...);
 
 #endif /* TFP_PRINTF_ */
