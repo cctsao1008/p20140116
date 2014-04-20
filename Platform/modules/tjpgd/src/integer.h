@@ -1,9 +1,8 @@
 /*-------------------------------------------*/
 /* Integer type definitions for FatFs module */
 /*-------------------------------------------*/
-
-#ifndef _INTEGER
-#define _INTEGER
+#ifndef INTEGER_H_
+#define INTEGER_H_
 
 #ifdef _WIN32	/* FatFs development platform */
 
@@ -34,4 +33,4 @@ typedef unsigned long	DWORD;
 
 #endif
 
-#endif
+#endif /* INTEGER_H_ */

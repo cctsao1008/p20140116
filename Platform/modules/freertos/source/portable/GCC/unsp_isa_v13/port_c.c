@@ -145,7 +145,7 @@ static void prvSetupTimerInterrupt( void )
 {
     reset_watch_dog();
     // Config Interrupt
-    #ifdef __GPCE206x_H__
+    #ifdef GPCE206x_H_
     P_INT_Ctrl |= C_IRQ7_64Hz;
     #else
     P_Int_Ctrl |= C_IRQ7_64Hz;
@@ -198,7 +198,7 @@ void vPortExitCritical( void )
 void IRQ7(void) __attribute__ ((ISR));
 void IRQ7(void)
 {
-	#ifdef __GPCE206x_H__
+	#ifdef GPCE206x_H_
 	P_INT_Status = C_IRQ7_64Hz;
 	#else
 	P_Int_Status = C_IRQ7_64Hz;

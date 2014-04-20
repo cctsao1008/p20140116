@@ -1,5 +1,5 @@
-#ifndef	__GPCE_DIAGNOSTIC_H__
-#define	__GPCE_DIAGNOSTIC_H__
-//	write your header here
+#ifndef FUNNY_CAR_H_
+#define FUNNY_CAR_H_
 
-#endif
+#endif /* FUNNY_CAR_H_ */
+

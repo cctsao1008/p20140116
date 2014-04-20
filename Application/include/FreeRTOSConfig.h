@@ -63,8 +63,8 @@
     1 tab == 4 spaces!
 */
 
-#ifndef FREERTOS_CONFIG_H
-#define FREERTOS_CONFIG_H
+#ifndef FREERTOS_CONFIG_H_
+#define FREERTOS_CONFIG_H_
 
 /* THE VALUE FOR configSTACK_START MUST BE OBTAINED FROM THE .MEM FILE. */
 #define configSTACK_START                  0
@@ -113,5 +113,5 @@ to exclude the API function. */
 #define configCHECK_FOR_STACK_OVERFLOW      0
 #define configUSE_MALLOC_FAILED_HOOK        0
 
-#endif /* FREERTOS_CONFIG_H */
+#endif /* FREERTOS_CONFIG_H_ */
 

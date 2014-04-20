@@ -8,8 +8,8 @@
  *   
  *
  ****************************************************************************/
-#ifndef _PLATFORM_H
-#define _PLATFORM_H
+#ifndef PLATFORM_H_
+#define PLATFORM_H_
 
 #include "GPCE206x.h"
 #include "SACM.h"
@@ -88,4 +88,4 @@ typedef struct _mtd_data_buff
     char data[ 8 ];
 } mtd_data_buff;
 
-#endif _PLATFORM_H
+#endif /* PLATFORM_H_ */

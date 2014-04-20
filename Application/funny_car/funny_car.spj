@@ -29,7 +29,7 @@ EXPORT=3
 #PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
-EXPORT=0
+EXPORT=3
 # Begin Source File
 SOURCE=..\..\Platform\drivers\drv_i2c.c
 USEPARAM=FALSE
@@ -210,7 +210,7 @@ EXPORT=3
 #PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
-EXPORT=0
+EXPORT=3
 # Begin Source File
 SOURCE=..\..\Platform\modules\printf\printf.c
 USEPARAM=FALSE
@@ -568,7 +568,7 @@ SOURCE=..\..\Platform\modules\freertos\source\include\timers.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=707406378
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\StackMacros.h
@@ -610,7 +610,7 @@ EXPORT=3
 #PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
-EXPORT=0
+EXPORT=3
 # Begin Source File
 SOURCE=..\..\Platform\drivers\drv_i2c.c
 USEPARAM=FALSE
@@ -791,7 +791,7 @@ EXPORT=3
 #PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
-EXPORT=0
+EXPORT=3
 # Begin Source File
 SOURCE=..\..\Platform\modules\printf\printf.c
 USEPARAM=FALSE
@@ -1149,7 +1149,7 @@ SOURCE=..\..\Platform\modules\freertos\source\include\timers.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=707406378
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\StackMacros.h

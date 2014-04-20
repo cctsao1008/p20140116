@@ -30,14 +30,8 @@ File: printf.c
  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
  OF SUCH DAMAGE.
  
- ----------------------------------------------------------------------
-
 */
-//putchar#include <stdio.h>
-
 #include "printf.h"
-
-void putchar(char c);
 
 static char* bf;
 static char buf[12];

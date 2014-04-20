@@ -8,8 +8,8 @@
  *   
  *
  ****************************************************************************/
-#ifndef PORTMACRO_H
-#define PORTMACRO_H
+#ifndef PORTMACRO_H_
+#define PORTMACRO_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -81,5 +81,4 @@ extern void vPortExitCritical( void );
 }
 #endif
 
-#endif /* PORTMACRO_H */
-
+#endif /* PORTMACRO_H_ */

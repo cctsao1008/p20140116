@@ -1,3 +1,5 @@
+#ifndef GPCE063_H_
+#define GPCE063_H_
 //==========================================================================
 // File Name   : GPCE063.h
 // Description : GPCE063 registers and constants definition
@@ -5,8 +7,6 @@
 // Last modified date:
 //              2008/03/19
 //==========================================================================
-//#ifndef __GPCE063_H__
-//#define __GPCE063_H__
 
 //--------------------------------------------------------------------------------------------------------------------------------------------
 //  GPIO Configration
@@ -35,9 +35,6 @@
 //  IOB_Func       Bit15 Bit14 Bit13 Bit12 Bit11 Bit10 Bit9  Bit8  Bit7  Bit6  Bit5  Bit4  Bit3  Bit2  Bit1  Bit0
 //  ADC_CH         -     -     -     -     -     -     -     -     AN7   AN6   AN5   AN4   AN3   AN2   AN1   AN0
 //--------------------------------------------------------------------------------------------------------------------------------------------
-
-#ifndef    __GPCE063_H__
-#define    __GPCE063_H__
 
 typedef union tagIOBITS {
 
@@ -662,4 +659,4 @@ typedef union tagIOBITS {
 #define BIT(x)    (1 << (x))
 #endif
 
-#endif __GPCE063_H__
+#endif /* GPCE063_H_ */

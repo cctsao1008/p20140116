@@ -1,5 +1,5 @@
-#ifndef __MODULO_H
-    #define  __MODULO_H
+#ifndef MODULO_H_
+#define MODULO_H_
 /****************************************************************************/
 /*  FILE: modulo.h                                                          */
 /*                                                                          */
@@ -33,9 +33,4 @@
   #ifdef __cplusplus
     }
   #endif
-#endif
-
-
-
-
-
+#endif /* MODULO_H_ */

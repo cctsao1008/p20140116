@@ -8,10 +8,8 @@
  *      This is a driver for Universal Asynchronous Receiver/Transmitter (UART).
  *
  ****************************************************************************/
-#ifndef DRV_UART_H
-#define DRV_UART_H
-
+#ifndef DRV_UART_H_
+#define DRV_UART_H_
 #include "platform.h"
 
-#endif DRV_UART_H
-
+#endif /* DRV_UART_H_ */

@@ -8,9 +8,8 @@
  *      This module performs Inter-Integrated Circuit (I2C) functionality.
  *
  ****************************************************************************/
-#ifndef DRV_I2C_H
-#define DRV_I2C_H
-
+#ifndef DRV_I2C_H_
+#define DRV_I2C_H_
 #include "platform.h"
 
 #define  false           0
@@ -23,4 +22,5 @@ uint8_t i2cWriteBuffer(uint8_t addr_, uint8_t reg_, uint8_t len_, uint8_t *data)
 uint8_t i2cWrite(uint8_t addr_, uint8_t reg, uint8_t data);
 uint8_t i2cRead(uint8_t addr_, uint8_t reg, uint8_t len, uint8_t* buf);
 uint16_t i2cGetErrorCounter(void);
-#endif DRV_I2C_H
+#endif /* DRV_I2C_H_ */
+

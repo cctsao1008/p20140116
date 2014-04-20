@@ -5,8 +5,8 @@
 // Last modified date:
 //              2005/12/26
 //==========================================================================
-#ifndef	__SACM_H__
-#define	__SACM_H__
+#ifndef SACM_H_
+#define SACM_H_
 //**************************************************************************
 // Function Call Publication Area
 //**************************************************************************
@@ -375,4 +375,4 @@ extern void SP_RampDnDAC2(void);
 #define C_ADC_FIR_Type1				0x01	// 2X up-sampling
 #define C_ADC_FIR_Type2				0x02	// 4X up-sampling
 
-#endif
+#endif /* SACM_H_ */
