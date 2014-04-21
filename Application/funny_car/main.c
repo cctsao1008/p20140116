@@ -51,7 +51,7 @@ uint32_t addr;
 
 uint16_t pvParameter = 0xA5A5;
 
-int main()
+int main(void)
 {
     platform_init();
 
