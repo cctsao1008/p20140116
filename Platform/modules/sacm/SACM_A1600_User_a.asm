@@ -16,11 +16,11 @@
 //**************************************************************************
 // Contant Defintion Area
 //**************************************************************************
-.define C_A1600_Timer_Setting_X1		C_Timer_Setting_8K
-.define C_A1600_Timer_Setting_X2		C_Timer_Setting_16K
-.define C_A1600_Timer_Setting_X4		C_Timer_Setting_32K
+.define C_A1600_Timer_Setting_X1                C_Timer_Setting_8K
+.define C_A1600_Timer_Setting_X2                C_Timer_Setting_16K
+.define C_A1600_Timer_Setting_X4                C_Timer_Setting_32K
 
-.define C_SpeechNumberLength		4	// for skip song number
+.define C_SpeechNumberLength            4       // for skip song number
 
 
 //**************************************************************************
@@ -88,9 +88,9 @@
 // Volume Table
 T_SACM_A1600_Volume_Level:
 .dw 0x0000, 0x0250, 0x0500, 0x1000
-.dw	0x1500, 0x2000, 0x2500, 0x3000
+.dw     0x1500, 0x2000, 0x2500, 0x3000
 .dw 0x3500, 0x4000, 0x5000, 0x6500
-.dw	0x7d00, 0x9c00, 0xc400, 0xf500
+.dw     0x7d00, 0x9c00, 0xc400, 0xf500
 
 
 //**************************************************************************
@@ -106,35 +106,36 @@ T_SACM_A1600_Volume_Level:
 // Return      : None
 // Note        : None
 //****************************************************************
-F_SACM_A1600_Init_:	.proc
-	FIR_MOV OFF;
-	
-	R1 = C_TimerA_FPLL;				// TimerA CKA=Fosc/2 CKB=1 Tout:off
-	[P_Timer_Ctrl] = R1;
-	R1= C_A1600_Timer_Setting_X1;	// TimerA setting
-	[P_TimerA_Data] = R1;
-	[P_TimerA_CNTR] = R1;
+F_SACM_A1600_Init_:     .proc
+    FIR_MOV OFF;
+
+    R1 = [P_Timer_Ctrl]
+    R1 |= C_TimerA_FPLL;                             // TimerA CKA=Fosc/2 CKB=1 Tout:off
+    [P_Timer_Ctrl] = R1;
+    R1= C_A1600_Timer_Setting_X1;   // TimerA setting
+    [P_TimerA_Data] = R1;
+    [P_TimerA_CNTR] = R1;
 
     R1 = C_DAC_Enable | C_DAC_CH1_Up_Sample_Enable | C_DAC_CH1_Enable | C_DAC_CH1_TMR_Sel_TimerA;
-	[P_DAC_Ctrl] = R1;		
+        [P_DAC_Ctrl] = R1;              
 
-	R1 = C_Ext_DAC_In_Disable | C_PP_NMOS_Enable | C_PP_Gain_LV10;
-	[P_PPAMP_Ctrl] = R1;
-	call F_SACM_Delay;
-	R1 |= C_PP_PMOS_Enable;
-	[P_PPAMP_Ctrl] = R1;
+        R1 = C_Ext_DAC_In_Disable | C_PP_NMOS_Enable | C_PP_Gain_LV10;
+        [P_PPAMP_Ctrl] = R1;
+        call F_SACM_Delay;
+        R1 |= C_PP_PMOS_Enable;
+        [P_PPAMP_Ctrl] = R1;
 
-	R1 = [P_INT_Ctrl];
-	R1 |= C_IRQ0_TMA;
-	[P_INT_Ctrl] = R1;
+        R1 = [P_INT_Ctrl];
+        R1 |= C_IRQ0_TMA;
+        [P_INT_Ctrl] = R1;
 
-	R1 = [P_FIQ_Sel];
-	R1 |= C_IRQ0_TMA;
-	[P_FIQ_Sel] = R1;
+        R1 = [P_FIQ_Sel];
+        R1 |= C_IRQ0_TMA;
+        [P_FIQ_Sel] = R1;
 
-	FIQ on;
-	retf;
-	.endp
+        FIQ on;
+        retf;
+        .endp
 
 //****************************************************************
 // Function    : F_USER_A1600_Volume
@@ -145,14 +146,14 @@ F_SACM_A1600_Init_:	.proc
 // Note        : None
 //****************************************************************
  _USER_A1600_Volume: .proc
-	R1 = SP + 3;
-	R1 = [R1];								// volume index
+        R1 = SP + 3;
+        R1 = [R1];                                                              // volume index
 F_USER_A1600_Volume:
-	R1 += T_SACM_A1600_Volume_Level;		// loop up volume table
-	R1 = [R1];
-	call F_SACM_A1600_Volume;
-	retf
-	.endp
+        R1 += T_SACM_A1600_Volume_Level;                // loop up volume table
+        R1 = [R1];
+        call F_SACM_A1600_Volume;
+        retf
+        .endp
 
 //****************************************************************
 // Function    : F_SACM_A1600_DAC_Timer_X1
@@ -162,12 +163,12 @@ F_USER_A1600_Volume:
 // Return      : None
 // Note        : None
 //****************************************************************
- _SACM_A1600_DAC_Timer_X1:	.proc
+ _SACM_A1600_DAC_Timer_X1:      .proc
 F_SACM_A1600_DAC_Timer_X1:
-	R1 = C_A1600_Timer_Setting_X1;
-	[P_TimerA_Data] = R1;
-	retf;
-	.endp
+        R1 = C_A1600_Timer_Setting_X1;
+        [P_TimerA_Data] = R1;
+        retf;
+        .endp
 
 //****************************************************************
 // Function    : F_SACM_A1600_DAC_Timer_X2
@@ -177,14 +178,14 @@ F_SACM_A1600_DAC_Timer_X1:
 // Return      : None
 // Note        : None
 //****************************************************************
- _SACM_A1600_DAC_Timer_X2:	.proc
+ _SACM_A1600_DAC_Timer_X2:      .proc
 F_SACM_A1600_DAC_Timer_X2:
-	push R1 to [SP];
-	R1 = C_A1600_Timer_Setting_X2;
-	[P_TimerA_Data] = R1;
-	pop R1 from [SP];
-	retf;
-	.endp
+        push R1 to [SP];
+        R1 = C_A1600_Timer_Setting_X2;
+        [P_TimerA_Data] = R1;
+        pop R1 from [SP];
+        retf;
+        .endp
 
 //****************************************************************
 // Function    : F_SACM_A1600_SendDAC1
@@ -194,10 +195,10 @@ F_SACM_A1600_DAC_Timer_X2:
 // Return      : None
 // Note        : None
 //****************************************************************
-F_SACM_A1600_SendDAC1:	.proc
+F_SACM_A1600_SendDAC1:  .proc
     [P_DAC_CH1_Data] = R4;
-	retf;
-	.endp
+        retf;
+        .endp
 
 //****************************************************************
 // Function    : F_SACM_A1600_SendDAC2
@@ -207,10 +208,10 @@ F_SACM_A1600_SendDAC1:	.proc
 // Return      : None
 // Note        : None
 //****************************************************************
-F_SACM_A1600_SendDAC2:	.proc
+F_SACM_A1600_SendDAC2:  .proc
     [P_DAC_CH2_Data] = R4;
-	retf; 
-	.endp
+        retf; 
+        .endp
 
 //****************************************************************
 // Function    : F_SACM_A1600_StartPlay
@@ -220,10 +221,10 @@ F_SACM_A1600_SendDAC2:	.proc
 // Return      : None
 // Note        : None
 //****************************************************************
-F_SACM_A1600_StartPlay:	.proc
-	nop;
-	retf;
-	.endp
+F_SACM_A1600_StartPlay: .proc
+        nop;
+        retf;
+        .endp
 
 //****************************************************************
 // Function    : F_SACM_A1600_EndPlay
@@ -234,10 +235,10 @@ F_SACM_A1600_StartPlay:	.proc
 // Return      : None
 // Note        : None
 //****************************************************************
-F_SACM_A1600_EndPlay:	.proc
-	nop;
-	retf;
-	.endp
+F_SACM_A1600_EndPlay:   .proc
+        nop;
+        retf;
+        .endp
 
 .if 0
 //****************************************************************
@@ -252,70 +253,70 @@ F_SACM_A1600_EndPlay:	.proc
 // Return      : None
 // Note        : None
 //****************************************************************
-_USER_A1600_SetStartAddr:	.proc
-	R1 = SP + 3;
-	R1 = [R1];
+_USER_A1600_SetStartAddr:       .proc
+        R1 = SP + 3;
+        R1 = [R1];
 
 F_USER_A1600_SetStartAddr:
-	push R2 to [SP];
-	
-	R1 = R1 lsl 2;
-	R1 += C_SpeechNumberLength;
-	push R1 to [SP];
-	R2 = 0x0000;
-	//call F_SPI_ReadAWord;
-	[R_ExtMem_Low] = R1;
-	
-	pop R1 from [SP];
-	R1 += 2;
-	//call F_SPI_ReadAWord;	
-	[R_ExtMem_High] = R1;
+        push R2 to [SP];
+        
+        R1 = R1 lsl 2;
+        R1 += C_SpeechNumberLength;
+        push R1 to [SP];
+        R2 = 0x0000;
+        //call F_SPI_ReadAWord;
+        [R_ExtMem_Low] = R1;
+        
+        pop R1 from [SP];
+        R1 += 2;
+        //call F_SPI_ReadAWord; 
+        [R_ExtMem_High] = R1;
 
-	pop R2 from [SP];
-	retf;
-	.endp
+        pop R2 from [SP];
+        retf;
+        .endp
 
 
 .comment @
-_USER_A1600_SetStartAddr:	.proc
-	R1 = SP + 3;
-	R1 = [R1];
+_USER_A1600_SetStartAddr:       .proc
+        R1 = SP + 3;
+        R1 = [R1];
 
 F_USER_A1600_SetStartAddr:
-	push R1, R2 to [SP];
-	R1 += T_SACM_A1600_SpeechTable;
-	R1 = [R1];
-	R2 = [R1++];
-	[R_ExtMem_Low] = R2;
-	R1 = [R1];
-	R1 = R1 lsl 4;
-	R1 = R1 lsl 4;
-	R1 = R1 lsl 2;
-	[R_ExtMem_High] = R1;
-			
-	pop R1, R2 from [SP];
-	retf;
-	.endp
-@	
-	
+        push R1, R2 to [SP];
+        R1 += T_SACM_A1600_SpeechTable;
+        R1 = [R1];
+        R2 = [R1++];
+        [R_ExtMem_Low] = R2;
+        R1 = [R1];
+        R1 = R1 lsl 4;
+        R1 = R1 lsl 4;
+        R1 = R1 lsl 2;
+        [R_ExtMem_High] = R1;
+                        
+        pop R1, R2 from [SP];
+        retf;
+        .endp
+@       
+        
 .comment @
-_USER_A1600_SetStartAddr:	.proc
-	R2 = SP + 3;
-	R1 = [R2++];
-	R2 = [R2];
+_USER_A1600_SetStartAddr:       .proc
+        R2 = SP + 3;
+        R1 = [R2++];
+        R2 = [R2];
 F_USER_A1600_SetStartAddr:
-	[R_ExtMem_Low] = R1;
-	[R_ExtMem_High] = R2;
-	retf;
-	.endp
+        [R_ExtMem_Low] = R1;
+        [R_ExtMem_High] = R2;
+        retf;
+        .endp
 @
 .else
-F_USER_A1600_SetStartAddr:	.proc
-	push R1, R4 to [SP];
-	call _USER_A1600_SetStartAddr;
-	pop R1, R4 from [SP];
-	retf;
-	.endp
+F_USER_A1600_SetStartAddr:      .proc
+        push R1, R4 to [SP];
+        call _USER_A1600_SetStartAddr;
+        pop R1, R4 from [SP];
+        retf;
+        .endp
 .endif
 
 //****************************************************************
@@ -330,48 +331,48 @@ F_USER_A1600_SetStartAddr:	.proc
 // Return      : None
 // Note        : None
 //****************************************************************
-_USER_A1600_SetStartAddr_Con:	.proc
-	R1 = SP + 3;
-	R1 = [R1];
+_USER_A1600_SetStartAddr_Con:   .proc
+        R1 = SP + 3;
+        R1 = [R1];
 
 F_USER_A1600_SetStartAddr_Con:
-	push R2 to [SP];
-	
-	R1 = R1 lsl 2;
-	R1 += C_SpeechNumberLength;
-	push R1 to [SP];
-	R2 = 0x0000;
-	//call F_SPI_ReadAWord;
-	[R_ExtMem_Low_Con] = R1;
-	
-	pop R1 from [SP];
-	R1 += 2;
-	//call F_SPI_ReadAWord;	
-	[R_ExtMem_High_Con] = R1;
+        push R2 to [SP];
+        
+        R1 = R1 lsl 2;
+        R1 += C_SpeechNumberLength;
+        push R1 to [SP];
+        R2 = 0x0000;
+        //call F_SPI_ReadAWord;
+        [R_ExtMem_Low_Con] = R1;
+        
+        pop R1 from [SP];
+        R1 += 2;
+        //call F_SPI_ReadAWord; 
+        [R_ExtMem_High_Con] = R1;
 
-	pop R2 from [SP];
-	retf;
-	.endp
+        pop R2 from [SP];
+        retf;
+        .endp
 
 .comment @
-_USER_A1600_SetStartAddr_Con:	.proc
-	R1 = SP + 3;
-	R1 = [R1];
+_USER_A1600_SetStartAddr_Con:   .proc
+        R1 = SP + 3;
+        R1 = [R1];
 F_USER_A1600_SetStartAddr_Con:
-	push R1, R2 to [SP];
-	R1 += T_SACM_A1600_SpeechTable;
-	R1 = [R1];
-	R2 = [R1++];
-	[R_ExtMem_Low_Con] = R2;
-	R1 = [R1];
-	R1 = R1 lsl 4;
-	R1 = R1 lsl 4;
-	R1 = R1 lsl 2;
-	[R_ExtMem_High_Con] = R1;
+        push R1, R2 to [SP];
+        R1 += T_SACM_A1600_SpeechTable;
+        R1 = [R1];
+        R2 = [R1++];
+        [R_ExtMem_Low_Con] = R2;
+        R1 = [R1];
+        R1 = R1 lsl 4;
+        R1 = R1 lsl 4;
+        R1 = R1 lsl 2;
+        [R_ExtMem_High_Con] = R1;
 
-	pop R1, R2 from [SP];
-	retf;
-	.endp
+        pop R1, R2 from [SP];
+        retf;
+        .endp
 @
 //****************************************************************
 // Function    : F_SACM_A1600_GetStartAddr_Con
@@ -381,13 +382,13 @@ F_USER_A1600_SetStartAddr_Con:
 // Return      : None
 // Note        : None
 //****************************************************************
-F_SACM_A1600_GetStartAddr_Con:	.proc
-	R1 = [R_ExtMem_Low_Con];
-	R2 = [R_ExtMem_High_Con];
-	[R_ExtMem_Low] = R1;
-	[R_ExtMem_High] = R2;
-	retf;
-	.endp
+F_SACM_A1600_GetStartAddr_Con:  .proc
+        R1 = [R_ExtMem_Low_Con];
+        R2 = [R_ExtMem_High_Con];
+        [R_ExtMem_Low] = R1;
+        [R_ExtMem_High] = R2;
+        retf;
+        .endp
 
 .if 0
 //****************************************************************
@@ -401,62 +402,61 @@ F_SACM_A1600_GetStartAddr_Con:	.proc
 // Note        : None
 //****************************************************************
 .comment @
-F_USER_A1600_GetData:	.proc
-	push R1, R5 to [SP];
-	R3 = [R_ExtMem_Low];
-	R4 = [R_ExtMem_High];
+F_USER_A1600_GetData:   .proc
+        push R1, R5 to [SP];
+        R3 = [R_ExtMem_Low];
+        R4 = [R_ExtMem_High];
 
 ?L_Get_Loop:
-	cmp R2, 0;
-	jz ?L_End;
-	SR &= (~0xFC00);
-	SR |= R4;
-	R5 = D:[R3++];
-	[R1++] = R5;
-	R2 -= 1;
-	cmp R3, 0;
-	jnz ?L_Get_Loop;
-	R4 += 0x0400;
-	[R_ExtMem_High] = R4;
-	jmp ?L_Get_Loop;
+        cmp R2, 0;
+        jz ?L_End;
+        SR &= (~0xFC00);
+        SR |= R4;
+        R5 = D:[R3++];
+        [R1++] = R5;
+        R2 -= 1;
+        cmp R3, 0;
+        jnz ?L_Get_Loop;
+        R4 += 0x0400;
+        [R_ExtMem_High] = R4;
+        jmp ?L_Get_Loop;
 
 ?L_End:
-	[R_ExtMem_Low] = R3; 
-	 
-	pop R1, R5 from [SP];
-	retf;
-	.endp
+        [R_ExtMem_Low] = R3; 
+         
+        pop R1, R5 from [SP];
+        retf;
+        .endp
 @
 
-F_USER_A1600_GetData:	.proc
-	R3 = [R_ExtMem_Low];
-	R4 = [R_ExtMem_High];
-	//call F_SPI_ReadNWords;
-	R3 += R2 lsl 1;
-	R4 += 0, carry;
-	[R_ExtMem_Low] = R3;
-	[R_ExtMem_High] = R4;
-	retf;
-	.endp
+F_USER_A1600_GetData:   .proc
+        R3 = [R_ExtMem_Low];
+        R4 = [R_ExtMem_High];
+        //call F_SPI_ReadNWords;
+        R3 += R2 lsl 1;
+        R4 += 0, carry;
+        [R_ExtMem_Low] = R3;
+        [R_ExtMem_High] = R4;
+        retf;
+        .endp
 
 
 .comment @
-F_USER_A1600_GetData:	.proc
-	R3 = [R_ExtMem_Low];
-	R4 = [R_ExtMem_High];
-	call F_SIO_ReadNWords;
-	[R_ExtMem_Low] = R3;
-	[R_ExtMem_High] = R4;
-	retf;
-	.endp
+F_USER_A1600_GetData:   .proc
+        R3 = [R_ExtMem_Low];
+        R4 = [R_ExtMem_High];
+        call F_SIO_ReadNWords;
+        [R_ExtMem_Low] = R3;
+        [R_ExtMem_High] = R4;
+        retf;
+        .endp
 @
 .else
-.external _vTaskSwitchContext
-F_USER_A1600_GetData:	.proc
-	push R1, R4 to [SP];
-	call _USER_A1600_GetData;
-	pop R1, R4 from [SP];
-	retf;
-	.endp
+F_USER_A1600_GetData:   .proc
+        push R1, R4 to [SP];
+        call _USER_A1600_GetData;
+        pop R1, R4 from [SP];
+        retf;
+        .endp
 .endif
 
