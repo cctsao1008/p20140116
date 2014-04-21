@@ -40,7 +40,7 @@ POP_FR: .MACRO
     POP R1 FROM [SP];
     R2 = 0x1FFF;
     R1 = R1 & R2;
-    R1 |= 0x0070;
+    R1 |= 0x0070; // Force to enable FIQ, IRQ
     FR = R1
     SECBANK OFF;
 .ENDM
@@ -50,20 +50,15 @@ POP_FR: .MACRO
 
 _portSAVE_CONTEXT: .PROC
     SECBANK ON;
-    PUSH BP TO [SP]
-    BP = SP
-    R3 = [BP + 2]; // Read PC
-    R4 = [BP + 3]; // Read SR
-    POP BP FROM [SP]
-    //POP R3,R4 FROM [SP]; // Read PC and SR From Stack
-    //PUSH R3,R4 TO [SP]; // Push back PC and SR
+    POP R3,R4 FROM [SP]; // Save PC and SR
+    PUSH R3,R4 TO [SP];
     PUSH_FR
     SECBANK OFF;
     PUSH_ALL
     R1 = [_pxCurrentTCB];
     [R1] = SP;
     SECBANK ON;
-    PUSH R3,R4 TO [SP];
+    PUSH R3,R4 TO [SP]; // Restore PC and SR for function call rteurn
     SECBANK OFF;
     RETF
 .ENDP
@@ -72,8 +67,7 @@ _portRESTORE_CONTEXT: .PROC
     R1 = [_pxCurrentTCB];
     SP = [R1];
     POP_ALL
-    POP_FR
-    RETF
+    RETI
 .ENDP
 
 _uxPortReadFlagRegister: .PROC
@@ -93,4 +87,3 @@ _vPortWriteFlagRegister: .PROC
     POP_ALL
     RETF
 .ENDP
-

@@ -78,34 +78,41 @@ StackType_t *pxPortInitialiseStack( StackType_t *pxTopOfStack, TaskFunction_t px
 
     /*Simulate task be interrupt status. */
 
-    /* Push pvParameters */
+    /* Argument 3 */
     *pxTopOfStack-- = (StackType_t)pvParameters;
 
-    /* Push SR to SP */
-    *pxTopOfStack-- = (StackType_t)0x0000;
-    *pxTopOfStack-- = (StackType_t)0x0000;
-
-    /* Push PC to SP */
+    /* Argument 2 */
     *pxTopOfStack-- = (StackType_t)(*(( StackType_t*)(pxCode+1)));
-    *pxTopOfStack-- = (StackType_t)(*(( StackType_t*)(pxCode+0)));
+    
+    /* Argument 1 */
+    *pxTopOfStack-- = (StackType_t)pxTopOfStack;
 
-    /* Push FR to SP */
+    /* SR */
+    //*pxTopOfStack-- = (StackType_t)0x0000;
+
+    /* PC */
+    *pxTopOfStack-- = (StackType_t)(*(( StackType_t*)(pxCode+1)));
+
+    /* SR */
+    *pxTopOfStack-- = (StackType_t)0x0000;
+
+    /* FR */
     *pxTopOfStack-- = (StackType_t)uxPortReadFlagRegister();
 
-    /* Push R5 to sp */
-    *pxTopOfStack-- = (StackType_t)0x1111;
+    /* R5 */
+    *pxTopOfStack-- = (StackType_t)0x55555;
 
-    /* Push R4 to sp */                 
-    *pxTopOfStack-- = (StackType_t)0x2222;
-
-    /* Push R3 to sp */                
-    *pxTopOfStack-- = (StackType_t)0x3333;
-
-    /* Push R2 to sp */
+    /* R4 */                 
     *pxTopOfStack-- = (StackType_t)0x4444;
 
-    /* Push R1 to sp */
-    *pxTopOfStack-- = (StackType_t)0x5555;
+    /* R3 */                
+    *pxTopOfStack-- = (StackType_t)0x3333;
+
+    /* R2 */
+    *pxTopOfStack-- = (StackType_t)0x2222;
+
+    /* R1 */
+    *pxTopOfStack-- = (StackType_t)0x1111;
 
     return pxTopOfStack;
 }
@@ -169,7 +176,7 @@ void vApplicationTickHook( void )
 
 void vPortEnterCritical( void )
 {
-    SAVED_FR = uxPortReadFlagRegister();
+    //SAVED_FR = uxPortReadFlagRegister();
     portDISABLE_INTERRUPTS();
     usCriticalNesting++;
 }
@@ -185,7 +192,8 @@ void vPortExitCritical( void )
         /* re-enabled. */
         if( usCriticalNesting == portNO_CRITICAL_SECTION_NESTING)
         {
-            vPortWriteFlagRegister(SAVED_FR);
+            //vPortWriteFlagRegister(SAVED_FR);
+            portENABLE_INTERRUPTS();
         }
     }
 }
@@ -203,9 +211,7 @@ void IRQ7(void)
         #endif
 
         #if( configUSE_PREEMPTION == 1 )
-        //portENABLE_INTERRUPTS();
         portSAVE_CONTEXT();
-        //portDISABLE_INTERRUPTS();
         xTaskIncrementTick();
         vTaskSwitchContext();
         portRESTORE_CONTEXT();
@@ -214,4 +220,3 @@ void IRQ7(void)
         #endif
     }
 }
-
