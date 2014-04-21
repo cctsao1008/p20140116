@@ -19,14 +19,13 @@
 /*-----------------------------------------------------------
  * Implementation of functions defined in portable.h for the unSP ISA V1.3 port.
  *----------------------------------------------------------*/
-
 #include "platform.h"
 
 /* Each task maintains its own interrupt status in the critical nesting variable. */
-#define portINITIAL_CRITICAL_NESTING	    ( ( uint16_t ) 10 )
+#define portINITIAL_CRITICAL_NESTING        ( ( uint16_t ) 0 )
 
 /* Critical section control macros. */
-#define portNO_CRITICAL_SECTION_NESTING		( ( uint16_t ) 0 )
+#define portNO_CRITICAL_SECTION_NESTING     ( ( uint16_t ) 0 )
 volatile uint16_t usCriticalNesting = portINITIAL_CRITICAL_NESTING;
 
 
@@ -41,11 +40,8 @@ static void prvSetupTimerInterrupt( void );
  * Start first task is a separate function so it can be tested in isolation.
  */
  
-extern unsigned portBASE_TYPE uxPortReadFlagRegister( void );
-extern void vPortWriteFlagRegister( unsigned portBASE_TYPE );
-
-unsigned portBASE_TYPE saved_FR = 0;
-
+extern StackType_t uxPortReadFlagRegister( void );
+extern void vPortWriteFlagRegister( StackType_t FR );
 
 void vPortEnterCritical( void );
 void vPortExitCritical( void );
@@ -58,6 +54,8 @@ void portSAVE_CONTEXT( void );
 void portRESTORE_CONTEXT( void );
 #endif
 
+volatile StackType_t SAVED_FR = 0;
+
 /* 
  * Initialise the stack of a task to look exactly as if a call to 
  * portSAVE_CONTEXT had been called.
@@ -66,37 +64,48 @@ void portRESTORE_CONTEXT( void );
  */
 StackType_t *pxPortInitialiseStack( StackType_t *pxTopOfStack, TaskFunction_t pxCode, void *pvParameters )
 {
-	/* 
-		Place a few bytes of known values on the bottom of the stack. 
-		This is just useful for debugging and can be included if required.
+    /* 
+        Place a few bytes of known values on the bottom of the stack. 
+        This is just useful for debugging and can be included if required.
 
-		*pxTopOfStack = ( StackType_t ) 0x1111;
-		pxTopOfStack--;
-		*pxTopOfStack = ( StackType_t ) 0x2222;
-		pxTopOfStack--;
-		*pxTopOfStack = ( StackType_t ) 0x3333;
-		pxTopOfStack--; 
-	*/
+        *pxTopOfStack = ( StackType_t ) 0x1111;
+        pxTopOfStack--;
+        *pxTopOfStack = ( StackType_t ) 0x2222;
+        pxTopOfStack--;
+        *pxTopOfStack = ( StackType_t ) 0x3333;
+        pxTopOfStack--; 
+      */
 
     /*Simulate task be interrupt status. */
-    *pxTopOfStack-- = (portSTACK_TYPE)pvParameters;           /* push pvParameters */
-    *pxTopOfStack-- = (portSTACK_TYPE)0x0000;                 /* push PC to SP */
-    *pxTopOfStack-- = (portSTACK_TYPE)0x0000;                 /* push SR to SP */
 
-    *pxTopOfStack-- = (portSTACK_TYPE)(*((unsigned portPOINTER_SIZE_TYPE*)(pxCode+1)));         /* Push PC to SP */
-    *pxTopOfStack-- = (portSTACK_TYPE)(*((unsigned portPOINTER_SIZE_TYPE*)(pxCode+0)));         /* push SR to SP */
+    /* Push pvParameters */
+    *pxTopOfStack-- = (StackType_t)pvParameters;
 
-    #if 0
-    *pxTopOfStack-- = (portSTACK_TYPE)0x0078;                 /* push FR to SP */
-    #else
-    *pxTopOfStack-- = (portSTACK_TYPE)uxPortReadFlagRegister();                 /* push FR to SP */
-    #endif
+    /* Push SR to SP */
+    *pxTopOfStack-- = (StackType_t)0x0000;
+    *pxTopOfStack-- = (StackType_t)0x0000;
 
-    *pxTopOfStack-- = (portSTACK_TYPE)0x1111;                 /* push R5 to sp */
-    *pxTopOfStack-- = (portSTACK_TYPE)0x2222;                 /* push R4 to sp */
-    *pxTopOfStack-- = (portSTACK_TYPE)0x3333;                 /* push R3 to sp */
-    *pxTopOfStack-- = (portSTACK_TYPE)0x4444;                 /* push R2 to sp */
-    *pxTopOfStack-- = (portSTACK_TYPE)0x5555;                 /* push R1 to sp */
+    /* Push PC to SP */
+    *pxTopOfStack-- = (StackType_t)(*(( StackType_t*)(pxCode+1)));
+    *pxTopOfStack-- = (StackType_t)(*(( StackType_t*)(pxCode+0)));
+
+    /* Push FR to SP */
+    *pxTopOfStack-- = (StackType_t)uxPortReadFlagRegister();
+
+    /* Push R5 to sp */
+    *pxTopOfStack-- = (StackType_t)0x1111;
+
+    /* Push R4 to sp */                 
+    *pxTopOfStack-- = (StackType_t)0x2222;
+
+    /* Push R3 to sp */                
+    *pxTopOfStack-- = (StackType_t)0x3333;
+
+    /* Push R2 to sp */
+    *pxTopOfStack-- = (StackType_t)0x4444;
+
+    /* Push R1 to sp */
+    *pxTopOfStack-- = (StackType_t)0x5555;
 
     return pxTopOfStack;
 }
@@ -104,12 +113,12 @@ StackType_t *pxPortInitialiseStack( StackType_t *pxTopOfStack, TaskFunction_t px
 
 BaseType_t xPortStartScheduler( void )
 {
-	/* Setup the hardware to generate the tick.  Interrupts are disabled when
-	this function is called. */
-	prvSetupTimerInterrupt();
+    /* Setup the hardware to generate the tick.  Interrupts are disabled when
+       this function is called. */
+    prvSetupTimerInterrupt();
 
-	/* Restore the context of the first task that is going to run. */
-	portRESTORE_CONTEXT();
+    /* Restore the context of the first task that is going to run. */
+    portRESTORE_CONTEXT();
 
     /* Should not get here! */
     return pdTRUE;
@@ -143,7 +152,6 @@ void vPortYield( void )
  */
 static void prvSetupTimerInterrupt( void )
 {
-    reset_watch_dog();
     // Config Interrupt
     #ifdef GPCE206x_H_
     P_INT_Ctrl |= C_IRQ7_64Hz;
@@ -154,66 +162,56 @@ static void prvSetupTimerInterrupt( void )
     portENABLE_INTERRUPTS();
 }
 
-#if 0
-void vApplicationIdleHook( void )
-{
-    portENABLE_INTERRUPTS();
-    reset_watch_dog();
-}
-#endif
-
 void vApplicationTickHook( void )
 {
-    //portENABLE_INTERRUPTS();
-    //reset_watch_dog();
     System_ServiceLoop();
 }
 
 void vPortEnterCritical( void )
 {
-    //saved_FR = uxPortReadFlagRegister();
-	portDISABLE_INTERRUPTS();
-	usCriticalNesting++;
+    SAVED_FR = uxPortReadFlagRegister();
+    portDISABLE_INTERRUPTS();
+    usCriticalNesting++;
 }
 
 void vPortExitCritical( void )
 {
-	if( usCriticalNesting > portNO_CRITICAL_SECTION_NESTING )					\
-	{																			\
-		/* Decrement the nesting count as we are leaving a critical section. */	\
-		usCriticalNesting--;													\
-																				\
-		/* If the nesting level has reached zero then interrupts should be */	\
-		/* re-enabled. */														\
-		if( usCriticalNesting == portNO_CRITICAL_SECTION_NESTING )				\
-		{																		\
-			portENABLE_INTERRUPTS();											\
-		}																		\
-	}
+    if( usCriticalNesting > portNO_CRITICAL_SECTION_NESTING )
+    {
+        /* Decrement the nesting count as we are leaving a critical section. */ 
+        usCriticalNesting--;
 
+        /* If the nesting level has reached zero then interrupts should be */
+        /* re-enabled. */
+        if( usCriticalNesting == portNO_CRITICAL_SECTION_NESTING)
+        {
+            vPortWriteFlagRegister(SAVED_FR);
+        }
+    }
 }
 
-#if 1
-// Interrupt
+/*Interrupt */
 void IRQ7(void) __attribute__ ((ISR));
 void IRQ7(void)
 {
-	#ifdef GPCE206x_H_
-	P_INT_Status = C_IRQ7_64Hz;
-	#else
-	P_Int_Status = C_IRQ7_64Hz;
-	#endif
-    
-    reset_watch_dog();
-    
-    #if( configUSE_PREEMPTION == 1 )
-    //vPortYield();
-    portSAVE_CONTEXT();
-    xTaskIncrementTick();
-    vTaskSwitchContext();
-    portRESTORE_CONTEXT();
-    #else
-    xTaskIncrementTick();
-    #endif
+    if((P_INT_Status & C_IRQ7_64Hz) == C_IRQ7_64Hz)
+    {
+        #ifdef GPCE206x_H_
+        P_INT_Status = C_IRQ7_64Hz;
+        #else
+        P_Int_Status = C_IRQ7_64Hz;
+        #endif
+
+        #if( configUSE_PREEMPTION == 1 )
+        //portENABLE_INTERRUPTS();
+        portSAVE_CONTEXT();
+        //portDISABLE_INTERRUPTS();
+        xTaskIncrementTick();
+        vTaskSwitchContext();
+        portRESTORE_CONTEXT();
+        #else
+        xTaskIncrementTick();
+        #endif
+    }
 }
-#endif
+
