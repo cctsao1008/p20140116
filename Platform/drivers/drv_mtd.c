@@ -14,18 +14,24 @@
 #if ( CFG_DRV_MTD > 0 )
 uint32_t mtd_curr_addr = 0;
 
-static const struct mtd_spi_flash_params mtd_flash_table[] = {
-	{
-		.id			        = WINBOND_ID_W25Q16B,
-		.l2_page_size		= 8,
-		.pages_per_sector	= 16,
-		.sectors_per_block	= 16,
-		.nr_blocks		    = 32,
-		.name			    = "W25Q16B",
-	},
+static const MTD_PARAMS mtd_flash_table[] = {
+    {
+        .id                 = WINBOND_ID_W25Q16B,
+        .l2_page_size       = 8,
+        .pages_per_sector   = 16,
+        .sectors_per_block  = 16,
+        .nr_blocks          = 32,
+        .name               = "W25Q16B",
+    },
 };
 
-void mtd_select(uint8_t high);
+void mtd_select(uint8_t high)
+{
+    if(high)
+        spi_select(CS_SFLASH, 1);
+    else
+        spi_select(CS_SFLASH, 0);
+}
 
 MTD_RESULT mtd_probe(MTD_PARAMS *param)
 {
@@ -102,7 +108,7 @@ uint8_t mtd_read_status_2(uint8_t mask)
 
 MTD_RESULT mtd_write_enable(void)
 {
-	MTD_RESULT rc = MTD_OK;
+    MTD_RESULT rc = MTD_OK;
 
     while(mtd_read_status_1(B_BUSY))
     {
@@ -122,6 +128,7 @@ MTD_RESULT mtd_write_enable(void)
     return rc;
 }
 
+#if 0
 MTD_RESULT mtd_write_disable(void)
 {
     MTD_RESULT rc = MTD_OK;
@@ -143,10 +150,11 @@ MTD_RESULT mtd_write_disable(void)
 
     return rc;
 }
+#endif
 
 MTD_RESULT mtd_write_status(uint8_t data)
 {
-	MTD_RESULT rc = MTD_OK;
+    MTD_RESULT rc = MTD_OK;
 
     while(mtd_read_status_1(B_BUSY))
     {
@@ -305,14 +313,6 @@ MTD_RESULT mtd_chip_erase(void)
     return rc;
 }
 
-void mtd_select(uint8_t high)
-{
-    if(high)
-        spi_select(CS_SFLASH, 1);
-    else
-        spi_select(CS_SFLASH, 0);
-}
-
 void mtd_open(void)
 {
 
@@ -326,7 +326,7 @@ void mtd_xmit(const uint8_t d)
 
 uint8_t mtd_rcvr(void)
 {
-	uint8_t r;
+    uint8_t r;
 
     return r;
 }

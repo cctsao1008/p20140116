@@ -51,71 +51,82 @@
 
 #define MTD_SECTOR_SIZE (4 * 1024)
 
-#define WINBOND_ID_W25Q16B		0x4015
-#define WINBOND_ID_W25Q32B		0x4016
+#define WINBOND_ID_W25Q16B      0x4015
+#define WINBOND_ID_W25Q32B      0x4016
 
-#define WINBOND_SR_WIP		(1 << 0)	/* Write-in-Progress */
+#define WINBOND_SR_WIP      (1 << 0)    /* Write-in-Progress */
 
 /* MTD function return code (MTDRESULT) */
 
 typedef enum {
-	MTD_OK = 0,			/* 0 */
-	MTD_BUSY,	    	/* 1 */
-	MTD_TIMEOUT,		/* 2 */
-	MTD_FAILED,			/* 3 */
+    MTD_OK = 0,         /* 0 */
+    MTD_BUSY,           /* 1 */
+    MTD_TIMEOUT,        /* 2 */
+    MTD_FAILED,         /* 3 */
 } MTD_RESULT;
 
 #if 0
 struct mtd_spi_flash_region {
-	uint16_t	count;
-	uint16_t	size;
+    uint16_t    count;
+    uint16_t    size;
 };
 
 struct mtd_spi_flash_op {
 
-	const char	*name;
-	uint32_t	size;
-	uint8_t		(*read)(struct mtd_spi_flash_op *flash, uint32_t offset,
-				size_t len, void *buf);
-	uint8_t		(*write)(struct mtd_spi_flash_op *flash, uint32_t offset,
-				size_t len, const void *buf);
-	uint8_t		(*erase)(struct mtd_spi_flash_op *flash, uint32_t offset,
-				size_t len);
+    const char  *name;
+    uint32_t    size;
+    uint8_t     (*read)(struct mtd_spi_flash_op *flash, uint32_t offset,
+                size_t len, void *buf);
+    uint8_t     (*write)(struct mtd_spi_flash_op *flash, uint32_t offset,
+                size_t len, const void *buf);
+    uint8_t     (*erase)(struct mtd_spi_flash_op *flash, uint32_t offset,
+                size_t len);
 };
 
 static inline int mtd_spi_flash_read(struct mtd_spi_flash_op *flash, uint32_t offset,
-		size_t len, void *buf)
+        size_t len, void *buf)
 {
-	return flash->read(flash, offset, len, buf);
+    return flash->read(flash, offset, len, buf);
 }
 
 static inline int mtd_spi_flash_write(struct mtd_spi_flash_op *flash, uint32_t offset,
-		size_t len, const void *buf)
+        size_t len, const void *buf)
 {
-	return flash->write(flash, offset, len, buf);
+    return flash->write(flash, offset, len, buf);
 }
 
 static inline int mtd_spi_flash_erase(struct mtd_spi_flash_op *flash, uint32_t offset,
-		size_t len)
+        size_t len)
 {
-	return flash->erase(flash, offset, len);
+    return flash->erase(flash, offset, len);
 }
 #endif
 
-typedef struct mtd_spi_flash_params {
-	uint16_t	id;
-	/* Log2 of page size in power-of-two mode */
-	uint8_t		l2_page_size;
-	uint16_t	pages_per_sector;
-	uint16_t	sectors_per_block;
-	uint8_t		nr_blocks;
-	const char	*name;
+typedef struct _mtd_params {
+    uint16_t    id;
+    /* Log2 of page size in power-of-two mode */
+    uint8_t     l2_page_size;
+    uint16_t    pages_per_sector;
+    uint16_t    sectors_per_block;
+    uint8_t     nr_blocks;
+    const char  *name;
 }MTD_PARAMS;
+
+typedef union _flash_addr {
+    uint32_t dw32;
+
+    struct {
+        uint8_t b1 : 8;
+        uint8_t b2 : 8;
+        uint8_t b3 : 8;
+        uint8_t b4 : 8;
+    };
+} FLASH_ADDR;
 
 #if 0
 struct mtd_spi_flash {
-	struct mtd_spi_flash_op flash;
-	const struct mtd_spi_flash_params *params;
+    struct mtd_spi_flash_op flash;
+    const struct mtd_spi_flash_params *params;
 };
 #endif
 

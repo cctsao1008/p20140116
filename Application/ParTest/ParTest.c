@@ -123,7 +123,7 @@ void vParTestInitialise( void )
 }
 /*-----------------------------------------------------------*/
 
-void vParTestSetLED( unsigned portBASE_TYPE uxLED, portBASE_TYPE xValue )
+void vParTestSetLED( portBASE_TYPE uxLED, portBASE_TYPE xValue )
 {
 unsigned short ucBit = ( unsigned short ) 1;
 
@@ -150,7 +150,7 @@ unsigned short ucBit = ( unsigned short ) 1;
 }
 /*-----------------------------------------------------------*/
 
-void vParTestToggleLED( unsigned portBASE_TYPE uxLED )
+void vParTestToggleLED( portBASE_TYPE uxLED )
 {
 unsigned short ucBit;
 

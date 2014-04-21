@@ -11,51 +11,79 @@
 #include "drv_gpio.h"
 
 #if 0
-typedef enum {
-	IOA , IOB
-} IOX;
-
-typedef enum {
-	LCD_SCK , LCD_SDA, LCD_A0, LCD_RST,          // LCD
-	SPI_CS_LCDMOD, SPI_CS_SFLASH, SPI_CS_SDCARD, // SPI CS
-    SPI_CK, SPI_DI, SPI_DO,                      // SPI IO
-    K0, K1, K2, K3,
-    K4, K5, K6, K7,
-} PIN_ID;
-
-typedef struct _gpio_map {
-    const char	  *name; 
-    IOX           port;
-	uint8_t	      pin;
-    volatile  REG da;
-    volatile  REG at;
-    volatile  REG di;
-}GPIO_MAP;
-
-const GPIO_MAP gpio_map[] =
+const GPIO_CFG gpio_init_tbl[] =
 {
-  {"LCD_SCK"      , IOA,  1, 0, 0, 0 },
-  {"LCD_SDA"      , IOA,  2, 0, 0, 0 },
-  {"LCD_A0"       , IOA,  3, 0, 0, 0 },
-  {"LCD_RST"      , IOA,  4, 0, 0, 0 },
-  {"SPI_CS_LCDMOD", IOA, 10, 0, 0, 0 },
-  {"SPI_CS_SFLASH", IOA, 11, 0, 0, 0 },
-  {"SPI_CS_SDCARD", IOA, 12, 0, 0, 0 },
-  {"SPI_CK"       , IOA, 13, 0, 0, 0 },
-  {"SPI_DI"       , IOA, 14, 0, 0, 0 },
-  {"SPI_DO"       , IOA, 15, 0, 0, 0 },
-  {"K0"           , IOB,  0, 0, 0, 0 },
-  {"K1"           , IOB,  1, 0, 0, 0 },
-  {"K2"           , IOB,  2, 0, 0, 0 },
-  {"K3"           , IOB,  3, 0, 0, 0 },
-  {"K4"           , IOB,  4, 0, 0, 0 },
-  {"K5"           , IOB,  5, 0, 0, 0 },
-  {"K6"           , IOB,  6, 0, 0, 0 },
-  {"K7"           , IOB,  7, 0, 0, 0 },
+    [INDEX(IOB, PIN_LCD_SCK)] = {
+      .tag = "lcd_sck",
+      .cfg = TYPE_OUTPUT_HIGH,
+    },
+    [INDEX(IOB, PIN_LCD_SDA)] = {
+      .tag = "lcd_sda",
+      .cfg = TYPE_OUTPUT_HIGH,
+    },
+    [INDEX(IOB, PIN_LCD_A0)] = {
+      .tag = "lcd_sck",
+      .cfg  = TYPE_OUTPUT_HIGH,
+    },
+    [INDEX(IOB, PIN_LCD_RST)] = {
+      .tag = "lcd_rst",
+      .cfg = TYPE_OUTPUT_HIGH,
+    },
+    [INDEX(IOB, PIN_SPI_CS_PN)] = {
+      .tag= "spi_cs_pn",
+      .cfg = TYPE_OUTPUT_HIGH,
+    },
+    [INDEX(IOB, PIN_SPI_CS_SF)] = {
+      .tag = "spi_cs_sf",
+      .cfg = TYPE_OUTPUT_HIGH,
+    },
+    [INDEX(IOB, PIN_SPI_CS_SD)] = {
+      .tag = "spi_cs_sd",
+      .cfg = TYPE_OUTPUT_HIGH,
+    },
+    [INDEX(IOB, PIN_SPI_CK)] = {
+      .tag = "lcd_sck",
+      .cfg = TYPE_OUTPUT_HIGH,
+    },
+    [INDEX(IOB, PIN_SPI_DI)] = {
+      .tag = "lcd_sck",
+      .cfg = TYPE_OUTPUT_HIGH,
+    },
+    [INDEX(IOB, PIN_SPI_DO)] = {
+      .tag = "lcd_sck",
+      .cfg = TYPE_OUTPUT_HIGH,
+    },
+    [INDEX(IOA, PIN_K0)] = {
+      .tag = "btn_k0",
+      .cfg = TYPE_OUTPUT_HIGH,
+    },
+    [INDEX(IOA, PIN_K1)] = {
+      .tag = "btn_k1",
+      .cfg = TYPE_OUTPUT_HIGH,
+    },
+    [INDEX(IOA, PIN_K2)] = {
+      .tag = "btn_k2",
+      .cfg = TYPE_OUTPUT_HIGH,
+    },
+    [INDEX(IOA, PIN_K3)] = {
+      .tag = "btn_k3",
+      .cfg = TYPE_OUTPUT_HIGH,
+    },
+    [INDEX(IOA, PIN_K4)] = {
+      .tag = "btn_k4",
+      .cfg = TYPE_OUTPUT_HIGH,
+    },
+    [INDEX(IOA, PIN_K5)] = {
+      .tag = "btn_k5",
+      .cfg = TYPE_OUTPUT_HIGH,
+    },
+    [INDEX(IOA, PIN_K6)] = {
+      .tag = "btn_k6",
+      .cfg = TYPE_OUTPUT_HIGH,
+    },
+    [INDEX(IOA, PIN_K7)] = {
+      .tag = "btn_k7",
+      .cfg = TYPE_OUTPUT_HIGH,
+    },
 };
-
-void gpio_init()
-{
-
-}
 #endif

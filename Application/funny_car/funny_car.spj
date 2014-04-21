@@ -138,13 +138,6 @@ EXPORT=3
 # End Source File
 # End Group
 # Begin Source File
-SOURCE=..\..\Platform\modules\freertos\source\croutine.c
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\list.c
 USEPARAM=FALSE
 PARAM=
@@ -160,20 +153,6 @@ EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\tasks.c
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\freertos\source\timers.c
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\freertos\source\event_groups.c
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -515,6 +494,13 @@ ID=
 EXPORT=0
 # End Source File
 # Begin Source File
+SOURCE=..\..\Platform\modules\rtclib\rtclib.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\projdefs.h
 USEPARAM=FALSE
 PARAM=
@@ -557,18 +543,11 @@ ID=
 EXPORT=0
 # End Source File
 # Begin Source File
-SOURCE=..\..\Platform\include\GPCE206x.inc
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\timers.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=707406378
+EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\StackMacros.h
@@ -578,7 +557,7 @@ ID=
 EXPORT=0
 # End Source File
 # Begin Source File
-SOURCE=..\..\Platform\modules\freertos\source\include\event_groups.h
+SOURCE=..\..\Platform\include\GPCE206x.inc
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -719,13 +698,6 @@ EXPORT=3
 # End Source File
 # End Group
 # Begin Source File
-SOURCE=..\..\Platform\modules\freertos\source\croutine.c
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\list.c
 USEPARAM=FALSE
 PARAM=
@@ -741,20 +713,6 @@ EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\tasks.c
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\freertos\source\timers.c
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\freertos\source\event_groups.c
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -1096,6 +1054,13 @@ ID=
 EXPORT=0
 # End Source File
 # Begin Source File
+SOURCE=..\..\Platform\modules\rtclib\rtclib.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\projdefs.h
 USEPARAM=FALSE
 PARAM=
@@ -1138,18 +1103,11 @@ ID=
 EXPORT=0
 # End Source File
 # Begin Source File
-SOURCE=..\..\Platform\include\GPCE206x.inc
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\timers.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=707406378
+EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\StackMacros.h
@@ -1159,7 +1117,7 @@ ID=
 EXPORT=0
 # End Source File
 # Begin Source File
-SOURCE=..\..\Platform\modules\freertos\source\include\event_groups.h
+SOURCE=..\..\Platform\include\GPCE206x.inc
 USEPARAM=FALSE
 PARAM=
 ID=
