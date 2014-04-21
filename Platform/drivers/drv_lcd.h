@@ -147,9 +147,9 @@
 #define CENTER          -1
 #define RIGHT           -2
 
-extern const unsigned char SmallFont[]; 
+extern const unsigned char FONT_ASCII_8X12[]; 
 
-int putchar (int c);
+//int putchar (int c);
 
 void lcd7735_init(void);
 void lcd7735_initR(uint8_t options);

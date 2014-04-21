@@ -15,8 +15,8 @@
 //#define USE_PROTOTHREADS
 #define USE_FREERTOS
 #define NO_DEBUG_MSG_OUTPUT
-#define DEBUG_MSG_OUTPUT_UART
-//#define DEBUG_MSG_OUTPUT_LCD
+//#define DEBUG_MSG_OUTPUT_UART
+#define DEBUG_MSG_OUTPUT_LCD
 
 
 /****************************************************************************
@@ -30,7 +30,7 @@
 #define CFG_DRV_SPI          1
 
 /* UART Driver Configuration */
-#define CFG_DRV_UART         0
+#define CFG_DRV_UART         1
 
 /* LCD Driver Configuration */
 #define CFG_DRV_LCD          1
@@ -53,17 +53,6 @@
 /* ParTest Application Configuration */
 #define CFG_APP_PARTEST      1
 
-/* Debug message output */
-#ifdef DEBUG_MSG_OUTPUT_LCD
-#define putchar lcd7735_putchar
-#define printf tfp_printf
-#endif
-
-#ifdef DEBUG_MSG_OUTPUT_UART
-#define putchar _putchar
-//#define printf(str, ...) tfp_printf
-#define printf tfp_printf
-#endif
 
 #include "GPCE206x.h"
 #include "SACM.h"
@@ -115,6 +104,18 @@
 #include "xprintf.h"
 #include "ringBufS.h"
 #include "rtclib.h"
+
+/* Debug message output */
+#ifdef DEBUG_MSG_OUTPUT_LCD
+#define putchar lcd7735_putc
+#define printf tfp_printf
+#endif
+
+#ifdef DEBUG_MSG_OUTPUT_UART
+#define putchar _putchar
+//#define printf(str, ...) tfp_printf
+#define printf tfp_printf
+#endif
 
 #endif /* _PLATFORM_H_ */
 

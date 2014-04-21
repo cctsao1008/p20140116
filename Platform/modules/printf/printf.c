@@ -39,6 +39,8 @@ static unsigned int num;
 static char uc;
 static char zs;
 
+//uint8_t  putchar (uint8_t  c);
+
 static void out(char c) {
     *bf++ = c;
 }
@@ -59,7 +61,7 @@ static void divOut(unsigned int div) {
         outDgt(dgt);
 }   
 
-void tfp_printf(char *fmt, ...)
+void tfp_printf(const char *fmt, ...)
 {
     va_list va;
     char ch;

@@ -72,6 +72,20 @@ PARAM=
 ID=
 EXPORT=3
 # End Source File
+# Begin Source File
+SOURCE=..\..\..\p20140116\Platform\drivers\drv_isr_a.asm
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\..\p20140116\Platform\drivers\drv_isr_c.c
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
 # End Group
 # Begin Group "modules"
 #PROP Default_Filter=
@@ -264,20 +278,6 @@ PARAM=
 ID=
 EXPORT=3
 # End Source File
-# Begin Source File
-SOURCE=isr_c.c
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=isr_a.asm
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
 # End Group
 # Begin Group "ParTest"
 #PROP Default_Filter=
@@ -438,13 +438,6 @@ ID=
 EXPORT=0
 # End Source File
 # Begin Source File
-SOURCE=..\..\Platform\include\GPCE206x.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
 SOURCE=..\..\Platform\modules\sacm\SACM.h
 USEPARAM=FALSE
 PARAM=
@@ -501,21 +494,7 @@ ID=
 EXPORT=0
 # End Source File
 # Begin Source File
-SOURCE=..\..\Platform\modules\freertos\source\include\projdefs.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
 SOURCE=..\include\FreeRTOSConfig.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\freertos\source\include\portable.h
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -530,13 +509,6 @@ EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\queue.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\freertos\source\include\mpu_wrappers.h
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -558,6 +530,34 @@ EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\include\GPCE206x.inc
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\include\GPCE206x.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\include\projdefs.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\include\portable.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\include\mpu_wrappers.h
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -632,6 +632,20 @@ PARAM=
 ID=
 EXPORT=3
 # End Source File
+# Begin Source File
+SOURCE=..\..\..\p20140116\Platform\drivers\drv_isr_a.asm
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\..\p20140116\Platform\drivers\drv_isr_c.c
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
 # End Group
 # Begin Group "modules"
 #PROP Default_Filter=
@@ -824,20 +838,6 @@ PARAM=
 ID=
 EXPORT=3
 # End Source File
-# Begin Source File
-SOURCE=isr_c.c
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=isr_a.asm
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
 # End Group
 # Begin Group "ParTest"
 #PROP Default_Filter=
@@ -998,13 +998,6 @@ ID=
 EXPORT=0
 # End Source File
 # Begin Source File
-SOURCE=..\..\Platform\include\GPCE206x.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
 SOURCE=..\..\Platform\modules\sacm\SACM.h
 USEPARAM=FALSE
 PARAM=
@@ -1061,21 +1054,7 @@ ID=
 EXPORT=0
 # End Source File
 # Begin Source File
-SOURCE=..\..\Platform\modules\freertos\source\include\projdefs.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
 SOURCE=..\include\FreeRTOSConfig.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\freertos\source\include\portable.h
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -1090,13 +1069,6 @@ EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\queue.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\freertos\source\include\mpu_wrappers.h
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -1118,6 +1090,34 @@ EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\include\GPCE206x.inc
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\include\GPCE206x.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\include\projdefs.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\include\portable.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\freertos\source\include\mpu_wrappers.h
 USEPARAM=FALSE
 PARAM=
 ID=

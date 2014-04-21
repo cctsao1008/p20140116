@@ -40,7 +40,7 @@ static uint16_t _height = ST7735_TFTHEIGHT;
     Memory usage   : 1144 bytes
     Characters        : 95
 */
-const unsigned char SmallFont[] = {
+const unsigned char FONT_ASCII_8X12[] = {
 0x08,0x0C,0x20,0x5F,
 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, // <Space>
 0x00,0x00,0x20,0x20,0x20,0x20,0x20,0x20,0x00,0x20,0x00,0x00, // !
@@ -253,7 +253,7 @@ static struct __screen {
 //static uint16_t _fg = ST7735_GREEN;
 //static uint16_t _bg = ST7735_BLACK;
 
-
+#if 0
 /* printf in "CLib" will call putchar.
    user can implement this function -- send a char to UART? */
 int putchar (int c)
@@ -261,6 +261,7 @@ int putchar (int c)
     lcd7735_putc(c);
     return c;
 }
+#endif
 
 void delay_ms(uint32_t ms)
 {    
