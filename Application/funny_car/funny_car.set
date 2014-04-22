@@ -50,7 +50,7 @@ IsGenRes=1
 IsInitGlobal=1
 IsGenList=0
 CurIsa=ISA13
-IsWall=0
+IsWall=1
 POINTER=0
 
 [AdvancedHard]

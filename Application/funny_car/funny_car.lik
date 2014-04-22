@@ -10,6 +10,7 @@ Obj: "D:\funny_car\p20140116_test\Application\funny_car\Debug\drv_uart.obj"
 Obj: "D:\funny_car\p20140116_test\Application\funny_car\Debug\drv_gpio.obj"
 Obj: "D:\funny_car\p20140116_test\Application\funny_car\Debug\drv_isr_a.obj"
 Obj: "D:\funny_car\p20140116_test\Application\funny_car\Debug\drv_isr_c.obj"
+Obj: "D:\funny_car\p20140116_test\Application\funny_car\Debug\drv_sys.obj"
 Obj: "D:\funny_car\p20140116_test\Application\funny_car\Debug\mmcbb.obj"
 Obj: "D:\funny_car\p20140116_test\Application\funny_car\Debug\pff.obj"
 Obj: "D:\funny_car\p20140116_test\Application\funny_car\Debug\crc.obj"
@@ -20,7 +21,6 @@ Obj: "D:\funny_car\p20140116_test\Application\funny_car\Debug\SACM_A1600_User_c.
 Obj: "D:\funny_car\p20140116_test\Application\funny_car\Debug\modulo.obj"
 Obj: "D:\funny_car\p20140116_test\Application\funny_car\Debug\ringBufS.obj"
 Obj: "D:\funny_car\p20140116_test\Application\funny_car\Debug\main.obj"
-Obj: "D:\funny_car\p20140116_test\Application\funny_car\Debug\System.obj"
 Lib: "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\CLib16\lib\CLib.lib"
 Lib: "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\CLib16\lib\Libmem.lib"
 Lib: "C:\Program Files (x86)\Generalplus\unSPIDE 3.0.8\library\CMacro\CMacro1216.lib"
@@ -44,10 +44,10 @@ Output: "D:\funny_car\p20140116_test\Application\funny_car\Debug\funny_car.S37"
 ;Align: IRAM in "./memory/malloc" of "Libmem.lib"  with 0 
 ;Locate: IRAM in "./memory/init_heap" of "Libmem.lib"  at D0F5  linkat 423 
 ;Align: IRAM in "./memory/init_heap" of "Libmem.lib"  with 0 
-;Locate: RAM in "SACM_A1600_User_a.obj" at 1E0 
+;Locate: RAM in "drv_sys.obj" at 1E0 
+;Align: RAM in "drv_sys.obj" with 0 
+;Locate: RAM in "SACM_A1600_User_a.obj" at 1E4 
 ;Align: RAM in "SACM_A1600_User_a.obj" with 0 
-;Locate: RAM in "System.obj" at 1E4 
-;Align: RAM in "System.obj" with 0 
 ;Locate: OVERLAP_A1600_API_BLOCK in "SACM_A1600_API" of "SACM_A1600_V41b_Beta03.lib"  at 1 
 ;Align: OVERLAP_A1600_API_BLOCK in "SACM_A1600_API" of "SACM_A1600_V41b_Beta03.lib"  with 0 
 ;Locate: OVERLAP_A1600_RAM_BLOCK in "SACM_A1600_Decode" of "SACM_A1600_V41b_Beta03.lib"  at 18 
@@ -62,6 +62,8 @@ Output: "D:\funny_car\p20140116_test\Application\funny_car\Debug\funny_car.S37"
 ;Align: CODE in "drv_spi.obj" with 0 
 ;Locate: CODE in "drv_isr_c.obj" at CEB3 
 ;Align: CODE in "drv_isr_c.obj" with 0 
+;Locate: CODE in "drv_sys.obj" at C8FE 
+;Align: CODE in "drv_sys.obj" with 0 
 ;Locate: CODE in "mmcbb.obj" at B663 
 ;Align: CODE in "mmcbb.obj" with 0 
 ;Locate: CODE in "pff.obj" at 8DEF 
@@ -80,8 +82,6 @@ Output: "D:\funny_car\p20140116_test\Application\funny_car\Debug\funny_car.S37"
 ;Align: CODE in "ringBufS.obj" with 0 
 ;Locate: CODE in "main.obj" at AA0E 
 ;Align: CODE in "main.obj" with 0 
-;Locate: CODE in "System.obj" at C8FE 
-;Align: CODE in "System.obj" with 0 
 ;Locate: CODE in "./string/strlen" of "CLib.lib"  at CE76 
 ;Align: CODE in "./string/strlen" of "CLib.lib"  with 0 
 ;Locate: CODE in "./string/memset" of "CLib.lib"  at CE59 

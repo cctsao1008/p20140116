@@ -86,6 +86,13 @@ PARAM=
 ID=
 EXPORT=3
 # End Source File
+# Begin Source File
+SOURCE=..\..\Platform\drivers\drv_sys.asm
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
 # End Group
 # Begin Group "modules"
 #PROP Default_Filter=
@@ -210,13 +217,6 @@ PARAM=
 ID=
 EXPORT=3
 # End Source File
-# Begin Source File
-SOURCE=System.asm
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
 # End Group
 # End Group
 # End Group
@@ -250,14 +250,7 @@ EXPORT=3
 #PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
-EXPORT=0
-# Begin Source File
-SOURCE=A1600.inc
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
+EXPORT=48
 # Begin Source File
 SOURCE=..\..\Platform\drivers\drv_i2c.h
 USEPARAM=FALSE
@@ -340,14 +333,14 @@ SOURCE=..\..\Platform\drivers\drv_mtd.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=3090976
+EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\drivers\drv_lcd.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=1887007776
+EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\drivers\drv_uart.h
@@ -403,7 +396,7 @@ SOURCE=..\..\Platform\modules\rtclib\rtclib.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\projdefs.h
@@ -413,18 +406,18 @@ ID=
 EXPORT=0
 # End Source File
 # Begin Source File
-SOURCE=..\include\FreeRTOSConfig.h
+SOURCE=..\..\Platform\include\FreeRTOSConfig.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=707406378
+EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\portable.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\list.h
@@ -459,10 +452,17 @@ SOURCE=..\..\Platform\modules\freertos\source\include\mpu_wrappers.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=1936269426
+EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\include\GPCE206x.inc
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\sacm\A1600.inc
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -473,14 +473,14 @@ SOURCE=..\..\Platform\modules\pff\src\diskio.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=6581871
+EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\rinbufs\modulo.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=48
+EXPORT=0
 # End Source File
 # End Group
 # End SubItem
@@ -565,6 +565,13 @@ PARAM=
 ID=
 EXPORT=3
 # End Source File
+# Begin Source File
+SOURCE=..\..\Platform\drivers\drv_sys.asm
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
 # End Group
 # Begin Group "modules"
 #PROP Default_Filter=
@@ -689,13 +696,6 @@ PARAM=
 ID=
 EXPORT=3
 # End Source File
-# Begin Source File
-SOURCE=System.asm
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
 # End Group
 # End Group
 # End Group
@@ -729,14 +729,7 @@ EXPORT=3
 #PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
-EXPORT=0
-# Begin Source File
-SOURCE=A1600.inc
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
+EXPORT=48
 # Begin Source File
 SOURCE=..\..\Platform\drivers\drv_i2c.h
 USEPARAM=FALSE
@@ -819,14 +812,14 @@ SOURCE=..\..\Platform\drivers\drv_mtd.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=3090976
+EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\drivers\drv_lcd.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=1887007776
+EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\drivers\drv_uart.h
@@ -882,7 +875,7 @@ SOURCE=..\..\Platform\modules\rtclib\rtclib.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\projdefs.h
@@ -892,18 +885,18 @@ ID=
 EXPORT=0
 # End Source File
 # Begin Source File
-SOURCE=..\include\FreeRTOSConfig.h
+SOURCE=..\..\Platform\include\FreeRTOSConfig.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=707406378
+EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\portable.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\list.h
@@ -938,10 +931,17 @@ SOURCE=..\..\Platform\modules\freertos\source\include\mpu_wrappers.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=1936269426
+EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\include\GPCE206x.inc
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=0
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\sacm\A1600.inc
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -952,14 +952,14 @@ SOURCE=..\..\Platform\modules\pff\src\diskio.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=6581871
+EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\rinbufs\modulo.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=48
+EXPORT=0
 # End Source File
 # End Group
 # End SubItem
