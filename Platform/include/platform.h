@@ -13,7 +13,7 @@
 
 /* Project Configurations */
 //#define USE_PROTOTHREADS
-#define USE_FREERTOS
+//#define USE_FREERTOS
 #define NO_DEBUG_MSG_OUTPUT
 #define DEBUG_MSG_OUTPUT_UART
 //#define DEBUG_MSG_OUTPUT_LCD

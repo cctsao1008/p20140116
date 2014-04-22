@@ -19,9 +19,7 @@ void IRQ5(void) __attribute__ ((ISR));
 
 void IRQ6(void) __attribute__ ((ISR));
 
-#if 0
 void IRQ7(void) __attribute__ ((ISR));
-#endif
 
 void BREAK(void)
 {
@@ -79,11 +77,8 @@ void IRQ6(void)
 
 }
 
-#if 0
 void IRQ7(void)
 {
 	//add your code here
 
 }
-#endif
-
