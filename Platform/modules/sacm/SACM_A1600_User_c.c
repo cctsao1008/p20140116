@@ -1,3 +1,13 @@
+/****************************************************************************
+ * Platform/modules/sacm/SACM_A1600_User_c.c
+ *
+ *   Copyright (C) 2014  DRPM Development Team. All rights reserved.
+ *   Author: TSAO, CHIA-CHENG <chiacheng.tsao@gmail.com>
+ *
+ *   GENERAL DESCRIPTION
+ *  
+ *
+ ****************************************************************************/
 #include "platform.h"
 
 extern ringBufS rb;
@@ -14,10 +24,10 @@ void USER_A1600_GetData(unsigned int *dba,unsigned int dbl)
     for(i = 0 ; i < dbl ; i++)
     {
         #ifdef USE_RINGBUFS
-    	if(ringBufS_empty(&rb))
+        if(ringBufS_empty(&rb))
         {
-        	mtd_read_data((uint32_t)addr, (uint8_t *)&buff, 2);
-        	ringBufS_put(&rb, buff[0]);
+            mtd_read_data((uint32_t)addr, (uint8_t *)&buff, 2);
+            ringBufS_put(&rb, buff[0]);
             ringBufS_put(&rb, buff[1]);
             addr = addr + 2;
         }

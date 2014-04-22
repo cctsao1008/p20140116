@@ -1,3 +1,5 @@
+#ifndef GPCE206x_H_
+#define GPCE206x_H_
 //==========================================================================
 // File Name   : GPCE206x.H
 // Description : GPCE206x registers and constants definition
@@ -35,9 +37,6 @@
 //	ADC_CH		I2S_WS	I2S_DA	I2S_CK	-		-		-		-		-		-		AN7		AN6		AN5		AN4		AN3		AN2		AN1		AN0
 //	IOToggle	Yes		Yes		Yes		Yes		Yes		Yes		Yes		Yes		Yes		Yes		Yes		Yes		Yes		Yes		Yes		Yes
 //--------------------------------------------------------------------------------------------------------------------------------------------
-
-#ifndef    __GPCE206x_H__
-#define    __GPCE206x_H__
 
 typedef union tagREG {
 
@@ -757,10 +756,26 @@ typedef union tagREG {
 #define toggle(x,y)    x^=(1 << (y))
 #endif
 
+#ifndef sbi_m
+#define sbi_m(x,y)    x|=y
+#endif
+
+#ifndef cbi_m
+#define cbi_m(x,y)    x&=~y
+#endif
+
+#ifndef tstb_m
+#define tstb_m(x,y)    ((x & y) ? y : 0)
+#endif
+
+#ifndef toggle_m
+#define toggle_m(x,y)    x^=y
+#endif
+
 #ifndef BIT
 #define BIT(x)    (1 << (x))
 #endif
 
 #define reset_watch_dog() (P_Watchdog_Clear = C_Watchdog_Clear)
 
-#endif __GPCE206x_H__
+#endif /* GPCE206x_H_ */

@@ -9,10 +9,8 @@
  *      for micro-controllers
  *
  ****************************************************************************/
-#ifndef DRV_VUSB_H
-#define DRV_VUSB_H
-
+#ifndef DRV_VUSB_H_
+#define DRV_VUSB_H_
 #include "platform.h"
 
-#endif DRV_VUSB_H
-
+#endif /* DRV_VUSB_H_ */

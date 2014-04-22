@@ -5,8 +5,8 @@
 // Last modified date:
 //              2005/12/26
 //==========================================================================
-#ifndef	__SACM_H__
-#define	__SACM_H__
+#ifndef SACM_H_
+#define SACM_H_
 //**************************************************************************
 // Function Call Publication Area
 //**************************************************************************
@@ -300,79 +300,79 @@ extern void SP_RampDnDAC2(void);
 // Constant difinition
 //////////////////////////////////////////////////////////////////////////////////////////
 // SACM Record/Play mode
-#define Manual_Mode_Index			-1
-#define Manual						0
-#define Auto						1
+#define Manual_Mode_Index           -1
+#define Manual                      0
+#define Auto                        1
 
 // DAC output
-#define	DAC1						1
-#define DAC2						2
+#define DAC1                        1
+#define DAC2                        2
 
 // Ramp up/Ramp down
-#define	Ramp_Disable				0
-#define Ramp_Up						1
-#define	Ramp_Dn						2
+#define Ramp_Disable                0
+#define Ramp_Up                     1
+#define Ramp_Dn                     2
 
 // For DVR
-#define	RecMonitorOff				0
-#define	RecMonitorOn				1
+#define RecMonitorOff               0
+#define RecMonitorOn                1
 
 // DVR AD Channel
-#define	Mic							0
-#define	Line_In1					1
-#define	Line_In2					2
-#define	Line_In3					3
-#define	Line_In4					4
-#define	Line_In5					5
-#define	Line_In6					6
-#define	Line_In7					7
-#define	Line_In8					8
+#define Mic                         0
+#define Line_In1                    1
+#define Line_In2                    2
+#define Line_In3                    3
+#define Line_In4                    4
+#define Line_In5                    5
+#define Line_In6                    6
+#define Line_In7                    7
+#define Line_In8                    8
 
 // DVR 1600 bit rate
-#define	DVR1600_BIT_RATE_10K		0
-#define	DVR1600_BIT_RATE_12K		1
-#define	DVR1600_BIT_RATE_14K		2
-#define	DVR1600_BIT_RATE_16K		3
-#define	DVR1600_BIT_RATE_20K		4
-#define DVR1600_BIT_RATE_24K		5
+#define DVR1600_BIT_RATE_10K        0
+#define DVR1600_BIT_RATE_12K        1
+#define DVR1600_BIT_RATE_14K        2
+#define DVR1600_BIT_RATE_16K        3
+#define DVR1600_BIT_RATE_20K        4
+#define DVR1600_BIT_RATE_24K        5
 
 // DVR 1800 bit rate
-#define	DVR1800_BIT_RATE_7_2K		0
-#define	DVR1800_BIT_RATE_9_6K		1
-#define	DVR1800_BIT_RATE_12K		2
-#define	DVR1800_BIT_RATE_14_4K		3
-#define	DVR1800_BIT_RATE_16K		4
-#define DVR1800_BIT_RATE_20K		5
-#define DVR1800_BIT_RATE_24K		6
-#define DVR1800_BIT_RATE_32K		7
+#define DVR1800_BIT_RATE_7_2K       0
+#define DVR1800_BIT_RATE_9_6K       1
+#define DVR1800_BIT_RATE_12K        2
+#define DVR1800_BIT_RATE_14_4K      3
+#define DVR1800_BIT_RATE_16K        4
+#define DVR1800_BIT_RATE_20K        5
+#define DVR1800_BIT_RATE_24K        6
+#define DVR1800_BIT_RATE_32K        7
 
 // DVR4800 bit rate
-#define	DVR4800_BIT_RATE_32K		0
-#define	DVR4800_BIT_RATE_36K		1
-#define	DVR4800_BIT_RATE_40K		2
-#define	DVR4800_BIT_RATE_44K		3
-#define	DVR4800_BIT_RATE_48K		4
-#define DVR4800_BIT_RATE_52K		5
-#define DVR4800_BIT_RATE_56K		6
+#define DVR4800_BIT_RATE_32K        0
+#define DVR4800_BIT_RATE_36K        1
+#define DVR4800_BIT_RATE_40K        2
+#define DVR4800_BIT_RATE_44K        3
+#define DVR4800_BIT_RATE_48K        4
+#define DVR4800_BIT_RATE_52K        5
+#define DVR4800_BIT_RATE_56K        6
 
-#define MS02_DAC_8K					0					// MS02 use only
-#define MS02_DAC_10K				1					// MS02 use only
-#define MS02_DAC_12K				2					// MS02 use only
-#define MS02_DAC_16K				3					// MS02 use only
-#define MS02_DAC_20K				4					// MS02 use only
-#define MS02_DAC_24K				5					// MS02 use only
-#define MS02_DAC_28K				6					// MS02 use only
-#define MS02_DAC_32K				7					// MS02 use only
-#define MS02_DAC_36K				8					// MS02 use only
-#define MS02_DAC_40K				9					// MS02 use only
+#define MS02_DAC_8K                 0                   // MS02 use only
+#define MS02_DAC_10K                1                   // MS02 use only
+#define MS02_DAC_12K                2                   // MS02 use only
+#define MS02_DAC_16K                3                   // MS02 use only
+#define MS02_DAC_20K                4                   // MS02 use only
+#define MS02_DAC_24K                5                   // MS02 use only
+#define MS02_DAC_28K                6                   // MS02 use only
+#define MS02_DAC_32K                7                   // MS02 use only
+#define MS02_DAC_36K                8                   // MS02 use only
+#define MS02_DAC_40K                9                   // MS02 use only
 
-#define C_DAC_FIR_Type0				0x00	// no up-sampling
-#define C_DAC_FIR_Type1				0x01	// 2X up-sampling, no filter
-#define C_DAC_FIR_Type2				0x02	// 2X up-sampling, simple filter
-#define C_DAC_FIR_Type3				0x03	// 2X up-sampling, complex filter
+#define C_DAC_FIR_Type0             0x00    // no up-sampling
+#define C_DAC_FIR_Type1             0x01    // 2X up-sampling, no filter
+#define C_DAC_FIR_Type2             0x02    // 2X up-sampling, simple filter
+#define C_DAC_FIR_Type3             0x03    // 2X up-sampling, complex filter
 
-#define C_ADC_FIR_Type0				0x00	// no up-sampling
-#define C_ADC_FIR_Type1				0x01	// 2X up-sampling
-#define C_ADC_FIR_Type2				0x02	// 4X up-sampling
+#define C_ADC_FIR_Type0             0x00    // no up-sampling
+#define C_ADC_FIR_Type1             0x01    // 2X up-sampling
+#define C_ADC_FIR_Type2             0x02    // 4X up-sampling
 
-#endif
+#endif /* SACM_H_ */

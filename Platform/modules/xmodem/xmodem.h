@@ -1,6 +1,5 @@
-#ifndef _XMODEM_H_
-#define _XMODEM_H_
-
+#ifndef XMODEM_H_
+#define XMODEM_H_
 
 #define XMODEM_SOH	0x01
 #define XMODEM_EOT	0x04
@@ -27,4 +26,4 @@ extern char getch(void);
 extern void putch(char);
 
 
-#endif /* _XMODEM_H_ */
+#endif /* XMODEM_H_ */

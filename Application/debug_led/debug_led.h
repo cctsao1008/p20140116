@@ -1,4 +1,5 @@
-#ifndef DEBUG_LED_H
-#define DEBUG_LED_H
+#ifndef DEBUG_LED_H_
+#define DEBUG_LED_H_
 
-#endif
+#endif /* DEBUG_LED_H_ */
+

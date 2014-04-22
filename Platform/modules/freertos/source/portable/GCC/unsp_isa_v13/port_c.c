@@ -19,7 +19,6 @@
 /*-----------------------------------------------------------
  * Implementation of functions defined in portable.h for the unSP ISA V1.3 port.
  *----------------------------------------------------------*/
-
 #include "platform.h"
 
 /* Each task maintains its own interrupt status in the critical nesting variable. */
@@ -79,34 +78,41 @@ StackType_t *pxPortInitialiseStack( StackType_t *pxTopOfStack, TaskFunction_t px
 
     /*Simulate task be interrupt status. */
 
-    /* Push pvParameters */
+    /* Argument 3 */
     *pxTopOfStack-- = (StackType_t)pvParameters;
 
-    /* Push PC to SP */
-    *pxTopOfStack-- = (StackType_t)0x0000;
-    *pxTopOfStack-- = (StackType_t)0x0000;
-
-    /* Push PC to SP */
+    /* Argument 2 */
     *pxTopOfStack-- = (StackType_t)(*(( StackType_t*)(pxCode+1)));
-    *pxTopOfStack-- = (StackType_t)(*(( StackType_t*)(pxCode+0)));
+    
+    /* Argument 1 */
+    *pxTopOfStack-- = (StackType_t)pxTopOfStack;
 
-    /* Push FR to SP */
+    /* SR */
+    //*pxTopOfStack-- = (StackType_t)0x0000;
+
+    /* PC */
+    *pxTopOfStack-- = (StackType_t)(*(( StackType_t*)(pxCode+1)));
+
+    /* SR */
+    *pxTopOfStack-- = (StackType_t)0x0000;
+
+    /* FR */
     *pxTopOfStack-- = (StackType_t)uxPortReadFlagRegister();
 
-    /* Push R5 to sp */
-    *pxTopOfStack-- = (StackType_t)0x1111;
+    /* R5 */
+    *pxTopOfStack-- = (StackType_t)0x55555;
 
-    /* Push R4 to sp */                 
-    *pxTopOfStack-- = (StackType_t)0x2222;
-
-    /* Push R3 to sp */                
-    *pxTopOfStack-- = (StackType_t)0x3333;
-
-    /* Push R2 to sp */
+    /* R4 */                 
     *pxTopOfStack-- = (StackType_t)0x4444;
 
-    /* Push R1 to sp */
-    *pxTopOfStack-- = (StackType_t)0x5555;
+    /* R3 */                
+    *pxTopOfStack-- = (StackType_t)0x3333;
+
+    /* R2 */
+    *pxTopOfStack-- = (StackType_t)0x2222;
+
+    /* R1 */
+    *pxTopOfStack-- = (StackType_t)0x1111;
 
     return pxTopOfStack;
 }
@@ -154,7 +160,7 @@ void vPortYield( void )
 static void prvSetupTimerInterrupt( void )
 {
     // Config Interrupt
-    #ifdef __GPCE206x_H__
+    #ifdef GPCE206x_H_
     P_INT_Ctrl |= C_IRQ7_64Hz;
     #else
     P_Int_Ctrl |= C_IRQ7_64Hz;
@@ -165,17 +171,13 @@ static void prvSetupTimerInterrupt( void )
 
 void vApplicationTickHook( void )
 {
-    //portENABLE_INTERRUPTS();
-    //reset_watch_dog();
     System_ServiceLoop();
 }
 
 void vPortEnterCritical( void )
 {
-    SAVED_FR = uxPortReadFlagRegister();
-
+    //SAVED_FR = uxPortReadFlagRegister();
     portDISABLE_INTERRUPTS();
-
     usCriticalNesting++;
 }
 
@@ -190,28 +192,31 @@ void vPortExitCritical( void )
         /* re-enabled. */
         if( usCriticalNesting == portNO_CRITICAL_SECTION_NESTING)
         {
-            vPortWriteFlagRegister(SAVED_FR);
+            //vPortWriteFlagRegister(SAVED_FR);
+            portENABLE_INTERRUPTS();
         }
     }
 }
 
-// Interrupt
+/*Interrupt */
 void IRQ7(void) __attribute__ ((ISR));
 void IRQ7(void)
 {
-    #ifdef __GPCE206x_H__
-    P_INT_Status = C_IRQ7_64Hz;
-    #else
-    P_Int_Status = C_IRQ7_64Hz;
-    #endif
-    
-    #if( configUSE_PREEMPTION == 1 )
-    portSAVE_CONTEXT();
-    xTaskIncrementTick();
-    vTaskSwitchContext();
-    portRESTORE_CONTEXT();
-    #else
-    xTaskIncrementTick();
-    #endif
-}
+    if((P_INT_Status & C_IRQ7_64Hz) == C_IRQ7_64Hz)
+    {
+        #ifdef GPCE206x_H_
+        P_INT_Status = C_IRQ7_64Hz;
+        #else
+        P_Int_Status = C_IRQ7_64Hz;
+        #endif
 
+        #if( configUSE_PREEMPTION == 1 )
+        portSAVE_CONTEXT();
+        xTaskIncrementTick();
+        vTaskSwitchContext();
+        portRESTORE_CONTEXT();
+        #else
+        xTaskIncrementTick();
+        #endif
+    }
+}

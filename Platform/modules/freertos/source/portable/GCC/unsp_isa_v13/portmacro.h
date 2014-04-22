@@ -8,8 +8,8 @@
  *   
  *
  ****************************************************************************/
-#ifndef PORTMACRO_H
-#define PORTMACRO_H
+#ifndef PORTMACRO_H_
+#define PORTMACRO_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -36,9 +36,9 @@ extern "C" {
 #define portDOUBLE            double
 #define portLONG              long int
 #define portSHORT             short
-#define portSTACK_TYPE        unsigned short
-#define portBASE_TYPE         unsigned short
-#define portPOINTER_SIZE_TYPE unsigned short
+#define portSTACK_TYPE        short
+#define portBASE_TYPE         short
+#define portPOINTER_SIZE_TYPE short
 
 
 typedef portSTACK_TYPE StackType_t;
@@ -81,5 +81,4 @@ extern void vPortExitCritical( void );
 }
 #endif
 
-#endif /* PORTMACRO_H */
-
+#endif /* PORTMACRO_H_ */

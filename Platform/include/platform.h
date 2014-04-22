@@ -8,12 +8,16 @@
  *   
  *
  ****************************************************************************/
-#ifndef _PLATFORM_H
-#define _PLATFORM_H
+#ifndef PLATFORM_H_
+#define PLATFORM_H_
 
-#include "GPCE206x.h"
-#include "SACM.h"
-#include "stdint.h"
+/* Project Configurations */
+//#define USE_PROTOTHREADS
+//#define USE_FREERTOS
+#define NO_DEBUG_MSG_OUTPUT
+#define DEBUG_MSG_OUTPUT_UART
+//#define DEBUG_MSG_OUTPUT_LCD
+
 
 /****************************************************************************
     Driver Configuration
@@ -41,7 +45,6 @@
 /* HASH Module Configuration */
 #define CFG_MOD_CRC          1
 #define CFG_MOD_CRC16_CCITT  0
-#define CFG_MOD_RB           0
 
 /****************************************************************************
     Application Configuration
@@ -50,15 +53,40 @@
 /* ParTest Application Configuration */
 #define CFG_APP_PARTEST      1
 
+/* Debug message output */
+#ifdef DEBUG_MSG_OUTPUT_LCD
+#define putchar lcd7735_putchar
+#define printf tfp_printf
+#endif
+
+#ifdef DEBUG_MSG_OUTPUT_UART
+#define putchar _putchar
+//#define printf(str, ...) tfp_printf
+#define printf tfp_printf
+#endif
+
+#include "GPCE206x.h"
+#include "SACM.h"
+
+/* ANSI C Standard Library headers */
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdint.h>
+
+#ifdef USE_FREERTOS
 /* FreeRTOS head  files */
 #include "FreeRTOS.h" 
-#include "task.h"
-
-#if ( configUSE_CO_ROUTINES > 0 )
-#include "croutine.h" 
-#endif
- 
+#include "task.h" 
+#include "croutine.h"
 #include "semphr.h"
+#endif
+
+#ifdef USE_PROTOTHREADS
+#include "pt.h"
+#include "pt-sem.h"
+#endif
 
 /* GPIO Driver */
 #include "drv_gpio.h"
@@ -75,6 +103,8 @@
 /* LCD Driver */
 #include "drv_lcd.h"
 
+/* UART Driver */
+#include "drv_uart.h"
 
 /* Petit FAT File System Module head files */
 #include "pff.h"
@@ -84,17 +114,7 @@
 #include "printf.h"
 #include "xprintf.h"
 #include "ringBufS.h"
-#include "rtc.h"
+#include "rtclib.h"
 
-/* Debug message output */
-//#define printf(str, ...)
-//#define putchar(c)
-//#define printf xprintf
-#define printf tfp_printf
+#endif /* _PLATFORM_H_ */
 
-typedef struct _mtd_data_buff
-{
-    char data[ 8 ];
-} mtd_data_buff;
-
-#endif _PLATFORM_H

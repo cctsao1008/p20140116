@@ -1,6 +1,5 @@
-
-#ifndef STDINT_INC
-#define STDINT_INC
+#ifndef STDINT_H_
+#define STDINT_H_
 
 /* This file will get picked up when stdint.h does not appear in the default
 include path (which it doesn't seem to be - even though the file exists). */
@@ -12,4 +11,4 @@ typedef unsigned short uint16_t;
 typedef long int32_t;
 typedef unsigned long uint32_t;
 
-#endif /* STDINT_INC */
+#endif /* STDINT_H_ */
