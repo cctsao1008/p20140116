@@ -91,7 +91,7 @@ SOURCE=..\..\Platform\drivers\drv_sys.asm
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # End Group
 # Begin Group "modules"
@@ -250,13 +250,111 @@ EXPORT=3
 #PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
-EXPORT=48
+EXPORT=3
 # Begin Source File
 SOURCE=..\..\Platform\drivers\drv_i2c.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\drivers\drv_gpio.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\drivers\drv_spi.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\drivers\drv_mtd.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\drivers\drv_lcd.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\drivers\drv_uart.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\pff\src\pff.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\hash\crc.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\sfat\sfat.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\printf\printf.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\rinbufs\ringBufS.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\pff\src\integer.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\sacm\A1600.inc
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\pff\src\diskio.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\rinbufs\modulo.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\include\platform.h
@@ -315,77 +413,7 @@ ID=
 EXPORT=0
 # End Source File
 # Begin Source File
-SOURCE=..\..\Platform\drivers\drv_gpio.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\drivers\drv_spi.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\drivers\drv_mtd.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\drivers\drv_lcd.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\drivers\drv_uart.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\pff\src\pff.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\hash\crc.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\sfat\sfat.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\printf\printf.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
 SOURCE=..\..\Platform\modules\xprintf\xprintf.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\rinbufs\ringBufS.h
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -396,7 +424,7 @@ SOURCE=..\..\Platform\modules\rtclib\rtclib.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=3
+EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\projdefs.h
@@ -417,7 +445,7 @@ SOURCE=..\..\Platform\modules\freertos\source\include\portable.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=3
+EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\list.h
@@ -428,13 +456,6 @@ EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\queue.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\pff\src\integer.h
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -452,35 +473,14 @@ SOURCE=..\..\Platform\modules\freertos\source\include\mpu_wrappers.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=41686512
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\include\GPCE206x.inc
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\sacm\A1600.inc
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\pff\src\diskio.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\rinbufs\modulo.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
+EXPORT=41723320
 # End Source File
 # End Group
 # End SubItem
@@ -570,7 +570,7 @@ SOURCE=..\..\Platform\drivers\drv_sys.asm
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
 # End Source File
 # End Group
 # Begin Group "modules"
@@ -729,13 +729,111 @@ EXPORT=3
 #PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
-EXPORT=48
+EXPORT=3
 # Begin Source File
 SOURCE=..\..\Platform\drivers\drv_i2c.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\drivers\drv_gpio.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\drivers\drv_spi.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\drivers\drv_mtd.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\drivers\drv_lcd.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\drivers\drv_uart.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\pff\src\pff.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\hash\crc.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\sfat\sfat.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\printf\printf.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\rinbufs\ringBufS.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\pff\src\integer.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\sacm\A1600.inc
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\pff\src\diskio.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
+# End Source File
+# Begin Source File
+SOURCE=..\..\Platform\modules\rinbufs\modulo.h
+USEPARAM=FALSE
+PARAM=
+ID=
+EXPORT=3
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\include\platform.h
@@ -794,77 +892,7 @@ ID=
 EXPORT=0
 # End Source File
 # Begin Source File
-SOURCE=..\..\Platform\drivers\drv_gpio.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\drivers\drv_spi.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\drivers\drv_mtd.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=3
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\drivers\drv_lcd.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\drivers\drv_uart.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\pff\src\pff.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\hash\crc.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\sfat\sfat.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\printf\printf.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
 SOURCE=..\..\Platform\modules\xprintf\xprintf.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\rinbufs\ringBufS.h
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -875,7 +903,7 @@ SOURCE=..\..\Platform\modules\rtclib\rtclib.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=3
+EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\projdefs.h
@@ -896,7 +924,7 @@ SOURCE=..\..\Platform\modules\freertos\source\include\portable.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=3
+EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\list.h
@@ -907,13 +935,6 @@ EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\queue.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\pff\src\integer.h
 USEPARAM=FALSE
 PARAM=
 ID=
@@ -931,35 +952,14 @@ SOURCE=..\..\Platform\modules\freertos\source\include\mpu_wrappers.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=41686512
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\include\GPCE206x.inc
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\sacm\A1600.inc
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\pff\src\diskio.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
-# End Source File
-# Begin Source File
-SOURCE=..\..\Platform\modules\rinbufs\modulo.h
-USEPARAM=FALSE
-PARAM=
-ID=
-EXPORT=0
+EXPORT=41723320
 # End Source File
 # End Group
 # End SubItem
