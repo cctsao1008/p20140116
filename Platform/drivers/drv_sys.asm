@@ -7,9 +7,10 @@
 // Contant Defintion Area
 //**************************************************************************
 //.external _UART_Receive_CMD
-.define C_DebounceCnt           0x0008
+.define C_DebounceCnt       0x0008
 .define C_SACM_RAMP_DELAY   80
-.define C_SCAN_8_Bits       1 //0 for 16Bits            
+.define C_SCAN_8_Bits       1    // 0 for 16Bits
+.define C_SCAN_Port         0    // 1 for IOA
 //**************************************************************************
 // Variable Publication Area
 //**************************************************************************
@@ -240,15 +241,22 @@ L_DebounceCntZero:
 //****************************************************************
 F_Key_Scan_ServiceLoop: .proc
 
-        //R1 = [P_IOA_Data];                            // get key data from IOA
+        .IF C_SCAN_Port
+        R1 = [P_IOA_Data];                            // get key data from IOA
+        .ELSE
         R1 = [P_IOB_Data];                              // get key data from IOB
+        .ENDIF
+
 .IF C_SCAN_8_Bits
         //////////////////// Avoid Latch PortA Data Error 
         R1 &= 0xFF00;                             //R1 &= 0xFFFF;
-        //[P_IOA_Buffer] = R1;
-        //R1 = [P_IOA_Data];
+        .IF C_SCAN_Port
+        [P_IOA_Buffer] = R1;
+        R1 = [P_IOA_Data];
+        .ELSE
         [P_IOB_Buffer] = R1;
         R1 = [P_IOB_Data];
+        .ENDIF
         //////////////////// 
         R1 &= 0x00FF;                             
 .ELSE   
