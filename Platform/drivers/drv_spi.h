@@ -34,26 +34,26 @@
 
 #define SPI_DEFAULT_SPEED SPI_8MHz
 
-#define CK_H()      (P_IOA_DA->b_13) = 0x1  /* Set MMC SCLK "high" */
-#define	CK_L()      (P_IOA_DA->b_13) = 0x0  /* Set MMC SCLK "low" */
-#define DI_H()      (P_IOA_DA->b_14) = 0x1  /* Set MMC DI "high" */
-#define DI_L()      (P_IOA_DA->b_14) = 0x0  /* Set MMC DI "low" */
-#define DO          (P_IOA_DA->b_15)        /* Get MMC DO value (high:true, low:false) */
+#define CK_H()      (P_IOA_BU->b_13) = 0x1  /* Set MMC SCLK "high" */
+#define CK_L()      (P_IOA_BU->b_13) = 0x0  /* Set MMC SCLK "low" */
+#define DI_H()      (P_IOA_BU->b_14) = 0x1  /* Set MMC DI "high" */
+#define DI_L()      (P_IOA_BU->b_14) = 0x0  /* Set MMC DI "low" */
+#define DO          (P_IOA_DA->b_15)          /* Get MMC DO value (high:true, low:false) */
 
 //#define CS_H()      (P_IOA_BU->bit_12) = 0x1  /* Set MMC CS "high" */
 //#define CS_L()      (P_IOA_BU->bit_12) = 0x0  /* Set MMC CS "low" */
 
 #define CS_SDCARD     1
-#define CS_SDCARD_H() (P_IOA_DA->b_12) = 0x1
-#define CS_SDCARD_L() (P_IOA_DA->b_12) = 0x0
+#define CS_SDCARD_H() (P_IOA_BU->b_12) = 0x1
+#define CS_SDCARD_L() (P_IOA_BU->b_12) = 0x0
 
 #define CS_SFLASH     2
-#define CS_SFLASH_H() (P_IOA_DA->b_11) = 0x1
-#define CS_SFLASH_L() (P_IOA_DA->b_11) = 0x0
+#define CS_SFLASH_H() (P_IOA_BU->b_11) = 0x1
+#define CS_SFLASH_L() (P_IOA_BU->b_11) = 0x0
 
 #define CS_LCDMOD     3
-#define CS_LCDMOD_H() (P_IOA_DA->b_10) = 0x1
-#define CS_LCDMOD_L() (P_IOA_DA->b_10) = 0x0
+#define CS_LCDMOD_H() (P_IOA_BU->b_10) = 0x1
+#define CS_LCDMOD_L() (P_IOA_BU->b_10) = 0x0
 
 /**
  * Flags for various the SPI MODEs
@@ -61,9 +61,9 @@
  * Note:
  */
 
-#define SPI_MODE_0 			/* CPOL=0 CPHA=0 */
-#define SPI_MODE_1         	/* CPOL=0 CPHA=1 */
-#define SPI_MODE_2 	        /* CPOL=1 CPHA=0 */
+#define SPI_MODE_0          /* CPOL=0 CPHA=0 */
+#define SPI_MODE_1          /* CPOL=0 CPHA=1 */
+#define SPI_MODE_2          /* CPOL=1 CPHA=0 */
 #define SPI_MODE_3          /* CPOL=1 CPHA=1 */
 
 /**

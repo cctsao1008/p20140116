@@ -3,11 +3,11 @@
 /*------------------------------------------------------------------------*/
 /* Universal string handler for user console interface  (C)ChaN, 2011     */
 /*------------------------------------------------------------------------*/
-#define _USE_XFUNC_OUT	1	/* 1: Use output functions */
-#define	_CR_CRLF		0	/* 1: Convert \n ==> \r\n in the output char */
+#define _USE_XFUNC_OUT  1   /* 1: Use output functions */
+#define _CR_CRLF        0   /* 1: Convert \n ==> \r\n in the output char */
 
-#define _USE_XFUNC_IN	0	/* 1: Use input function */
-#define	_LINE_ECHO		0	/* 1: Echo back input chars in xgets function */
+#define _USE_XFUNC_IN   0   /* 1: Use input function */
+#define _LINE_ECHO      0   /* 1: Echo back input chars in xgets function */
 
 #define _USE_XFPUTS     0
 #define _USE_XSPRINTF   0
@@ -22,11 +22,11 @@ void xputs (const char* str);
 void xfputs (void (*func)(unsigned char), const char* str);
 void xprintf (const char* fmt, ...);
 void xsprintf (char* buff, const char* fmt, ...);
-void xfprintf (void (*func)(unsigned char), const char*	fmt, ...);
+void xfprintf (void (*func)(unsigned char), const char* fmt, ...);
 void put_dump (const void* buff, unsigned long addr, int len, int width);
-#define DW_CHAR		sizeof(char)
-#define DW_SHORT	sizeof(short)
-#define DW_LONG		sizeof(long)
+#define DW_CHAR     sizeof(char)
+#define DW_SHORT    sizeof(short)
+#define DW_LONG     sizeof(long)
 #endif
 
 #if _USE_XFUNC_IN
