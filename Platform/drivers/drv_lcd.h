@@ -49,7 +49,7 @@
 //#define CK_H()      (P_IOA_BU->bit_13) = 0x1  /* Set MMC SCLK "high" */
 
 #define WHITE            0xFFFF
-#define BLACK            0x0000	  
+#define BLACK            0x0000   
 #define BLUE             0x001F  
 #define BRED             0XF81F
 #define GRED             0XFFE0
@@ -119,10 +119,10 @@
 #define ST7735_GMCTRN1   0xE1
 
 // 5-6-5 bits colors samples 
-#define	ST7735_BLACK     0x0000
-#define	ST7735_BLUE      0x001F
-#define	ST7735_RED       0xF800
-#define	ST7735_GREEN     0x07E0
+#define ST7735_BLACK     0x0000
+#define ST7735_BLUE      0x001F
+#define ST7735_RED       0xF800
+#define ST7735_GREEN     0x07E0
 #define ST7735_CYAN      0x07FF
 #define ST7735_MAGENTA   0xF81F
 #define ST7735_YELLOW    0xFFE0  

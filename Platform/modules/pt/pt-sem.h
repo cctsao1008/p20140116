@@ -122,7 +122,7 @@ PT_THREAD(driver_thread(struct pt *pt))
   PT_INIT(&pt_consumer);
 
   PT_WAIT_THREAD(pt, producer(&pt_producer) &
-		     consumer(&pt_consumer));
+             consumer(&pt_consumer));
 
   PT_END(pt);
 }
@@ -198,10 +198,10 @@ struct pt_sem {
  *
  * \hideinitializer
  */
-#define PT_SEM_WAIT(pt, s)	\
-  do {						\
-    PT_WAIT_UNTIL(pt, (s)->count > 0);		\
-    --(s)->count;				\
+#define PT_SEM_WAIT(pt, s)  \
+  do {                      \
+    PT_WAIT_UNTIL(pt, (s)->count > 0);      \
+    --(s)->count;               \
   } while(0)
 
 /**

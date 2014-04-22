@@ -156,56 +156,56 @@ PT_THREAD(codelock_thread(struct pt *pt))
        */
       if(keys == 0) {
 
-	/*
-	 * The PT_WAIT_UNTIL() function will block until the condition
-	 * key_pressed() is true.
-	 */
-	PT_WAIT_UNTIL(pt, key_pressed());
+    /*
+     * The PT_WAIT_UNTIL() function will block until the condition
+     * key_pressed() is true.
+     */
+    PT_WAIT_UNTIL(pt, key_pressed());
       } else {
-	
-	/*
-	 * If the "key" variable was larger than zero, we have already
-	 * gotten at least one correct key press. If so, we'll not
-	 * only wait for the next key, but we'll also set a timer that
-	 * expires in one second. This gives the person pressing the
-	 * keys one second to press the next key in the code.
-	 */
-	timer_set(&codelock_timer, 1000);
+    
+    /*
+     * If the "key" variable was larger than zero, we have already
+     * gotten at least one correct key press. If so, we'll not
+     * only wait for the next key, but we'll also set a timer that
+     * expires in one second. This gives the person pressing the
+     * keys one second to press the next key in the code.
+     */
+    timer_set(&codelock_timer, 1000);
 
-	/*
-	 * The following statement shows how complex blocking
-	 * conditions can be easily expressed with protothreads and
-	 * the PT_WAIT_UNTIL() function.
-	 */
-	PT_WAIT_UNTIL(pt, key_pressed() || timer_expired(&codelock_timer));
+    /*
+     * The following statement shows how complex blocking
+     * conditions can be easily expressed with protothreads and
+     * the PT_WAIT_UNTIL() function.
+     */
+    PT_WAIT_UNTIL(pt, key_pressed() || timer_expired(&codelock_timer));
 
-	/*
-	 * If the timer expired, we should break out of the for() loop
-	 * and start reading keys from the beginning of the while(1)
-	 * loop instead.
-	 */
-	if(timer_expired(&codelock_timer)) {
-	  printf("Code lock timer expired.\n");
-	  
-	  /*
-	   * Break out from the for() loop and start from the
-	   * beginning of the while(1) loop.
-	   */
-	  break;
-	}
+    /*
+     * If the timer expired, we should break out of the for() loop
+     * and start reading keys from the beginning of the while(1)
+     * loop instead.
+     */
+    if(timer_expired(&codelock_timer)) {
+      printf("Code lock timer expired.\n");
+      
+      /*
+       * Break out from the for() loop and start from the
+       * beginning of the while(1) loop.
+       */
+      break;
+    }
       }
 
       /*
        * Check if the pressed key was correct.
        */
       if(key != code[keys]) {
-	printf("Incorrect key '%c' found\n", key);
-	/*
-	 * Break out of the for() loop since the key was incorrect.
-	 */
-	break;
+    printf("Incorrect key '%c' found\n", key);
+    /*
+     * Break out of the for() loop since the key was incorrect.
+     */
+    break;
       } else {
-	printf("Correct key '%c' found\n", key);
+    printf("Correct key '%c' found\n", key);
       }
     }
 
@@ -232,15 +232,15 @@ PT_THREAD(codelock_thread(struct pt *pt))
        * the timer expired, we don't open the lock.
        */
       if(!timer_expired(&codelock_timer)) {
-	printf("Key pressed during final wait, code lock locked again.\n");
+    printf("Key pressed during final wait, code lock locked again.\n");
       } else {
 
-	/*
-	 * If the timer expired, we'll open the lock and exit from the
-	 * protothread.
-	 */
-	printf("Code lock unlocked.\n");
-	PT_EXIT(pt);
+    /*
+     * If the timer expired, we'll open the lock and exit from the
+     * protothread.
+     */
+    printf("Code lock unlocked.\n");
+    PT_EXIT(pt);
       }
     }
   }

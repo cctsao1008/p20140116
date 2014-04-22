@@ -35,7 +35,7 @@
 #define SPI_DEFAULT_SPEED SPI_8MHz
 
 #define CK_H()      (P_IOA_BU->b_13) = 0x1  /* Set MMC SCLK "high" */
-#define	CK_L()      (P_IOA_BU->b_13) = 0x0  /* Set MMC SCLK "low" */
+#define CK_L()      (P_IOA_BU->b_13) = 0x0  /* Set MMC SCLK "low" */
 #define DI_H()      (P_IOA_BU->b_14) = 0x1  /* Set MMC DI "high" */
 #define DI_L()      (P_IOA_BU->b_14) = 0x0  /* Set MMC DI "low" */
 #define DO          (P_IOA_DA->b_15)          /* Get MMC DO value (high:true, low:false) */
@@ -61,9 +61,9 @@
  * Note:
  */
 
-#define SPI_MODE_0 			/* CPOL=0 CPHA=0 */
-#define SPI_MODE_1         	/* CPOL=0 CPHA=1 */
-#define SPI_MODE_2 	        /* CPOL=1 CPHA=0 */
+#define SPI_MODE_0          /* CPOL=0 CPHA=0 */
+#define SPI_MODE_1          /* CPOL=0 CPHA=1 */
+#define SPI_MODE_2          /* CPOL=1 CPHA=0 */
 #define SPI_MODE_3          /* CPOL=1 CPHA=1 */
 
 /**

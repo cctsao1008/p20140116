@@ -66,13 +66,13 @@
 /*
 Changes from V1.01:
 
-	+ Types used updated.
-	+ Add vParTestToggleLED();
+    + Types used updated.
+    + Add vParTestToggleLED();
 
 
 Changes from V2.0.0
 
-	+ Use scheduler suspends in place of critical sections.
+    + Use scheduler suspends in place of critical sections.
 */
 
 #include "FreeRTOS.h"
@@ -83,8 +83,8 @@ Changes from V2.0.0
 
 #if ( CFG_APP_PARTEST > 0 )
 
-#define partstALL_OUTPUTS_OFF			( ( unsigned short ) 0x0000 )
-#define partstMAX_OUTPUT_LED			( ( unsigned short ) 0xFFFF )
+#define partstALL_OUTPUTS_OFF           ( ( unsigned short ) 0x0000 )
+#define partstMAX_OUTPUT_LED            ( ( unsigned short ) 0xFFFF )
 
 #define partstDEFAULT_PORT_ADDRESS      P_IOA_DA
 
@@ -117,9 +117,9 @@ void portOUTPUT_WORD(unsigned short addr, unsigned short state)
 
 void vParTestInitialise( void )
 {
-	ucCurrentOutputValue = partstALL_OUTPUTS_OFF;
+    ucCurrentOutputValue = partstALL_OUTPUTS_OFF;
 
-	portOUTPUT_WORD( (unsigned short)usPortAddress, partstALL_OUTPUTS_OFF );
+    portOUTPUT_WORD( (unsigned short)usPortAddress, partstALL_OUTPUTS_OFF );
 }
 /*-----------------------------------------------------------*/
 
@@ -127,26 +127,26 @@ void vParTestSetLED( portBASE_TYPE uxLED, portBASE_TYPE xValue )
 {
 unsigned short ucBit = ( unsigned short ) 1;
 
-	if( uxLED <= partstMAX_OUTPUT_LED )
-	{
-		ucBit <<= uxLED;
-	}	
+    if( uxLED <= partstMAX_OUTPUT_LED )
+    {
+        ucBit <<= uxLED;
+    }   
 
-	vTaskSuspendAll();
-	{
-		if( xValue == pdTRUE )
-		{
-			ucBit ^= ( unsigned short ) 0xFFFF;
-			ucCurrentOutputValue &= ucBit;
-		}
-		else
-		{
-			ucCurrentOutputValue |= ucBit;
-		}
+    vTaskSuspendAll();
+    {
+        if( xValue == pdTRUE )
+        {
+            ucBit ^= ( unsigned short ) 0xFFFF;
+            ucCurrentOutputValue &= ucBit;
+        }
+        else
+        {
+            ucCurrentOutputValue |= ucBit;
+        }
 
-		portOUTPUT_WORD( (unsigned short)usPortAddress, ucCurrentOutputValue );
-	}
-	xTaskResumeAll();
+        portOUTPUT_WORD( (unsigned short)usPortAddress, ucCurrentOutputValue );
+    }
+    xTaskResumeAll();
 }
 /*-----------------------------------------------------------*/
 
@@ -154,25 +154,25 @@ void vParTestToggleLED( portBASE_TYPE uxLED )
 {
 unsigned short ucBit;
 
-	if( uxLED <= partstMAX_OUTPUT_LED )
-	{
-		ucBit = ( ( unsigned short ) 1 ) << uxLED;
+    if( uxLED <= partstMAX_OUTPUT_LED )
+    {
+        ucBit = ( ( unsigned short ) 1 ) << uxLED;
 
-		vTaskSuspendAll();
-		{
-			if( ucCurrentOutputValue & ucBit )
-			{
-				ucCurrentOutputValue &= ~ucBit;
-			}
-			else
-			{
-				ucCurrentOutputValue |= ucBit;
-			}
+        vTaskSuspendAll();
+        {
+            if( ucCurrentOutputValue & ucBit )
+            {
+                ucCurrentOutputValue &= ~ucBit;
+            }
+            else
+            {
+                ucCurrentOutputValue |= ucBit;
+            }
 
-			portOUTPUT_WORD( (unsigned short)usPortAddress, ucCurrentOutputValue );
-		}
-		xTaskResumeAll();			
-	}
+            portOUTPUT_WORD( (unsigned short)usPortAddress, ucCurrentOutputValue );
+        }
+        xTaskResumeAll();           
+    }
 }
 #endif
 

@@ -61,7 +61,7 @@ get_from_buffer(void)
   int item;
   item = buffer[bufptr];
   printf("Item %d retrieved from buffer at place %d\n",
-	 item, bufptr);
+     item, bufptr);
   bufptr = (bufptr + 1) % BUFSIZE;
   return item;
 }
@@ -134,7 +134,7 @@ PT_THREAD(driver_thread(struct pt *pt))
   PT_INIT(&pt_consumer);
  
   PT_WAIT_THREAD(pt, producer(&pt_producer) &
-		     consumer(&pt_consumer));
+             consumer(&pt_consumer));
  
   PT_END(pt);
 }
