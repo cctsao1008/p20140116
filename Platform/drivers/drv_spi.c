@@ -10,9 +10,14 @@
  ****************************************************************************/
 #include "drv_spi.h"
 
+bool spi_initialized = false;
+
 #if ( CFG_DRV_SPI > 0)
 void spi_initialize(void)
 {
+    if(spi_initialized == true)
+        return;
+
     reset_watch_dog();
 #ifdef USE_BIT_BANGING_SPI
     MISO_INIT();
@@ -25,21 +30,38 @@ void spi_initialize(void)
         #ifdef USE_HW_CS_CTRL
         CS_HWCTRL_INIT();
         #else    
-        //SD_CS : Micro SD Card Chip Select
+        /*SD_CS : Micro SD Card Chip Select */
         CS_SDCARD_INIT();
+
+        /* Reset Device */
+        spi_select(CS_SDCARD, 1);
+        spi_select(CS_SDCARD, 0);
+        spi_select(CS_SDCARD, 1);
         #endif
     #endif
 
 
     #ifdef USE_SFLASH
-    //F_CS : Serial Flash Chip Select
+    /* F_CS : Serial Flash Chip Select */
     CS_SFLASH_INIT();
+
+    /* Reset Device */
+    spi_select(CS_SFLASH, 1);
+    spi_select(CS_SFLASH, 0);
+    spi_select(CS_SFLASH, 1);
     #endif
 
     #ifdef USE_LCDMOD
-    //CS : TFT Drive IC Chip Select
+    /* CS : TFT Drive IC Chip Select */
     CS_LCDMOD_INIT();
+
+    /* Reset Device */
+    spi_select(CS_LCDMOD, 1);
+    spi_select(CS_LCDMOD, 0);
+    spi_select(CS_LCDMOD, 1);
     #endif
+
+    spi_initialized = true;
 }
 
 /**
@@ -133,6 +155,7 @@ void spi_skip_bytes (
 void spi_select(uint8_t cs, uint8_t high)
 {
     reset_watch_dog();
+
     switch(cs)
     {
 #ifndef USE_HW_CS_CTRL
@@ -174,7 +197,6 @@ void spi_select(uint8_t cs, uint8_t high)
             break;
     }
 
-    
 }
 
 /**

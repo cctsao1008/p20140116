@@ -49,12 +49,9 @@
 #define ARRAY_SIZE(arr) \
    (sizeof(arr) / sizeof(((typeof(arr)){})[0]))
 
-#define MTD_SECTOR_SIZE (4 * 1024)
 
-#define WINBOND_ID_W25Q16B      0x4015
-#define WINBOND_ID_W25Q32B      0x4016
-
-#define WINBOND_SR_WIP      (1 << 0)    /* Write-in-Progress */
+#define W25Q16B      0x4015
+#define W25Q32B      0x4016
 
 /* MTD function return code (MTDRESULT) */
 
@@ -64,6 +61,12 @@ typedef enum {
     MTD_TIMEOUT,        /* 2 */
     MTD_FAILED,         /* 3 */
 } MTD_RESULT;
+
+typedef enum {
+    MTD_NONE = 0,         /* 0 */
+    MTD_READ,           /* 1 */
+    MTD_WRITE,        /* 2 */
+} MTD_STATUS;
 
 #if 0
 struct mtd_spi_flash_region {
@@ -103,13 +106,13 @@ static inline int mtd_spi_flash_erase(struct mtd_spi_flash_op *flash, uint32_t o
 #endif
 
 typedef struct _mtd_params {
+    const char  *name;
     uint16_t    id;
-    /* Log2 of page size in power-of-two mode */
-    uint8_t     l2_page_size;
     uint16_t    pages_per_sector;
     uint16_t    sectors_per_block;
     uint8_t     nr_blocks;
-    const char  *name;
+    /* Log2 of page size in power-of-two mode */
+    uint8_t     l2_page_size;
 }MTD_PARAMS;
 
 typedef union _flash_addr {
@@ -132,8 +135,9 @@ struct mtd_spi_flash {
 
 MTD_RESULT mtd_probe(MTD_PARAMS *param);
 MTD_RESULT mtd_chip_erase(void);
-MTD_RESULT mtd_page_program(uint32_t addr,uint8_t *buf, uint32_t size);
-MTD_RESULT mtd_read_data(uint32_t addr,uint8_t *buf, uint32_t size);
+MTD_RESULT mtd_read(uint8_t *buf, uint32_t btr, uint32_t *ptr);
+MTD_RESULT mtd_write(uint8_t *buf, uint32_t btw, uint32_t *ptr);
+MTD_RESULT mtd_lseek(uint32_t ptr);
 
 extern uint32_t mtd_curr_addr;
 

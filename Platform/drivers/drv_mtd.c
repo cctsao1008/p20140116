@@ -12,11 +12,12 @@
 #include "drv_spi.h"
 
 #if ( CFG_DRV_MTD > 0 )
-uint32_t mtd_curr_addr = 0;
+MTD_STATUS status = MTD_NONE;
+uint32_t mtd_addr;
 
-static const MTD_PARAMS mtd_flash_table[] = {
+static const MTD_PARAMS mtd_dev_tbl[] = {
     {
-        .id                 = WINBOND_ID_W25Q16B,
+        .id                 = W25Q16B,
         .l2_page_size       = 8,
         .pages_per_sector   = 16,
         .sectors_per_block  = 16,
@@ -36,9 +37,9 @@ void mtd_select(uint8_t high)
 MTD_RESULT mtd_probe(MTD_PARAMS *param)
 {
     MTD_RESULT rc = MTD_OK;
-    MTD_PARAMS mtd_param;
     uint8_t i = 0, jedec_id[3] = {0};
 
+    /* Chip select go high to end a flash command */
     mtd_select(1);
 
     /* Chip select go low to start a flash command */
@@ -50,28 +51,29 @@ MTD_RESULT mtd_probe(MTD_PARAMS *param)
     for(i = 0 ; i < 3 ; i++)
         jedec_id[i] = spi_rcvr();
 
+    /* Chip select go high to end a flash command */
     mtd_select(1);
 
-    mtd_param.id = ((uint16_t)jedec_id[1] << 8 ) | jedec_id[2];
+    param->id = ((uint16_t)jedec_id[1] << 8 ) | jedec_id[2];
 
     switch(jedec_id[0])
     {
         case MF_ID_WINBOND :
 
-            if(WINBOND_ID_W25Q16B == mtd_param.id)
+            if( W25Q16B == param->id )
             {
-                param->id                = mtd_flash_table[0].id;
-                param->l2_page_size      = mtd_flash_table[0].l2_page_size;
-                param->pages_per_sector  = mtd_flash_table[0].pages_per_sector;
-                param->sectors_per_block = mtd_flash_table[0].sectors_per_block;
-                param->nr_blocks         = mtd_flash_table[0].nr_blocks;
-                param->name              = mtd_flash_table[0].name;
+                param->id                = mtd_dev_tbl[0].id;
+                param->l2_page_size      = mtd_dev_tbl[0].l2_page_size;
+                param->pages_per_sector  = mtd_dev_tbl[0].pages_per_sector;
+                param->sectors_per_block = mtd_dev_tbl[0].sectors_per_block;
+                param->nr_blocks         = mtd_dev_tbl[0].nr_blocks;
+                param->name              = mtd_dev_tbl[0].name;
             }
 
             break;
 
         default :
-            param->name = "unknow" ;
+            param->name              = "UNKNOW" ;
             rc = MTD_FAILED;
             break;
     }
@@ -83,11 +85,17 @@ uint8_t mtd_read_status_1(uint8_t mask)
 {
     uint8_t rc = 0;
 
+    /* Chip select go high to end a flash command */
+    mtd_select(1);
+
     /* Chip select go low to start a flash command */
     mtd_select(0);
+
     spi_xmit(CMD_RDSR1);
     rc = spi_rcvr();
-    mtd_select(1);
+
+    /* Chip select go high to end a flash command */
+    mtd_select(1);;
 
     return ( rc & mask );
 }
@@ -115,15 +123,16 @@ MTD_RESULT mtd_write_enable(void)
         reset_watch_dog();
     }
 
-    /* Chip select go low to start a flash command */
-    mtd_select(0);
-    spi_xmit(CMD_WREN);
+    /* Chip select go high to end a flash command */
     mtd_select(1);
 
-    while(0 == mtd_read_status_1(B_WEL))
-    {
-        reset_watch_dog();
-    }
+    /* Chip select go low to start a flash command */
+    mtd_select(0);
+
+    spi_xmit(CMD_WREN);
+
+    /* Chip select go high to end a flash command */
+    mtd_select(1);
 
     return rc;
 }
@@ -138,20 +147,22 @@ MTD_RESULT mtd_write_disable(void)
         reset_watch_dog();
     }
 
-    /* Chip select go low to start a flash command */
-    mtd_select(0);
-    spi_xmit(CMD_WRDI);
+    /* Chip select go high to end a flash command */
     mtd_select(1);
 
-    while(0 == mtd_read_status_1(B_WEL))
-    {
-        reset_watch_dog();
-    }
+    /* Chip select go low to start a flash command */
+    mtd_select(0);
+
+    spi_xmit(CMD_WRDI);
+
+    /* Chip select go high to end a flash command */
+    mtd_select(1);
 
     return rc;
 }
 #endif
 
+#if 0
 MTD_RESULT mtd_write_status(uint8_t data)
 {
     MTD_RESULT rc = MTD_OK;
@@ -161,6 +172,9 @@ MTD_RESULT mtd_write_status(uint8_t data)
         reset_watch_dog();
     }
 
+    /* Chip select go high to end a flash command */
+    mtd_select(1);
+
     /* Chip select go low to start a flash command */
     mtd_select(0);
     spi_xmit(CMD_WREN);
@@ -168,23 +182,27 @@ MTD_RESULT mtd_write_status(uint8_t data)
 
     /* Chip select go low to start a flash command */
     mtd_select(0);
+
     spi_xmit(CMD_WRSR);
     spi_xmit(data);
+
+    /* Chip select go high to end a flash command */
     mtd_select(1);
 
     return rc;
 }
+#endif
 
-void mtd_set_address(uint32_t addr)
+void spi_xmit_addr(uint32_t addr)
 {
     spi_xmit((uint8_t)(addr >> 16));
     spi_xmit((uint8_t)(addr >> 8 ));
     spi_xmit((uint8_t)(addr));
 
-    mtd_curr_addr = addr;
+    mtd_addr = addr;
 }
 
-MTD_RESULT mtd_read_data(uint32_t addr,uint8_t *buf, uint32_t size)
+MTD_RESULT mtd_read(uint8_t *buf, uint32_t btr, uint32_t *ptr)
 {
     MTD_RESULT rc = MTD_OK;
     uint32_t i = 0;
@@ -192,25 +210,36 @@ MTD_RESULT mtd_read_data(uint32_t addr,uint8_t *buf, uint32_t size)
     if( buf == NULL )
     {    rc = MTD_FAILED; goto error;}
 
+    #if 0
     /* Is Flash in busy mode ? */
     while(mtd_read_status_1(B_BUSY))
     {
         reset_watch_dog();
     }
+    #endif
 
-    /* Chip select go low to start a flash command */
-    mtd_select(0);
+    if(MTD_READ != status)
+    {
+        status = MTD_READ;
 
-    /* Write READ command and address */
-    spi_xmit(CMD_READ);
-    mtd_set_address(addr);
+        /* Chip select go high to end a flash command */
+        mtd_select(1);
+
+        /* Chip select go low to start a flash command */
+        mtd_select(0);
+
+        /* Write READ command and address */
+        spi_xmit(CMD_READ);
+        spi_xmit_addr(mtd_addr);
+    }
 
     /* Set a loop to read data into buffer */
-    for(i = 0 ; i < size ; i++)
-    {    buf[i] = spi_rcvr(); mtd_curr_addr++; }
+    for(i = 0 ; i < btr ; i++) {
+        buf[i] = spi_rcvr(); mtd_addr++;
+    }
 
-    /* Chip select go high to end a flash command */
-    mtd_select(1);
+    if(ptr)
+        *ptr = mtd_addr;
 
 error :
     return rc;
@@ -233,12 +262,12 @@ MTD_RESULT mtd_fast_read_data(uint32_t addr,uint8_t *buf, uint32_t size)
 
     /* Write READ command and address */
     spi_xmit(CMD_FAST_READ);
-    mtd_set_address(addr);
+    spi_xmit_addr(addr);
     spi_skip_bytes(1);
 
     /* Set a loop to read data into buffer */
     for(i = 0 ; i < size ; i++)
-    {    buf[i] = spi_rcvr(); mtd_curr_addr++; }
+    {    buf[i] = spi_rcvr(); mtd_addr++; }
 
     /* Chip select go high to end a flash command */
     mtd_select(1);
@@ -248,20 +277,23 @@ error :
 }
 #endif
 
-MTD_RESULT mtd_page_program(uint32_t addr,uint8_t *buf, uint32_t size)
+MTD_RESULT mtd_write(uint8_t *buf, uint32_t btw, uint32_t *ptr)
 {
     MTD_RESULT rc = MTD_OK;
 
     if( buf == NULL )
     {    rc = MTD_FAILED; goto error;}
-    else if( size == 0 )
+    else if( btw == 0 )
     {    rc = MTD_FAILED; goto error;}
-    else if( size > 256 )
-    {    rc = MTD_FAILED; goto error;}
-    else if( size > ( 256 - (uint8_t)addr % 256 ) )
+    else if( btw > 256 )
     {    rc = MTD_FAILED; goto error;}
 
-    /* Is Flash in busy mode ? */
+    status = MTD_WRITE;
+
+    /* Chip select go high to end a flash command */
+    mtd_select(1);
+
+    /* Busy wait */
     while(mtd_read_status_1(B_BUSY))
     {
         reset_watch_dog();
@@ -271,12 +303,16 @@ MTD_RESULT mtd_page_program(uint32_t addr,uint8_t *buf, uint32_t size)
 
     mtd_select(0);
     spi_xmit(CMD_PP);
-    mtd_set_address(addr);
+    spi_xmit_addr(mtd_addr);
 
-    while(size--)
+    while(btw--)
     {
+        spi_xmit(*(buf++));
+
+        mtd_addr++;
+
         /* Cross page check */
-        if(((uint8_t)mtd_curr_addr == 0x0) && (0 != size))
+        if((0 != btw) && ((uint8_t)mtd_addr == 0x0))
         {
             mtd_select(1);
 
@@ -288,22 +324,47 @@ MTD_RESULT mtd_page_program(uint32_t addr,uint8_t *buf, uint32_t size)
 
             mtd_select(0);
             spi_xmit(CMD_PP);
-            mtd_set_address(mtd_curr_addr);
+            spi_xmit_addr(mtd_addr);
         }
-
-        spi_xmit(*(buf++));
-        mtd_curr_addr++;
     }
 
+    /* Chip select go high to end a flash command */
     mtd_select(1);
+
+    /* Busy wait */
+    while(mtd_read_status_1(B_BUSY))
+    {
+        reset_watch_dog();
+    }
+
+    if(ptr)
+        *ptr = mtd_addr;
     
 error :
+    return rc;
+}
+
+MTD_RESULT mtd_lseek(uint32_t ptr)
+{
+    MTD_RESULT rc = MTD_OK;
+
+    /* Chip select go high to end a flash command */
+    mtd_select(1);
+
+    status = MTD_NONE;
+    mtd_addr = ptr;
+
     return rc;
 }
 
 MTD_RESULT mtd_chip_erase(void)
 {
     MTD_RESULT rc = MTD_OK;
+
+    status = MTD_NONE;
+
+    /* Chip select go high to end a flash command */
+    mtd_select(1);
 
     mtd_write_enable();
     mtd_select(0);
@@ -312,24 +373,5 @@ MTD_RESULT mtd_chip_erase(void)
 
     return rc;
 }
-
-void mtd_open(void)
-{
-
-}
-
-#if 0
-void mtd_xmit(const uint8_t d)
-{
-
-}
-
-uint8_t mtd_rcvr(void)
-{
-    uint8_t r;
-
-    return r;
-}
-#endif
 
 #endif

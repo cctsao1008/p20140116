@@ -33,7 +33,7 @@
 #define LCD_SDA_L()    (P_IOA_DA->b_2) = 0x0
 
 // A0 (DC, R/S)
-#define LCD_A0_INIT()   P_IOA_DA->b_3  = 0x0; P_IOA_AT->b_3 = 0x1; P_IOA_DI->b_3 = 0x1
+#define LCD_A0_INIT()   P_IOA_DA->b_3  = 0x1; P_IOA_AT->b_3 = 0x1; P_IOA_DI->b_3 = 0x1
 #define LCD_A0_H()     (P_IOA_BU->b_3) = 0x1
 #define LCD_A0_L()     (P_IOA_BU->b_3) = 0x0
 
@@ -41,7 +41,7 @@
 //#define LCD_SOFT_RESET
 
 #ifndef LCD_SOFT_RESET
-#define LCD_RST_INIT()   P_IOA_DA->b_4  = 0x0; P_IOA_AT->b_4 = 0x1; P_IOA_DI->b_4 = 0x1
+#define LCD_RST_INIT()   P_IOA_DA->b_4  = 0x1; P_IOA_AT->b_4 = 0x1; P_IOA_DI->b_4 = 0x1
 #define LCD_RST_H()     (P_IOA_DA->b_4) = 0x1
 #define LCD_RST_L()     (P_IOA_DA->b_4) = 0x0
 #endif
@@ -147,14 +147,25 @@
 #define CENTER          -1
 #define RIGHT           -2
 
-extern const unsigned char SmallFont[]; 
+extern const unsigned char Font_5x7[];
+extern const unsigned char SmallFont[];
+extern const unsigned char RusFont[];
+extern const unsigned char BigFont[];
+extern const unsigned char ComicSans_MS_8x12[];
+extern const unsigned char DotMatrix_M[];
+extern const unsigned char Sinclair_M[];
+extern const unsigned char TinyFont[];
 
 int putchar (int c);
 
 void lcd7735_init(void);
-void lcd7735_initR(uint8_t options);
+void lcd7735_init_r(uint8_t options);
 void lcd7735_init_screen(void *font,uint16_t fg, uint16_t bg, uint8_t orientation);
-void lcd7735_fillScreen(uint16_t color);
+void lcd7735_fill_screen(uint16_t color);
+void lcd7735_draw_pixel(int16_t x, int16_t y, uint16_t color);
+uint16_t lcd7735_color_565(uint8_t r, uint8_t g, uint8_t b);
+void lcd7735_invert_display(const uint8_t mode);
+
 #if 0
 void lcd7735_cursor_set(uint16_t row, uint16_t col);
 void lcd7735_cursor_get(uint16_t *row, uint16_t *col);

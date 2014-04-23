@@ -46,7 +46,7 @@
 #define CFG_MOD_CRC          1
 #define CFG_MOD_CRC16_CCITT  0
 
-#define CFG_MOD_RB           1
+#define CFG_MOD_RB           0
 
 /****************************************************************************
     Application Configuration

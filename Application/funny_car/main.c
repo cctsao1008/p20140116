@@ -40,7 +40,8 @@ uint8_t sflash_updater(void);
 void demo(void *pvParameters);
 
 /* Global Variable Defintion Area */
-uint16_t stack[256];
+#define stack_size 512
+size_t stack[stack_size];
 uint8_t shared_buff[shared_buff_size];
 SPEECH_TBL speech_addr[MaxSpeechNum];
 ringBufS rb;
@@ -85,11 +86,14 @@ void demo(void *pvParameters)
 
     printf("start demo task.\n");
 
+    #if ( CFG_MOD_RB > 0 )
     ringBufS_init(&rb, shared_buff, shared_buff_size);
+    #endif
 
-    mtd_read_data(0, (uint8_t *)&SpeechNum, 1);
+    mtd_lseek(0);
+    mtd_read((uint8_t *)&SpeechNum, 1, NULL);
 
-    if( 0 != SpeechNum) {
+    if( (0 != SpeechNum) && (0xFF != SpeechNum)) {
         if( 0x1 == SpeechNum )
             printf("found 1 speech.\n");
         else
@@ -101,7 +105,8 @@ void demo(void *pvParameters)
         }
 
         for(i = 0 ; i < SpeechNum ; i++ ) {
-            mtd_read_data((uint32_t)(4 + 4*i), (uint8_t *)buff, 4);
+            mtd_lseek((uint32_t)(4 + 4*i));
+            mtd_read((uint8_t *)buff, 4, NULL);
 
             speech_addr[i].addr_0 = buff[0];
             speech_addr[i].addr_1 = buff[1];
@@ -119,22 +124,9 @@ void demo(void *pvParameters)
 
     USER_A1600_Volume(VolumeIndex);
 
-    printf("playing....\n");
-
     for(;;) {
-#ifdef USE_RINGBUFS
-        while(!ringBufS_full(&rb)) {
-            mtd_read_data((uint32_t)addr, (uint8_t *)buff, 1);
-
-            portENTER_CRITICAL();
-            ringBufS_put(&rb, buff);
-            addr++;
-            portEXIT_CRITICAL();
-        }
-#endif
 
         if(reset == 1) {
-            printf("paly all test >>>\n");
             VolumeIndex = 1;
             SpeechIndex = 0;
             DAC_FIR_Type = C_DAC_FIR_Type0;
@@ -147,7 +139,8 @@ void demo(void *pvParameters)
 
         if((playing == 0) && (SpeechIndex < SpeechNum)) {
             playing = 1;
-            addr = speech_addr[SpeechIndex].addr_32;
+
+            mtd_lseek(speech_addr[SpeechIndex].addr_32);
 
             printf("playing speech %d.\n", SpeechIndex);
 
@@ -167,7 +160,7 @@ void demo(void *pvParameters)
 
         case 0x0001:    // IOB0 + Vcc
             SACM_A1600_Stop();
-            printf("K%d.\n", 0);
+            printf("K%d. next\n", 0);
             break;
 
         case 0x0002:    // IOB1 + Vcc
@@ -175,35 +168,37 @@ void demo(void *pvParameters)
                 VolumeIndex = 0;
 
             USER_A1600_Volume(VolumeIndex);         // volume up
-            printf("K%d.\n", 1);
+            printf("K%d. ", 1);
             printf("volume %d.\n", VolumeIndex);
             break;
 
         case 0x0004:    // IOB2 + Vcc
             SACM_A1600_Pause();                     // playback pause
-            printf("K%d.\n", 2);
+            printf("K%d. ", 2);
             printf("pause.\n");
             break;
 
         case 0x0008:    // IOB3 + Vcc
             SACM_A1600_Resume();                    // playback resuem
-            printf("K%d.\n", 3);
+            printf("K%d. ", 3);
             printf("resume.\n");
             break;
 
         case 0x0010:    // IOB4 + Vcc
-            printf("K%d.\n", 4);
-            printf("reserved.\n");
+            SACM_A1600_Stop();
+            printf("K%d. ", 4);
+            printf("reboot.\n");
+            while(1);
             break;
 
         case 0x0020:    // IOB5 + Vcc
-            printf("K%d.\n", 5);
+            printf("K%d. ", 5);
             printf("reserved.\n");
             break;
 
         case 0x0040:    // IOB6 + Vcc
             SACM_A1600_Stop();
-            printf("K%d.\n", 6);
+            printf("K%d. ", 6);
             printf("reset\n");
             reset = 1;
             break;
@@ -214,8 +209,8 @@ void demo(void *pvParameters)
 
             SACM_A1600_Pause();
             SACM_A1600_DA_FIRType(DAC_FIR_Type);    // change DAC filter type
-            printf("K%d.\n", 7);
-            printf("select fir type %d.\n", DAC_FIR_Type);
+            printf("K%d. ", 7);
+            printf("fir type %d.\n", DAC_FIR_Type);
             SACM_A1600_Resume();
             break;
 
@@ -236,123 +231,167 @@ done:
 #ifdef USE_SFLASH_UPDATER
 uint8_t sflash_updater(void)
 {
-    MTD_PARAMS param;
-    uint32_t   addr = 0;
+    MTD_PARAMS mtd;
     FATFS fatfs;
     WORD br, i;
-    BYTE* buff;
-    BYTE rc;
+    BYTE* buff = shared_buff;
+    BYTE rc = true;
+    uint32_t mtd_addr = 0;
     uint16_t crc16_sd = 0, crc16_sf = 0;
 
-    printf("DRPM SFlash Updater\n");
+    printf("Copyright 2014 DRPM\n");
+    printf("SFlash Updater\n\n");
 
     if (pf_mount(&fatfs)) {
-        printf("no sd card found.\n");
-        return false;
+        printf("found no sd card!\n");
+        goto done; // No SD card, SKIP
     }
 
-    /* MTD Device Detect */
-    if(MTD_OK == mtd_probe(&param)) {
-        printf("found spi flash..\n");
-        printf((char *)param.name);
-        printf("\n");
+    printf("found sd card.\n");
 
-        printf("open flash.bin(sd).\n");
+    if (pf_open("flash.bin\n")) {
+        goto done;  // No flash.bin, SKIP
+    }
 
-        if (pf_open("flash.bin\n")) {
-            printf("cannot find flash.bin.\n");
-            return false;
-        }
+    printf("found flash.bin\n");
 
-        if( fatfs.fsize > 1024)
-            printf("%u KB\n", (fatfs.fsize / 1024));
-        else
-            printf("%u Byte\n", fatfs.fsize);
+    if( fatfs.fsize > 1024)  // Is file size over than one MB ?
+        printf("file size %u KB\n", (fatfs.fsize / 1024));
+    else  // File size less than one MB
+        printf("file size %u Byte\n", fatfs.fsize);
 
-        buff = shared_buff;
+    /* Probe MTD Device */
+    if( MTD_OK == mtd_probe(&mtd) ) {
+        printf("found spi flash.\n");
+        printf((char *)mtd.name);
+        printf("\n\n");
 
         /* Is the file in micro sd  and in the sflash are the same one?  */
-
-        pf_read(buff, 256, &br);  /* Read a chunk of file */
-
-        for( i = 0 ; i < 256 ; i++) {
-            mtd_read_data(addr, (uint8_t*)&br, 1);
-
-            if(br != buff[i]) {
-                goto update;
-            }
-
-            addr++;
+        if(pf_read(buff, shared_buff_size, &br)){ /* Read a chunk of file */
+            printf("sd read failed!\n");
+            goto done; // Card removed !
         }
 
-        printf("data mtached!!\n");
-        goto done;
+        mtd_lseek(0); // set data point.
+
+        for( i = 0 ; i < shared_buff_size ; i++) {
+            mtd_read((uint8_t*)&br, 1, NULL);
+
+            if(br != buff[i]) {
+                goto update; // Data Mismatched, Update it !
+            }
+        }
+
+        printf("data matched.\n");
+        goto done;  // No need to update, SKIP
 
 update:
-        printf("new flash.bin!\n");
+        printf("data mismatched!\n");
 
-        printf("erase spi flash..\n");
+        printf("erase spi flash!\n");
 
-        mtd_chip_erase();
+        mtd_chip_erase(); // Erase whole flash
 
         printf("program spi flash..\n");
 
-        pf_lseek(0);
-        addr = 0;
+        pf_lseek(0); // Reset SD File point.
+        mtd_lseek(0); // Reset MTD data point.
 
         for (;;) {
             /* Read a chunk of file */
-            rc = pf_read(buff, shared_buff_size, &br);
+            if(pf_read(buff, shared_buff_size, &br)) {
+                printf("sd read failed!\n");
+                return false;  // Card removed !
+            }
 
-            /* Error or end of file */
-            if (rc || !br) break;
+            /* End of File (EOF) */
+            if (!br) break;
 
-            /* Do Page Program and Computer CRC */
-            if(MTD_OK !=mtd_page_program(addr, (uint8_t*)buff, br))
-                printf("failed in 0x%X.\n", addr);
+            /* Do Page Program and Computer CRC Value (SD Card) */
+            if(MTD_OK != mtd_write((uint8_t*)buff, br, &mtd_addr)) {
+                printf("failed in 0x%X!\n", mtd_addr);
+                return false; // UPDATE FAILED !
+            }
 
             /* Update CRC */
             for (i = 0; i < br; i++) {
                 crc16_sd = crc16_update(crc16_sd, buff[i]);
             }
 
-            /* Read Back Data and Computer CRC */
-            if(MTD_OK !=mtd_read_data(addr, (uint8_t*)buff, br))
-                printf("failed in 0x%X.\n", addr);
+            /* Read Back Data and Computer CRC Value(SPI Flash) */
+            mtd_lseek(mtd_addr - br);
 
-            /* Update CRC */
+            if(MTD_OK != mtd_read((uint8_t*)buff, br, &mtd_addr))
+                printf("failed in 0x%X!\n",mtd_addr);
+
+            /* Terminate MTD in continue reading mode */
+            mtd_lseek(mtd_addr);
+
+            /* Update CRC Value */
             for (i = 0; i < br; i++) {
                 crc16_sf = crc16_update(crc16_sf, buff[i]);
             }
 
-            addr = addr + br;
+            /* Check CRC Value */
+            if(crc16_sf != crc16_sd)
+            {
+                printf("CRC is not match!\n");
+
+                rc = false; goto show_crc; // File Corrupted, UPDATE FAILED !
+            }
         }
 
-        /* Show CRC */
-        printf("CRC16-SD 0x%04X.\n", crc16_sd);
-        printf("CRC16-SF 0x%04X.\n", crc16_sf);
+    }
+    else
+    {
+        printf("found no spi flash!\n");
+        return false; // NO SPI FLASH !
     }
 
-done:
-    if(crc16_sf == crc16_sd)
-        return true;
-    else
-        printf("CRC is not match!!\n");
+show_crc:
 
-    return false;
+    /* Show CRC Value */
+    printf("CRC16-SD 0x%04X.\n", crc16_sd);
+    printf("CRC16-SF 0x%04X.\n", crc16_sf);
+
+done:
+
+    return rc;
 }
 #endif
 
 static void platform_init(void)
 {
-    init_heap((size_t)stack,256);
+    #if 0
+    size_t *test = NULL;
+    uint16_t size = 512;
+    #endif
+
+    init_heap((size_t)stack, stack_size);
 
     /* System Initialization */
     System_Initial();
 
     lcd7735_init();
-    lcd7735_initR(INITR_REDTAB);
-    lcd7735_init_screen((void *)SmallFont,ST7735_WHITE,ST7735_BLACK,LANDSAPE);
+    lcd7735_init_r(INITR_REDTAB);
+    
+    //lcd7735_init_screen((void *)BigFont,ST7735_WHITE,ST7735_BLACK,LANDSAPE); // Will allocate RAM for 83
+    //lcd7735_init_screen((void *)SmallFont,ST7735_WHITE,ST7735_BLACK,LANDSAPE); // Will allocate RAM for 203
+    //lcd7735_init_screen((void *)RusFont,ST7735_WHITE,ST7735_BLUE,LANDSAPE); // Will allocate RAM for 323
+    //lcd7735_init_screen((void *)Font_5x7,ST7735_WHITE,ST7735_BLUE,LANDSAPE); // Will allocate RAM for 576
+    //lcd7735_init_screen((void *)ComicSans_MS_8x12,ST7735_WHITE,ST7735_BLUE,LANDSAPE);  // Will allocate RAM for 203
+    lcd7735_init_screen((void *)TinyFont,ST7735_WHITE,ST7735_BLUE,LANDSAPE); // Will allocate RAM for 323
+
+    #if 0 
+    for(;;)
+    {
+        test = malloc(size*sizeof(size_t));
+        
+        if(NULL != test)
+            break;
+        size--;
+    }
+    #endif
 
     _delay_ms(100);
 
