@@ -21,29 +21,39 @@
 
 
 #ifdef CODE_1
-#define LCD_CS_L()  spi_select(CS_LCDMOD, 0)
-#define LCD_CS_H()  spi_select(CS_LCDMOD, 1)
+//#define LCD_CS_L()  spi_select(CS_LCDMOD, 0)
+//#define LCD_CS_H()  spi_select(CS_LCDMOD, 1)
+#define LCD_CS_L()     asm("R3 = 0x2000"); asm("CLRB [R3], 10")
+#define LCD_CS_H()     asm("R3 = 0x2000"); asm("SETB [R3], 10")
 
 #define LCD_SCK_INIT()  P_IOA_DA->b_1  = 0x0; P_IOA_AT->b_1 = 0x1; P_IOA_DI->b_1 = 0x1
-#define LCD_SCK_H()    (P_IOA_DA->b_1) = 0x1
-#define LCD_SCK_L()    (P_IOA_DA->b_1) = 0x0
+//#define LCD_SCK_H()    (P_IOA_DA->b_1) = 0x1
+//#define LCD_SCK_L()    (P_IOA_DA->b_1) = 0x0
+#define LCD_SCK_H()    asm("R3 = 0x2000"); asm("SETB [R3], 1")
+#define LCD_SCK_L()    asm("R3 = 0x2000"); asm("CLRB [R3], 1")
 
 #define LCD_SDA_INIT()  P_IOA_DA->b_2  = 0x0; P_IOA_AT->b_2 = 0x1; P_IOA_DI->b_2 = 0x1
-#define LCD_SDA_H()    (P_IOA_DA->b_2) = 0x1
-#define LCD_SDA_L()    (P_IOA_DA->b_2) = 0x0
+//#define LCD_SDA_H()    (P_IOA_DA->b_2) = 0x1
+//#define LCD_SDA_L()    (P_IOA_DA->b_2) = 0x0
+#define LCD_SDA_H()    {asm("R3 = 0x2000"); asm("SETB [R3], 2");}
+#define LCD_SDA_L()    {asm("R3 = 0x2000"); asm("CLRB [R3], 2");}
 
 // A0 (DC, R/S)
 #define LCD_A0_INIT()   P_IOA_DA->b_3  = 0x1; P_IOA_AT->b_3 = 0x1; P_IOA_DI->b_3 = 0x1
-#define LCD_A0_H()     (P_IOA_BU->b_3) = 0x1
-#define LCD_A0_L()     (P_IOA_BU->b_3) = 0x0
+//#define LCD_A0_H()     (P_IOA_BU->b_3) = 0x1
+//#define LCD_A0_L()     (P_IOA_BU->b_3) = 0x0
+#define LCD_A0_H()     asm("R3 = 0x2000"); asm("SETB [R3], 3")
+#define LCD_A0_L()     asm("R3 = 0x2000"); asm("CLRB [R3], 3")
 
 /* The pin LCD_RST_PIN is not used if defined */
 //#define LCD_SOFT_RESET
 
 #ifndef LCD_SOFT_RESET
 #define LCD_RST_INIT()   P_IOA_DA->b_4  = 0x1; P_IOA_AT->b_4 = 0x1; P_IOA_DI->b_4 = 0x1
-#define LCD_RST_H()     (P_IOA_DA->b_4) = 0x1
-#define LCD_RST_L()     (P_IOA_DA->b_4) = 0x0
+//#define LCD_RST_H()     (P_IOA_DA->b_4) = 0x1
+//#define LCD_RST_L()     (P_IOA_DA->b_4) = 0x0
+#define LCD_RST_H()     asm("R3 = 0x2000"); asm("SETB [R3], 4")
+#define LCD_RST_L()     asm("R3 = 0x2000"); asm("CLRB [R3], 4")
 #endif
 
 //#define CK_H()      (P_IOA_BU->bit_13) = 0x1  /* Set MMC SCLK "high" */

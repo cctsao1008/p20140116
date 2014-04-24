@@ -34,11 +34,17 @@
 
 #define SPI_DEFAULT_SPEED SPI_8MHz
 
-#define CK_H()      (P_IOA_DA->b_13) = 0x1  /* Set MMC SCLK "high" */
-#define CK_L()      (P_IOA_DA->b_13) = 0x0  /* Set MMC SCLK "low" */
-#define DI_H()      (P_IOA_DA->b_14) = 0x1  /* Set MMC DI "high" */
-#define DI_L()      (P_IOA_DA->b_14) = 0x0  /* Set MMC DI "low" */
-#define DO          (P_IOA_DA->b_15)          /* Get MMC DO value (high:true, low:false) */
+//#define CK_H()      (P_IOA_DA->b_13) = 0x1  /* Set MMC SCLK "high" */
+//#define CK_L()      (P_IOA_DA->b_13) = 0x0  /* Set MMC SCLK "low" */
+//#define MOSI_H()      (P_IOA_DA->b_14) = 0x1  /* Set MMC MOSI "high" */
+//#define MOSI_L()      (P_IOA_DA->b_14) = 0x0  /* Set MMC MOSI "low" */
+
+#define CK_H()      asm("R3 = 0x2000"); asm("SETB [R3], 13")  /* Set MMC SCLK "high" */
+#define CK_L()      asm("R3 = 0x2000"); asm("CLRB [R3], 13")  /* Set MMC SCLK "low" */
+#define MOSI_H()    asm("R3 = 0x2000"); asm("SETB [R3], 14")  /* Set MMC MOSI "high" */
+#define MOSI_L()    asm("R3 = 0x2000"); asm("CLRB [R3], 14")  /* Set MMC MOSI "low" */
+
+#define MISO          (P_IOA_DA->b_15)          /* Get MMC MISO value (high:true, low:false) */
 
 //#define CS_H()      (P_IOA_BU->bit_12) = 0x1  /* Set MMC CS "high" */
 //#define CS_L()      (P_IOA_BU->bit_12) = 0x0  /* Set MMC CS "low" */

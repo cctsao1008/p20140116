@@ -250,7 +250,7 @@ EXPORT=3
 #PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
-EXPORT=1256113157
+EXPORT=0
 # Begin Source File
 SOURCE=..\..\Platform\drivers\drv_i2c.h
 USEPARAM=FALSE
@@ -389,7 +389,7 @@ SOURCE=..\..\Platform\modules\freertos\source\include\FreeRTOS.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=3
+EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\task.h
@@ -410,14 +410,14 @@ SOURCE=..\..\Platform\modules\freertos\source\include\semphr.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=593899679
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\xprintf\xprintf.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=124334392
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\rtclib\rtclib.h
@@ -431,7 +431,7 @@ SOURCE=..\..\Platform\modules\freertos\source\include\projdefs.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=41555308
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\portable.h
@@ -445,14 +445,14 @@ SOURCE=..\..\Platform\modules\freertos\source\include\list.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=593899734
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\queue.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=41555544
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\portable\GCC\unsp_isa_v13\portmacro.h
@@ -466,14 +466,14 @@ SOURCE=..\..\Platform\modules\freertos\source\include\mpu_wrappers.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=1918985055
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\include\GPCE206x.inc
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=104
 # End Source File
 # End Group
 # End SubItem
@@ -722,7 +722,7 @@ EXPORT=3
 #PROP Default_Filter=
 USEPARAM=FALSE
 PARAM=
-EXPORT=1256113157
+EXPORT=0
 # Begin Source File
 SOURCE=..\..\Platform\drivers\drv_i2c.h
 USEPARAM=FALSE
@@ -861,7 +861,7 @@ SOURCE=..\..\Platform\modules\freertos\source\include\FreeRTOS.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=3
+EXPORT=0
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\task.h
@@ -882,14 +882,14 @@ SOURCE=..\..\Platform\modules\freertos\source\include\semphr.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=593899679
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\xprintf\xprintf.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=124334392
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\rtclib\rtclib.h
@@ -903,7 +903,7 @@ SOURCE=..\..\Platform\modules\freertos\source\include\projdefs.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=41555308
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\portable.h
@@ -917,14 +917,14 @@ SOURCE=..\..\Platform\modules\freertos\source\include\list.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=593899734
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\include\queue.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=41555544
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\modules\freertos\source\portable\GCC\unsp_isa_v13\portmacro.h
@@ -938,14 +938,14 @@ SOURCE=..\..\Platform\modules\freertos\source\include\mpu_wrappers.h
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=1918985055
 # End Source File
 # Begin Source File
 SOURCE=..\..\Platform\include\GPCE206x.inc
 USEPARAM=FALSE
 PARAM=
 ID=
-EXPORT=0
+EXPORT=104
 # End Source File
 # End Group
 # End SubItem

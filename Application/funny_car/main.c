@@ -46,7 +46,6 @@ uint8_t shared_buff[shared_buff_size];
 SPEECH_TBL speech_addr[MaxSpeechNum];
 ringBufS rb;
 uint8_t playing = 0;
-uint32_t addr;
 
 void _delay_ms(uint32_t ms)
 {
@@ -120,7 +119,6 @@ void demo(void *pvParameters)
 
     /* A1600 Initialization */
     SACM_A1600_Initial();
-    USER_A1600_SetStartAddr(0, 0);
 
     USER_A1600_Volume(VolumeIndex);
 
@@ -159,6 +157,8 @@ void demo(void *pvParameters)
             break;
 
         case 0x0001:    // IOB0 + Vcc
+            SpeechIndex = SpeechIndex % SpeechNum;
+
             SACM_A1600_Stop();
             printf("K%d. next\n", 0);
             break;

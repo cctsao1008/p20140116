@@ -1147,47 +1147,37 @@ static struct __screen {
 void _xmit(const uint8_t tb)
 {
 #if 0
-    for(i=0; i < 8; i++) {
-        if (d & 0x80) LCD_MOSI1;
-        else LCD_MOSI0;
-        d = d << 1;
-        LCD_SCK0;
-        LCD_SCK1;
+    uint8_t i = 0;
+
+    for( i = 0; i < 8; i++ ) {
+        if (tb & 0x80)
+            LCD_SDA_H();
+        else
+            LCD_SDA_L();
+
+        tb = tb<< 1;
+        LCD_SCK_L();
+        LCD_SCK_H();
     }
 #else
     reset_watch_dog();
-    if (tb & 0x80) LCD_SDA_H();
-    else LCD_SDA_L();   /* bit7 */
-    LCD_SCK_L();
-    LCD_SCK_H();
-    if (tb & 0x40) LCD_SDA_H();
-    else LCD_SDA_L();   /* bit6 */
-    LCD_SCK_L();
-    LCD_SCK_H();
-    if (tb & 0x20) LCD_SDA_H();
-    else LCD_SDA_L();   /* bit5 */
-    LCD_SCK_L();
-    LCD_SCK_H();
-    if (tb & 0x10) LCD_SDA_H();
-    else LCD_SDA_L();   /* bit4 */
-    LCD_SCK_L();
-    LCD_SCK_H();
-    if (tb & 0x08) LCD_SDA_H();
-    else LCD_SDA_L();   /* bit3 */
-    LCD_SCK_L();
-    LCD_SCK_H();
-    if (tb & 0x04) LCD_SDA_H();
-    else LCD_SDA_L();   /* bit2 */
-    LCD_SCK_L();
-    LCD_SCK_H();
-    if (tb & 0x02) LCD_SDA_H();
-    else LCD_SDA_L();   /* bit1 */
-    LCD_SCK_L();
-    LCD_SCK_H();
-    if (tb & 0x01) LCD_SDA_H();
-    else LCD_SDA_L();   /* bit0 */
-    LCD_SCK_L();
-    LCD_SCK_H();
+
+    if (tb & 0x80) {LCD_SDA_H();} else {LCD_SDA_L();}  /* bit7 */
+    LCD_SCK_L(); LCD_SCK_H();
+    if (tb & 0x40) {LCD_SDA_H();} else {LCD_SDA_L();}  /* bit6 */
+    LCD_SCK_L(); LCD_SCK_H();
+    if (tb & 0x20) {LCD_SDA_H();} else {LCD_SDA_L();}  /* bit5 */
+    LCD_SCK_L(); LCD_SCK_H();
+    if (tb & 0x10) {LCD_SDA_H();} else {LCD_SDA_L();}  /* bit4 */
+    LCD_SCK_L(); LCD_SCK_H();
+    if (tb & 0x08) {LCD_SDA_H();} else {LCD_SDA_L();}  /* bit3 */
+    LCD_SCK_L(); LCD_SCK_H();
+    if (tb & 0x04) {LCD_SDA_H();} else {LCD_SDA_L();}  /* bit2 */
+    LCD_SCK_L(); LCD_SCK_H();
+    if (tb & 0x02) {LCD_SDA_H();} else {LCD_SDA_L();}  /* bit1 */
+    LCD_SCK_L(); LCD_SCK_H();
+    if (tb & 0x01) {LCD_SDA_H();} else {LCD_SDA_L();}  /* bit0 */
+    LCD_SCK_L(); LCD_SCK_H();
 #endif
 }
 

@@ -83,9 +83,9 @@ void dly_us(unsigned long n)
 #define CS_L()      (P_IOA_BU->bit_12) = 0x0  /* Set MMC CS "low" */
 #define CK_H()      (P_IOA_BU->bit_13) = 0x1  /* Set MMC SCLK "high" */
 #define CK_L()      (P_IOA_BU->bit_13) = 0x0  /* Set MMC SCLK "low" */
-#define DI_H()      (P_IOA_BU->bit_14) = 0x1  /* Set MMC DI "high" */
-#define DI_L()      (P_IOA_BU->bit_14) = 0x0  /* Set MMC DI "low" */
-#define DO          (P_IOA_DA->bit_15)        /* Get MMC DO value (high:true, low:false) */
+#define MOSI_H()      (P_IOA_BU->bit_14) = 0x1  /* Set MMC DI "high" */
+#define MOSI_L()      (P_IOA_BU->bit_14) = 0x0  /* Set MMC DI "low" */
+#define MISO          (P_IOA_DA->bit_15)        /* Get MMC DO value (high:true, low:false) */
 #else
 #define INIT_PORT() spi_initialize()
 #define DLY_US(n)   dly_us(n)    /* Delay n microseconds */
@@ -135,21 +135,21 @@ void xmit_mmc (
     BYTE d          /* Data to be sent */
 )
 {
-    if (d & 0x80) DI_H(); else DI_L();  /* bit7 */
+    if (d & 0x80) MOSI_H(); else MOSI_L();  /* bit7 */
     CK_H(); CK_L();
-    if (d & 0x40) DI_H(); else DI_L();  /* bit6 */
+    if (d & 0x40) MOSI_H(); else MOSI_L();  /* bit6 */
     CK_H(); CK_L();
-    if (d & 0x20) DI_H(); else DI_L();  /* bit5 */
+    if (d & 0x20) MOSI_H(); else MOSI_L();  /* bit5 */
     CK_H(); CK_L();
-    if (d & 0x10) DI_H(); else DI_L();  /* bit4 */
+    if (d & 0x10) MOSI_H(); else MOSI_L();  /* bit4 */
     CK_H(); CK_L();
-    if (d & 0x08) DI_H(); else DI_L();  /* bit3 */
+    if (d & 0x08) MOSI_H(); else MOSI_L();  /* bit3 */
     CK_H(); CK_L();
-    if (d & 0x04) DI_H(); else DI_L();  /* bit2 */
+    if (d & 0x04) MOSI_H(); else MOSI_L();  /* bit2 */
     CK_H(); CK_L();
-    if (d & 0x02) DI_H(); else DI_L();  /* bit1 */
+    if (d & 0x02) MOSI_H(); else MOSI_L();  /* bit1 */
     CK_H(); CK_L();
-    if (d & 0x01) DI_H(); else DI_L();  /* bit0 */
+    if (d & 0x01) MOSI_H(); else MOSI_L();  /* bit0 */
     CK_H(); CK_L();
 }
 #else
@@ -166,23 +166,23 @@ BYTE rcvr_mmc (void)
 {
     BYTE r;
 
-    DI_H(); /* Send 0xFF */
+    MOSI_H(); /* Send 0xFF */
 
-    r = 0;   if (DO) r++;   /* bit7 */
+    r = 0;   if (MISO) r++;   /* bit7 */
     CK_H(); CK_L();
-    r <<= 1; if (DO) r++;   /* bit6 */
+    r <<= 1; if (MISO) r++;   /* bit6 */
     CK_H(); CK_L();
-    r <<= 1; if (DO) r++;   /* bit5 */
+    r <<= 1; if (MISO) r++;   /* bit5 */
     CK_H(); CK_L();
-    r <<= 1; if (DO) r++;   /* bit4 */
+    r <<= 1; if (MISO) r++;   /* bit4 */
     CK_H(); CK_L();
-    r <<= 1; if (DO) r++;   /* bit3 */
+    r <<= 1; if (MISO) r++;   /* bit3 */
     CK_H(); CK_L();
-    r <<= 1; if (DO) r++;   /* bit2 */
+    r <<= 1; if (MISO) r++;   /* bit2 */
     CK_H(); CK_L();
-    r <<= 1; if (DO) r++;   /* bit1 */
+    r <<= 1; if (MISO) r++;   /* bit1 */
     CK_H(); CK_L();
-    r <<= 1; if (DO) r++;   /* bit0 */
+    r <<= 1; if (MISO) r++;   /* bit0 */
     CK_H(); CK_L();
 
     return r;
@@ -202,7 +202,7 @@ void skip_mmc (
     WORD n      /* Number of bytes to skip */
 )
 {
-    DI_H(); /* Send 0xFF */
+    MOSI_H(); /* Send 0xFF */
 
     do {
         CK_H(); CK_L();

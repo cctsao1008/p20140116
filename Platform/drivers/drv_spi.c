@@ -71,21 +71,21 @@ void spi_xmit(const uint8_t d)
 {
     reset_watch_dog();
 #ifdef USE_BIT_BANGING_SPI
-    if (d & 0x80) DI_H(); else DI_L();  /* bit7 */
+    if (d & 0x80) {MOSI_H();} else {MOSI_L();}  /* bit7 */
     CK_H(); CK_L();
-    if (d & 0x40) DI_H(); else DI_L();  /* bit6 */
+    if (d & 0x40) {MOSI_H();} else {MOSI_L();}  /* bit6 */
     CK_H(); CK_L();
-    if (d & 0x20) DI_H(); else DI_L();  /* bit5 */
+    if (d & 0x20) {MOSI_H();} else {MOSI_L();}  /* bit5 */
     CK_H(); CK_L();
-    if (d & 0x10) DI_H(); else DI_L();  /* bit4 */
+    if (d & 0x10) {MOSI_H();} else {MOSI_L();}  /* bit4 */
     CK_H(); CK_L();
-    if (d & 0x08) DI_H(); else DI_L();  /* bit3 */
+    if (d & 0x08) {MOSI_H();} else {MOSI_L();}  /* bit3 */
     CK_H(); CK_L();
-    if (d & 0x04) DI_H(); else DI_L();  /* bit2 */
+    if (d & 0x04) {MOSI_H();} else {MOSI_L();}  /* bit2 */
     CK_H(); CK_L();
-    if (d & 0x02) DI_H(); else DI_L();  /* bit1 */
+    if (d & 0x02) {MOSI_H();} else {MOSI_L();}  /* bit1 */
     CK_H(); CK_L();
-    if (d & 0x01) DI_H(); else DI_L();  /* bit0 */
+    if (d & 0x01) {MOSI_H();} else {MOSI_L();}  /* bit0 */
     CK_H(); CK_L();
 #else
     // TODO : HW SPI MODE
@@ -102,23 +102,23 @@ uint8_t spi_rcvr(void)
 
     reset_watch_dog();
 #ifdef USE_BIT_BANGING_SPI
-    DI_H(); /* Send 0xFF */
+    MOSI_H(); /* Send 0xFF */
 
-    r = 0;   if (DO) r++;   /* bit7 */
+    r = 0;   if (MISO) r++;   /* bit7 */
     CK_H(); CK_L();
-    r <<= 1; if (DO) r++;   /* bit6 */
+    r <<= 1; if (MISO) r++;   /* bit6 */
     CK_H(); CK_L();
-    r <<= 1; if (DO) r++;   /* bit5 */
+    r <<= 1; if (MISO) r++;   /* bit5 */
     CK_H(); CK_L();
-    r <<= 1; if (DO) r++;   /* bit4 */
+    r <<= 1; if (MISO) r++;   /* bit4 */
     CK_H(); CK_L();
-    r <<= 1; if (DO) r++;   /* bit3 */
+    r <<= 1; if (MISO) r++;   /* bit3 */
     CK_H(); CK_L();
-    r <<= 1; if (DO) r++;   /* bit2 */
+    r <<= 1; if (MISO) r++;   /* bit2 */
     CK_H(); CK_L();
-    r <<= 1; if (DO) r++;   /* bit1 */
+    r <<= 1; if (MISO) r++;   /* bit1 */
     CK_H(); CK_L();
-    r <<= 1; if (DO) r++;   /* bit0 */
+    r <<= 1; if (MISO) r++;   /* bit0 */
     CK_H(); CK_L();
 #else
     // TODO : HW SPI MODE
@@ -133,7 +133,7 @@ void spi_skip_bytes (
 {
     reset_watch_dog();
 #ifdef USE_BIT_BANGING_SPI
-    DI_H(); /* Send 0xFF */
+    MOSI_H(); /* Send 0xFF */
 
     do {
         CK_H(); CK_L();
