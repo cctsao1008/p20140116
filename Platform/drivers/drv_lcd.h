@@ -156,7 +156,7 @@ extern const unsigned char DotMatrix_M[];
 extern const unsigned char Sinclair_M[];
 extern const unsigned char TinyFont[];
 
-int putchar (int c);
+//int putchar (int c);
 
 void lcd7735_init(void);
 void lcd7735_init_r(uint8_t options);

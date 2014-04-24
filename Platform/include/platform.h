@@ -14,9 +14,9 @@
 /* Project Configurations */
 //#define USE_PROTOTHREADS
 //#define USE_FREERTOS
-#define NO_DEBUG_MSG_OUTPUT
-#define DEBUG_MSG_OUTPUT_UART
-//#define DEBUG_MSG_OUTPUT_LCD
+//#define NO_DEBUG_MSG_OUTPUT
+//#define DEBUG_MSG_OUTPUT_UART
+#define DEBUG_MSG_OUTPUT_LCD
 
 
 /****************************************************************************
@@ -56,15 +56,15 @@
 #define CFG_APP_PARTEST      1
 
 /* Debug message output */
-#ifdef DEBUG_MSG_OUTPUT_LCD
-#define putchar lcd7735_putchar
-#define printf tfp_printf
-#endif
-
-#ifdef DEBUG_MSG_OUTPUT_UART
-#define putchar _putchar
-//#define printf(str, ...) tfp_printf
-#define printf tfp_printf
+#if defined (NO_DEBUG_MSG_OUTPUT)
+ #define putchar(c)
+ #define printf(str, ...)
+#elif defined (DEBUG_MSG_OUTPUT_LCD)
+ #define putchar lcd7735_putc
+ #define printf tfp_printf
+#elif defined (DEBUG_MSG_OUTPUT_UART)
+ #define putchar soft_uart_putc
+ #define printf tfp_printf
 #endif
 
 #include "GPCE206x.h"

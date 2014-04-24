@@ -174,7 +174,7 @@ void init_uart( void )
     set_timer_interrupt( timer_isr );   // Enable timer interrupt
 }
 
-char _getchar( void )
+char soft_uart_getc( void )
 {
     char        ch;
 
@@ -194,7 +194,7 @@ char _getchar( void )
     return( ch );
 }
 
-void _putchar( char ch )
+void soft_uart_putc( char ch )
 {
     while ( flag_tx_ready );
     user_tx_buffer = ch;

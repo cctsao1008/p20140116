@@ -1330,6 +1330,7 @@ void _fill_rect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color)
     }
 }
 
+#if 0
 /* printf in "CLib" will call putchar.
    user can implement this function -- send a char to UART? */
 int putchar (int c)
@@ -1337,6 +1338,7 @@ int putchar (int c)
     lcd7735_putc(c);
     return c;
 }
+#endif
 
 void delay_ms(uint32_t ms)
 {
@@ -1425,6 +1427,7 @@ void lcd7735_init_r(uint8_t options)
     //  tabcolor = options;
 }
 
+#if 0
 // draw color pixel on screen
 void lcd7735_draw_pixel(int16_t x, int16_t y, uint16_t color)
 {
@@ -1434,6 +1437,7 @@ void lcd7735_draw_pixel(int16_t x, int16_t y, uint16_t color)
     _set_sddr_window(x,y,x+1,y+1);
     _push_color(color);
 }
+#endif
 
 #ifdef LCD_SHOW_CURSOR
 static void _cursor_expose(int flg)
@@ -1523,6 +1527,7 @@ void lcd7735_putc(char c)
     cursor_draw;
 }
 
+#if 0
 void lcd7735_puts(char *s)
 {
     int i;
@@ -1537,6 +1542,7 @@ void lcd7735_puts(char *s)
     }
     cursor_draw;
 }
+#endif
 
 #if 0
 void lcd7735_cursor_set(uint16_t row, uint16_t col)
@@ -1567,6 +1573,7 @@ uint16_t lcd7735_color_565(uint8_t r, uint8_t g, uint8_t b)
     return ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3);
 }
 
+#if 0
 void lcd7735_invert_display(const uint8_t mode)
 {
     if( mode == INVERT_ON ) _send_cmd(ST7735_INVON);
@@ -1591,6 +1598,7 @@ uint8_t lcd7735_get_height()
 {
     return(_height);
 }
+#endif
 
 void lcd7735_init(void)
 {

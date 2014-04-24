@@ -18,7 +18,7 @@
 #include <stdarg.h>
 void (*xfunc_out)(unsigned char);   /* Pointer to the output stream */
 static char *outptr;
-void putchar(char c);
+//void putchar(char c);
 
 /*----------------------------------------------*/
 /* Put a character                              */
