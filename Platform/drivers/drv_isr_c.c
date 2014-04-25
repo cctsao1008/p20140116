@@ -1,4 +1,4 @@
-/****************************************************************************
+/*********************************************************************
  * Platform/drivers/drv_isr_c.c
  *
  *   Copyright (C) 2014  DRPM Development Team. All rights reserved.
@@ -7,7 +7,7 @@
  *   GENERAL DESCRIPTION
  *      The driver performs interrupt service routine (ISR)
  *
- ****************************************************************************/
+ *********************************************************************/
 #include "platform.h"
 
 void BREAK(void) __attribute__ ((ISR));

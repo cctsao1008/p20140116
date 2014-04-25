@@ -1,4 +1,4 @@
-/****************************************************************************
+/*********************************************************************
  * Platform\modules\freertos\source\portable\GCC\unsp_isa_v13\port_c.c
  *
  *   Copyright (C) 2014  DRPM Development Team. All rights reserved.
@@ -7,7 +7,7 @@
  *   GENERAL DESCRIPTION
  *   
  *
- ****************************************************************************/
+ *********************************************************************/
 /* Standard includes. */
 #include <stdlib.h>
 #include <stdint.h>
@@ -62,7 +62,9 @@ volatile StackType_t SAVED_FR = 0;
  * 
  * See the header file portable.h.
  */
-StackType_t *pxPortInitialiseStack( StackType_t *pxTopOfStack, TaskFunction_t pxCode, void *pvParameters )
+StackType_t *pxPortInitialiseStack( StackType_t *pxTopOfStack,
+                                        TaskFunction_t pxCode,
+                                        void *pvParameters )
 {
     /* 
         Place a few bytes of known values on the bottom of the stack. 

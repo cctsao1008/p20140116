@@ -1,4 +1,4 @@
-/****************************************************************************
+/*********************************************************************
  * bsp/drivers/drv_vusb.c
  *
  *   Copyright (C) 2014  DRPM Development Team. All rights reserved.
@@ -8,6 +8,6 @@
  *      V-USB is a software-only implementation of a low-speed USB device
  *      for micro-controllers
  *
- ****************************************************************************/
+ *********************************************************************/
 #include "drv_vusb.h"
 

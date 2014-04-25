@@ -1,4 +1,4 @@
-/****************************************************************************
+/*********************************************************************
  * bsp/drivers/drv_gpio.h
  *
  *   Copyright (C) 2014  DRPM Development Team. All rights reserved.
@@ -7,7 +7,7 @@
  *   GENERAL DESCRIPTION
  *      This is a driver for General Purpose I/O (GPIO).
  *
- ****************************************************************************/
+ *********************************************************************/
 #ifndef DRV_GPIO_H_
 #define DRV_GPIO_H_
 #include "platform.h"

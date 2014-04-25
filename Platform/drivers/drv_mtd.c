@@ -1,4 +1,4 @@
-/****************************************************************************
+/*********************************************************************
  * bsp/drivers/drv_mtd.c
  *
  *   Copyright (C) 2014  DRPM Development Team. All rights reserved.
@@ -7,7 +7,7 @@
  *   GENERAL DESCRIPTION
  *      This module performs Memory Technology Device (MTD) functionality.
  *
- ****************************************************************************/
+ *********************************************************************/
 #include "drv_mtd.h"
 #include "drv_spi.h"
 

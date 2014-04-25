@@ -1,4 +1,4 @@
-/****************************************************************************
+/*********************************************************************
  * Platform/modules/sfat/sfat.h
  *
  *   Copyright (C) 2014  DRPM Development Team. All rights reserved.
@@ -7,7 +7,7 @@
  *   GENERAL DESCRIPTION
  *      Simple File Allocation Table using Linked List.
  *
- ****************************************************************************/
+ *********************************************************************/
 #ifndef SFAT_H_
 #define SFAT_H_
 #include "platform.h"
