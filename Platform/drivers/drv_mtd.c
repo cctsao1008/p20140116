@@ -234,9 +234,24 @@ MTD_RESULT mtd_read(uint8_t *buf, uint32_t btr, uint32_t *ptr)
     }
 
     /* Set a loop to read data into buffer */
+    #if 0
     for(i = 0 ; i < btr ; i++) {
         buf[i] = spi_rcvr(); mtd_addr++;
     }
+    #else /* Duff's Device */
+    switch (btr % 8)  /* count > 0 assumed */
+    {
+        case 0:     do {    buf[i++] = spi_rcvr(); mtd_addr++;
+        case 7:             buf[i++] = spi_rcvr(); mtd_addr++;
+        case 6:             buf[i++] = spi_rcvr(); mtd_addr++;
+        case 5:             buf[i++] = spi_rcvr(); mtd_addr++;
+        case 4:             buf[i++] = spi_rcvr(); mtd_addr++;
+        case 3:             buf[i++] = spi_rcvr(); mtd_addr++;
+        case 2:             buf[i++] = spi_rcvr(); mtd_addr++;
+        case 1:             buf[i++] = spi_rcvr(); mtd_addr++;
+                    } while (((int32_t)btr -= 8) > 0);
+    }
+    #endif
 
     if(ptr)
         *ptr = mtd_addr;
