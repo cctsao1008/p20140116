@@ -240,7 +240,7 @@ MTD_RESULT mtd_read(uint8_t *buf, uint32_t btr, uint32_t *ptr)
     for(i = 0 ; i < btr ; i++) {
         buf[i] = spi_rcvr();
     }
-    #else /* Duff's Device */
+    #else /* Use Duff's Device */
     switch (btr % 8)  /* count > 0 assumed */
     {
         case 0:    do {    buf[i++] = spi_rcvr();

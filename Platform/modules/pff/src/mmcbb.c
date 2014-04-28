@@ -61,9 +61,19 @@ void dly_us(unsigned long n)
     #if 1 // Use this will save 20 word in code.
     unsigned long c = n*50; // 49 ~= 1 us / ((1 / 49152000) * 10^6) us
 
-    do{
-        asm("NOP");
-    }while(--c);
+    /* Use Duff's Device */
+    switch (c % 8)  /* count > 0 assumed */
+    {
+        case 0:    do {    asm("NOP");
+        case 7:            asm("NOP");
+        case 6:            asm("NOP");
+        case 5:            asm("NOP");
+        case 4:            asm("NOP");
+        case 3:            asm("NOP");
+        case 2:            asm("NOP");
+        case 1:            asm("NOP");
+                   } while (((int32_t)c -= 8) > 0);
+    }
     #else
     unsigned long c = 0;
 

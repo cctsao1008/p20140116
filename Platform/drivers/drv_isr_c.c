@@ -177,12 +177,8 @@ void IRQ2(void)
 void IRQ6(void) __attribute__ ((ISR));
 void IRQ6(void)
 {
-    //System_ServiceLoop();
-
     if(tstb_m(P_INT_Status, C_IRQ6_4096Hz))
     {
-        //timer_isr();
-
         sbi_m(P_INT_Status, C_IRQ6_4096Hz);
     }
 }
@@ -190,8 +186,6 @@ void IRQ6(void)
 void IRQ7(void) __attribute__ ((ISR));
 void IRQ7(void)
 {
-    //System_ServiceLoop();
-
     if(tstb_m(P_INT_Status, C_IRQ7_2Hz))
     {
         sbi_m(P_INT_Status, C_IRQ7_2Hz);

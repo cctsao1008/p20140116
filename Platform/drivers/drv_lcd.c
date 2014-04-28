@@ -33,6 +33,7 @@ static void _putch(uint8_t c);
 
 static uint16_t _width = ST7735_TFTWIDTH;
 static uint16_t _height = ST7735_TFTHEIGHT;
+static uint16_t _color = ST7735_BLUE;
 
 /*
     Font type : Full (95 characters)
@@ -1280,11 +1281,52 @@ static void _putch(uint8_t c)
     *_scr(_screen.c.row, _screen.c.col) = c;
 }
 
+// fill a rectangle
+void _fill_rect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color)
+{
+    /* Use Duff's Device */
+    int16_t count = 0;
+
+    // rudimentary clipping (drawChar w/big text requires this)
+    if((x >= _width) || (y >= _height)) return;
+    if((x + w - 1) >= _width)  w = _width  - x;
+    if((y + h - 1) >= _height) h = _height - y;
+
+    _set_sddr_window(x, y, x+w-1, y+h-1);
+
+    LCD_A0_H();
+    for(y=h; y>0; y--) {
+        #if 0
+        for(x=w; x>0; x--) {
+            putpix(color);
+        }
+        #else /* Use Duff's Device */
+        count = w;
+        switch (count % 8)  /* count > 0 assumed */
+        {
+            case 0:    do {    putpix(color);
+            case 7:            putpix(color);
+            case 6:            putpix(color);
+            case 5:            putpix(color);
+            case 4:            putpix(color);
+            case 3:            putpix(color);
+            case 2:            putpix(color);
+            case 1:            putpix(color);
+                       } while (((int32_t)count -= 8) > 0);
+        }
+        #endif
+    }
+
+    _color = color;
+}
+
 static void _scroll_up()
 {
     int r,c;
     _screen.c.row = 0;
     _screen.c.col = 0;
+
+    #if 0
     for(r=1; r < _screen.nrow; r++)
         for(c=0; c < _screen.ncol; c++) {
             _putch(*_scr(r,c));
@@ -1300,24 +1342,9 @@ static void _scroll_up()
     }
     _screen.c.row = _screen.nrow - 1;
     _screen.c.col = 0;
-}
-
-// fill a rectangle
-void _fill_rect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color)
-{
-    // rudimentary clipping (drawChar w/big text requires this)
-    if((x >= _width) || (y >= _height)) return;
-    if((x + w - 1) >= _width)  w = _width  - x;
-    if((y + h - 1) >= _height) h = _height - y;
-
-    _set_sddr_window(x, y, x+w-1, y+h-1);
-
-    LCD_A0_H();
-    for(y=h; y>0; y--) {
-        for(x=w; x>0; x--) {
-            putpix(color);
-        }
-    }
+    #else
+    _fill_rect(0, 0,  _width, _height, _color);
+    #endif
 }
 
 #if 0
@@ -1335,10 +1362,19 @@ void delay_ms(uint32_t ms)
 #if 1 // Use this will save 20 word in code.
     uint32_t c = ms*50; // 49 ~= 1 us / ((1 / 49152000) * 10^6) us
 
-    do {
-        //asm("NOP");
-        reset_watch_dog();
-    } while(--c);
+    /* Use Duff's Device */
+    switch (c % 8)  /* count > 0 assumed */
+    {
+        case 0:    do {    asm("NOP");reset_watch_dog();
+        case 7:            asm("NOP");
+        case 6:            asm("NOP");
+        case 5:            asm("NOP");
+        case 4:            asm("NOP");
+        case 3:            asm("NOP");
+        case 2:            asm("NOP");
+        case 1:            asm("NOP");
+                   } while (((int32_t)c -= 8) > 0);
+    }
 #else
     unsigned long c = 0;
 
