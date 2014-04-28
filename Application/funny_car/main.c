@@ -1,4 +1,4 @@
-/****************************************************************************
+/*********************************************************************
  * app/funny_car/maim.c
  *
  *   Copyright (C) 2014  DRPM Development Team. All rights reserved.
@@ -7,11 +7,11 @@
  *  GENERAL DESCRIPTION
  *
  *
- ****************************************************************************/
+ *********************************************************************/
 #include "platform.h"
 
 /* Contant Defintion Are */
-#define MaxSpeechNum         6      // Max. of speech in resource
+#define MaxSpeechNum         4      // Max. of speech in resource
 #define MaxVolumeNum        16      // Max. of volume settings
 
 #define Foreground          0
@@ -44,7 +44,6 @@ void demo(void *pvParameters);
 size_t stack[stack_size];
 uint8_t shared_buff[shared_buff_size];
 SPEECH_TBL speech_addr[MaxSpeechNum];
-ringBufS rb;
 uint8_t playing = 0;
 
 void _delay_ms(uint32_t ms)
@@ -64,30 +63,66 @@ void _delay_ms(uint32_t ms)
 #endif
 }
 
-int main(void)
+PT pt1, pt2;
+HANDLE timer_1, timer_2;
+
+static
+PT_THREAD(thread_1(struct pt *pt))
 {
-    platform_init();
+    PT_BEGIN(pt);
+    if(timer_expired(timer_1, 5000))
+    {
+        printf("timer1 exp!\n");
+    }
 
-#ifdef USE_SFLASH_UPDATER
-    sflash_updater();
-#endif
+    System_ServiceLoop();
+    msgout_service();
+    PT_RESTART(pt);
+    PT_END(pt);
+}
 
-    demo(NULL);
+static
+PT_THREAD(thread_2(struct pt *pt))
+{
+    PT_BEGIN(pt);
+    if(timer_expired(timer_2, 10000))
+    {
+        printf("timer2 exp!\n");
+    }
 
-    return 0;
+    System_ServiceLoop();
+    msgout_service();
+    PT_RESTART(pt);
+    PT_END(pt);
+}
+
+void demo_20140428(void *pvParameters)
+{
+    /* Power ON state */
+    
 }
 
 void demo(void *pvParameters)
 {
     uint16_t SpeechIndex = 0, VolumeIndex = 9, SpeechNum = 0, i = 0;
     uint16_t DAC_FIR_Type = C_DAC_FIR_Type0;
-    uint16_t buff[4] = {0}, reset = 1, Key = 0;
+    uint16_t buff[4] = {1, 2, 3, 4}, reset = 1, Key = 0;
+
+    HANDLE h1 = NULL, h2 = NULL;
+
+    //sll_test();
+    //rb_test();
+
+    h1 = timer_create(5000);
+    h2 = timer_create(10000);
+    
+    if(NULL == h1)
+    	printf("h1 = NULL\n");
+
+    if(NULL == h2)
+    	printf("h2 = NULL\n");
 
     printf("start demo task.\n");
-
-    #if ( CFG_MOD_RB > 0 )
-    ringBufS_init(&rb, shared_buff, shared_buff_size);
-    #endif
 
     mtd_lseek(0);
     mtd_read((uint8_t *)&SpeechNum, 1, NULL);
@@ -116,6 +151,9 @@ void demo(void *pvParameters)
         printf("no speech file.\n");
         goto done;
     }
+
+    if(NULL == msgout_fifo_config(36))
+        printf("fifo failed!\n");
 
     /* A1600 Initialization */
     SACM_A1600_Initial();
@@ -157,8 +195,6 @@ void demo(void *pvParameters)
             break;
 
         case 0x0001:    // IOB0 + Vcc
-            SpeechIndex = SpeechIndex % SpeechNum;
-
             SACM_A1600_Stop();
             printf("K%d. next\n", 0);
             break;
@@ -188,7 +224,8 @@ void demo(void *pvParameters)
             SACM_A1600_Stop();
             printf("K%d. ", 4);
             printf("reboot.\n");
-            while(1);
+            while(!timer_expired(h1, 1000))
+                P_System_Reset = C_Software_Reset;
             break;
 
         case 0x0020:    // IOB5 + Vcc
@@ -219,6 +256,17 @@ void demo(void *pvParameters)
         } // end of switch
 
         System_ServiceLoop();
+        msgout_service();
+
+        if(timer_expired(h1, 5000))
+        {
+            printf("t1 exp!\n");
+        }
+
+        if(timer_expired(h2, 10000))
+        {
+            printf("t2 exp!\n");
+        }
     }
 
 done:
@@ -372,6 +420,9 @@ static void platform_init(void)
     /* System Initialization */
     System_Initial();
 
+    /* Timer */
+    P_INT_Ctrl |= C_IRQ7_64Hz;
+
     lcd7735_init();
     lcd7735_init_r(INITR_REDTAB);
     
@@ -381,6 +432,8 @@ static void platform_init(void)
     //lcd7735_init_screen((void *)Font_5x7,ST7735_WHITE,ST7735_BLUE,LANDSAPE); // Will allocate RAM for 576
     //lcd7735_init_screen((void *)ComicSans_MS_8x12,ST7735_WHITE,ST7735_BLUE,LANDSAPE);  // Will allocate RAM for 203
     lcd7735_init_screen((void *)TinyFont,ST7735_WHITE,ST7735_BLUE,LANDSAPE); // Will allocate RAM for 323
+
+    //soft_uart_init((unsigned char*)shared_buff, 32);
 
     #if 0 
     for(;;)
@@ -396,4 +449,18 @@ static void platform_init(void)
     _delay_ms(100);
 
     asm("INT FIQ, IRQ");
+}
+
+int main(void)
+{
+    platform_init();
+
+#ifdef USE_SFLASH_UPDATER
+    sflash_updater();
+#endif
+
+    //demo_20140428(NULL);
+    demo(NULL);
+
+    return 0;
 }

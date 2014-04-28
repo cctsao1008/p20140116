@@ -1592,7 +1592,7 @@ uint8_t lcd7735_get_height()
 
 void lcd7735_init(void)
 {
-    spi_initialize();
+    spi_init();
     LCD_SCK_INIT();
     LCD_SDA_INIT();
     LCD_A0_INIT();

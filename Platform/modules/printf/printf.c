@@ -38,17 +38,16 @@ static char buf[12];
 static unsigned int num;
 static char uc;
 static char zs;
-
-static void out(char c) {
+static void _out(char c) {
     *bf++ = c;
 }
 
-static void outDgt(char dgt) {
-    out(dgt+(dgt<10 ? '0' : (uc ? 'A' : 'a')-10));
+static void _outDgt(char dgt) {
+    _out(dgt+(dgt<10 ? '0' : (uc ? 'A' : 'a')-10));
     zs=1;
 }
     
-static void divOut(unsigned int div) {
+static void _divOut(unsigned int div) {
     unsigned char dgt=0;
     num &= 0xffff; // just for testing the code  with 32 bit ints
     while (num>=div) {
@@ -56,7 +55,7 @@ static void divOut(unsigned int div) {
         dgt++;
     }
     if (zs || dgt>0) 
-        outDgt(dgt);
+        _outDgt(dgt);
 }   
 
 void tfp_printf(char *fmt, ...)
@@ -97,31 +96,31 @@ void tfp_printf(char *fmt, ...)
                     num=va_arg(va, unsigned int);
                     if (ch=='d' && (int)num<0) {
                         num = -(int)num;
-                        out('-');
+                        _out('-');
                     }
-                    divOut(10000);
-                    divOut(1000);
-                    divOut(100);
-                    divOut(10);
-                    outDgt(num);
+                    _divOut(10000);
+                    _divOut(1000);
+                    _divOut(100);
+                    _divOut(10);
+                    _outDgt(num);
                     break;
                 case 'x': 
                 case 'X' : 
                     uc= ch=='X';
                     num=va_arg(va, unsigned int);
-                    divOut(0x1000);
-                    divOut(0x100);
-                    divOut(0x10);
-                    outDgt(num);
+                    _divOut(0x1000);
+                    _divOut(0x100);
+                    _divOut(0x10);
+                    _outDgt(num);
                     break;
                 case 'c' : 
-                    out((char)(va_arg(va, int)));
+                    _out((char)(va_arg(va, int)));
                     break;
                 case 's' : 
                     p=va_arg(va, char*);
                     break;
                 case '%' :
-                    out('%');
+                    _out('%');
                 default:
                     break;
             }
@@ -139,4 +138,3 @@ void tfp_printf(char *fmt, ...)
 abort:
     va_end(va);
 }
-

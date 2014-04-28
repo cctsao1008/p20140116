@@ -51,9 +51,9 @@
 
 #include "lc.h"
 
-struct pt {
+typedef struct pt {
   lc_t lc;
-};
+}PT;
 
 #define PT_WAITING 0
 #define PT_YIELDED 1

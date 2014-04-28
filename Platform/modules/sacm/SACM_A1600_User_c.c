@@ -10,12 +10,10 @@
  *********************************************************************/
 #include "platform.h"
 
-extern ringBufS rb;
-
 /*
         buf : decode buffer address
         length : decode buffer data length
-  */
+*/
 void USER_A1600_GetData(uint16_t *buf, uint16_t length)
 {
     uint8_t i = 0, byte[2];

@@ -33,8 +33,7 @@ void xputc (char c)
         return;
     }
 
-    //if (xfunc_out) xfunc_out((unsigned char)c);
-     putchar(c);
+    if (xfunc_out) xfunc_out((unsigned char)c);
 }
 
 
@@ -51,7 +50,7 @@ void xputs (                    /* Put a string to the default device */
         xputc(*str++);
 }
 
-#if _USE_XFPUTS
+
 void xfputs (                   /* Put a string to the specified device */
     void(*func)(unsigned char), /* Pointer to the output function */
     const char* str             /* Pointer to the string */
@@ -66,7 +65,7 @@ void xfputs (                   /* Put a string to the specified device */
         xputc(*str++);
     xfunc_out = pf;     /* Restore output device */
 }
-#endif
+
 
 
 /*----------------------------------------------*/
@@ -177,7 +176,7 @@ void xprintf (          /* Put a formatted string to the default device */
     va_end(arp);
 }
 
-#if _USE_XSPRINTF
+
 void xsprintf (         /* Put a formatted string to the memory */
     char* buff,         /* Pointer to the output buffer */
     const char* fmt,    /* Pointer to the format string */
@@ -217,9 +216,9 @@ void xfprintf (                 /* Put a formatted string to the specified devic
 
     xfunc_out = pf;     /* Restore output device */
 }
-#endif
 
-#if _USE_PUTDUMP
+
+
 /*----------------------------------------------*/
 /* Dump a line of binary dump                   */
 /*----------------------------------------------*/
@@ -240,7 +239,6 @@ void put_dump (
     xprintf("%08lX ", addr);        /* address */
 
     switch (width) {
-    #if 0
     case DW_CHAR:
         bp = buff;
         for (i = 0; i < len; i++)       /* Hexdecimal dump */
@@ -249,7 +247,6 @@ void put_dump (
         for (i = 0; i < len; i++)       /* ASCII dump */
             xputc((bp[i] >= ' ' && bp[i] <= '~') ? bp[i] : '.');
         break;
-    #endif
     case DW_SHORT:
         sp = buff;
         do                              /* Hexdecimal dump */
@@ -266,7 +263,6 @@ void put_dump (
 
     xputc('\n');
 }
-#endif
 
 #endif /* _USE_XFUNC_OUT */
 

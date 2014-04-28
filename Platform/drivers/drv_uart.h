@@ -12,4 +12,7 @@
 #define DRV_UART_H_
 #include "platform.h"
 
+void soft_uart_init( unsigned char *buf, unsigned buf_size );
+void soft_uart_putc( char c );
+
 #endif /* DRV_UART_H_ */

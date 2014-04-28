@@ -87,7 +87,7 @@ void dly_us(unsigned long n)
 #define MOSI_L()      (P_IOA_BU->bit_14) = 0x0  /* Set MMC DI "low" */
 #define MISO          (P_IOA_DA->bit_15)        /* Get MMC DO value (high:true, low:false) */
 #else
-#define INIT_PORT() spi_initialize()
+#define INIT_PORT() spi_init()
 #define DLY_US(n)   dly_us(n)    /* Delay n microseconds */
 #define FORWARD(d)  forward(d)   /* Data in-time processing function (depends on the project) */
 

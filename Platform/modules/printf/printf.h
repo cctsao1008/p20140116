@@ -85,7 +85,6 @@ regs Kusti, 26.2.2008
 #include <stdarg.h>
 
 void tfp_printf(char *fmt, ...);
-
-//#define printf tfp_printf
+void msg_putchar( char c );
 
 #endif /* TFP_PRINTF_ */

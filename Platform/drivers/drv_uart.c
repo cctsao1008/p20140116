@@ -49,16 +49,17 @@
 
 #if ( CFG_DRV_UART > 0)
 
-#include "stdio.h"
+//#include "stdio.h"
 
-#define BAUD_RATE       19200.0
+#define BAUD_RATE       9600
 
-#define IN_BUF_SIZE     256
+//#define IN_BUF_SIZE       32
 
-#define TRUE 1
+#define TRUE  1
 #define FALSE 0
 
-static unsigned char    inbuf[IN_BUF_SIZE];
+static unsigned char    *inbuf;
+static unsigned char    inbuf_size;
 static unsigned char    qin  = 0;
 static unsigned char    qout = 0;
 
@@ -77,16 +78,62 @@ static char             internal_rx_buffer;
 static char             internal_tx_buffer;
 static char             user_tx_buffer;
 
+/* UI BEGIN */
+static inline uint8_t get_rx_pin_status(void)
+{
+    return ((P_IOA_DA->b_8));
+}
+
+static inline void set_tx_pin_high(void)
+{
+    (P_IOA_DA->b_9) = 0x1;
+}
+
+static inline void set_tx_pin_low(void)
+{
+    (P_IOA_DA->b_9) = 0x0;
+}
+
+static inline void idle(void)
+{
+
+}
+
+void timer_set( uint16_t baudrate )
+{
+    switch(baudrate)
+    {
+        case 9600 :
+            P_TimerC_Data = 0xF955; //9600, works
+        break;
+
+        default :
+            P_TimerC_Data = 0xF955; //9600, works
+        break;
+    }
+
+    //sbi_m(P_INT_Ctrl, C_IRQ2_TMC);
+    //sbi_m(P_FIQ_Sel, C_IRQ2_TMC);
+    sbi_m(P_Timer_Ctrl, C_TimerC_FPLL);
+}
+
+void set_timer_interrupt( cbfun callback)
+{
+    cbfun_create(callback);
+}
+
+/* UI END */
+
 void timer_isr(void)
 {
-    char            mask, start_bit, flag_in;
+    char mask, start_bit, flag_in;
 
 // Transmitter Section
     if ( flag_tx_ready )
     {
         if ( --timer_tx_ctr<=0 )
         {
-            mask = internal_tx_buffer&1;
+            mask = internal_tx_buffer & 1;
             internal_tx_buffer >>= 1;
             if ( mask )
             {
@@ -97,14 +144,14 @@ void timer_isr(void)
                 set_tx_pin_low();
             }
             timer_tx_ctr = 3;
-            if ( --bits_left_in_tx<=0 )
+            if ( --bits_left_in_tx <= 0 )
             {
                 flag_tx_ready = FALSE;
             }
         }
     }
 // Receiver Section
-    if ( flag_rx_off==FALSE )
+    if ( flag_rx_off == FALSE )
     {
         if ( flag_rx_waiting_for_stop_bit )
         {
@@ -113,10 +160,10 @@ void timer_isr(void)
                 flag_rx_waiting_for_stop_bit = FALSE;
                 flag_rx_ready = FALSE;
                 internal_rx_buffer &= 0xFF;
-                if ( internal_rx_buffer!=0xC2 )
+                if ( internal_rx_buffer != 0xC2 )
                 {
                     inbuf[qin] = internal_rx_buffer;
-                    if ( ++qin>=IN_BUF_SIZE )
+                    if ( ++qin >= inbuf_size )
                     {
                         qin = 0;
                     }
@@ -125,11 +172,11 @@ void timer_isr(void)
         }
         else        // rx_test_busy
         {
-            if ( flag_rx_ready==FALSE )
+            if ( flag_rx_ready == FALSE )
             {
                 start_bit = get_rx_pin_status();
 // Test for Start Bit
-                if ( start_bit==0 )
+                if ( start_bit == 0 )
                 {
                     flag_rx_ready = TRUE;
                     internal_rx_buffer = 0;
@@ -149,7 +196,7 @@ void timer_isr(void)
                         internal_rx_buffer |= rx_mask;
                     }
                     rx_mask <<= 1;
-                    if ( --bits_left_in_rx<=0 )
+                    if ( --bits_left_in_rx <= 0 )
                     {
                         flag_rx_waiting_for_stop_bit = TRUE;
                     }
@@ -159,50 +206,61 @@ void timer_isr(void)
     }
 }
 
-void init_uart( void )
+void soft_uart_init( unsigned char *buf, unsigned buf_size )
 {
     flag_tx_ready = FALSE;
     flag_rx_ready = FALSE;
     flag_rx_waiting_for_stop_bit = FALSE;
-    flag_rx_off = FALSE;
+    flag_rx_off = TRUE;
     rx_num_of_bits = 10;
     tx_num_of_bits = 10;
+
+    inbuf = buf;
+    inbuf_size = buf_size;
+
+    P_IOA_DA->b_8 = 0x0; P_IOA_DA->b_8 = 0x0; P_IOA_DA->b_8 = 0x0; // RX IOA8
+    P_IOA_DA->b_9 = 0x0; P_IOA_DA->b_9 = 0x1; P_IOA_DA->b_9 = 0x1; // TX IOA9
 
     set_tx_pin_low();
 
     timer_set( BAUD_RATE );
-    set_timer_interrupt( timer_isr );   // Enable timer interrupt
+    set_timer_interrupt( timer_isr );     // Enable timer interrupt
 }
 
 char soft_uart_getc( void )
 {
-    char        ch;
+    char c;
 
     do
     {
-        while ( qout==qin )
+        while ( qout == qin )
         {
             idle();
         }
-        ch = inbuf[qout] & 0xFF;
-        if ( ++qout>=IN_BUF_SIZE )
+
+        c = inbuf[qout] & 0xFF;
+
+        if ( ++qout >= inbuf_size )
         {
             qout = 0;
         }
     }
-    while ( ch==0x0A || ch==0xC2 );
-    return( ch );
+
+    while ( c == 0x0A || c == 0xC2 );
+
+    return( c );
 }
 
-void soft_uart_putc( char ch )
+void soft_uart_putc( char c )
 {
-    while ( flag_tx_ready );
-    user_tx_buffer = ch;
+	while ( flag_tx_ready );
+    
+    user_tx_buffer = c;
 
 // invoke_UART_transmit
     timer_tx_ctr = 3;
     bits_left_in_tx = tx_num_of_bits;
-    internal_tx_buffer = (user_tx_buffer<<1) | 0x200;
+    internal_tx_buffer = (user_tx_buffer << 1) | 0x200;
     flag_tx_ready = TRUE;
 }
 

@@ -81,7 +81,7 @@
 #endif
 
 /**
- * spi_initialize() - Configure Registers for SPI mode
+ * spi_init() - Configure Registers for SPI mode
  */
 
 #define MISO_INIT() P_IOA_DA->b_15 = 0x0; P_IOA_AT->b_15 = 0x0; P_IOA_DI->b_15 = 0x0
@@ -102,7 +102,7 @@
 //#define DESELECT() CS_H()      /* CS = H */
 
 
-void spi_initialize(void);
+void spi_init(void);
 void spi_xmit(const uint8_t d);
 void spi_select(uint8_t cs, uint8_t high);
 void spi_skip_bytes (uint8_t n);

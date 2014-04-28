@@ -56,7 +56,7 @@
 .public _IRQ7
 .endif
 
-.external _ISR_IRQ2
+.external _ISR2
 
 //**************************************************************************
 // External Function Declaration
@@ -140,7 +140,7 @@ L_FIQ_TimerC:
     //------------------------------------------------------------------
     R1 = C_IRQ2_TMC;
     [P_INT_Status] = R1;
-    call _ISR_IRQ2;
+    call _ISR2;
     pop R1, R5 from [SP];
     reti;
 

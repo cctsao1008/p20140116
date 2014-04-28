@@ -10,12 +10,12 @@
  *********************************************************************/
 #include "drv_spi.h"
 
-bool spi_initialized = false;
+bool spi_init_mutex = false;
 
 #if ( CFG_DRV_SPI > 0)
-void spi_initialize(void)
+void spi_init(void)
 {
-    if(spi_initialized == true)
+    if(spi_init_mutex == true)
         return;
 
     reset_watch_dog();
@@ -61,7 +61,7 @@ void spi_initialize(void)
     spi_select(CS_LCDMOD, 1);
     #endif
 
-    spi_initialized = true;
+    spi_init_mutex = true;
 }
 
 /**
