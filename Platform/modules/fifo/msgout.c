@@ -65,6 +65,9 @@ void msgout_service()
     if(NULL == rb)
         return;
     
+    if( (_puc_path == soft_uart_putc) && soft_uart_tx_busy())
+        return;
+
     while(!rb_empty(rb) && (0 < count--))
     {
         rb_read(rb, &c);
