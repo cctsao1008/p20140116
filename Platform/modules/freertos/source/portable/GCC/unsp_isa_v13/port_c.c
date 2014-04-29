@@ -137,7 +137,6 @@ BaseType_t xPortStartScheduler( void )
 void vPortEndScheduler( void )
 {
     /* Not implemented for this port. */
-    reset_watch_dog();
 }
 /*-----------------------------------------------------------*/
 
