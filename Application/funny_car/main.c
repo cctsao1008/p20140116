@@ -11,7 +11,7 @@
 #include "platform.h"
 
 /* Contant Defintion Are */
-#define MaxSpeechNum         4      // Max. of speech in resource
+#define MaxSpeechNum        4       // Max. of speech in resource
 #define MaxVolumeNum        16      // Max. of volume settings
 
 #define Foreground          0
@@ -43,68 +43,92 @@ void demo(void *pvParameters);
 #define stack_size 512
 size_t stack[stack_size];
 uint8_t shared_buff[shared_buff_size];
-SPEECH_TBL speech_addr[MaxSpeechNum];
+SPEECH_TBL speech_addr;
 uint8_t playing = 0;
 
-void _delay_ms(uint32_t ms)
-{
-#if 1 // Use this will save 20 word in code.
-    uint32_t c = ms*50; // 49 ~= 1 us / ((1 / 49152000) * 10^6) us
+/*
 
-    do {
-        reset_watch_dog();
-    } while(--c);
-#else
-    unsigned long c = 0;
+    RTC and Date/Time utility functions demo using Protothreads
 
-    for(c = 0 ; c < ( 50*n ) ; c++ ) {
-        asm("NOP");
-    }
-#endif
-}
+    What is Protothreads :
 
-PT pt1, pt2;
-HANDLE timer_1, timer_2;
+    Protothreads - Lightweight, Stackless Threads in C
+
+    http://dunkels.com/adam/pt/
+
+*/
+
+static PT pt1, pt2;
+static HANDLE timer_1, timer_2;
+extern uint32_t _sec;
+uint32_t _curr_sec;
+rtc_time tm;
 
 static
-PT_THREAD(thread_1(struct pt *pt))
+PT_THREAD(thread_1(PT* pt))
 {
     PT_BEGIN(pt);
-    if(timer_expired(timer_1, 5000))
+    for(;;)
     {
-        printf("timer1 exp!\n");
+        //PT_WAIT_UNTIL(pt, timer_expired(timer_1, 1000));
+        PT_WAIT_UNTIL(pt, (_sec > _curr_sec));
+        _curr_sec = _sec;
+        //printf("timer1 exp!\n");
+        rtc_time_to_tm(_sec, &tm);
+        printf("%u/%02u/%02u-%02u:%02u:%02u\n",
+                tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday + 1,
+                tm.tm_hour, tm.tm_min, tm.tm_sec);
     }
-
-    System_ServiceLoop();
-    msgout_service();
-    PT_RESTART(pt);
     PT_END(pt);
 }
 
 static
-PT_THREAD(thread_2(struct pt *pt))
+PT_THREAD(thread_2(PT* pt))
 {
     PT_BEGIN(pt);
-    if(timer_expired(timer_2, 10000))
+    for(;;)
     {
-        printf("timer2 exp!\n");
+        PT_WAIT_UNTIL(pt, timer_expired(timer_2, 10000));
+        //printf("timer2 exp!\n");
     }
-
-    System_ServiceLoop();
-    msgout_service();
-    PT_RESTART(pt);
     PT_END(pt);
 }
 
-void demo_20140428(void *pvParameters)
+void pt_demo(void *pvParameters)
 {
-    /* Power ON state */
+    uint32_t _sec_offset = 0;
+
+    timer_1 = timer_create(6000);
+    timer_2 = timer_create(9000);
+
+    tm.tm_year = (2014 - 1900);
+    tm.tm_mon  = 4;
+    tm.tm_mday = 29;
+    tm.tm_hour = 23;
+    tm.tm_min  = 22;
+    tm.tm_sec  = 0;
+
+    rtc_tm_to_time(&tm, &_sec_offset);
+
+    _sec += _sec_offset;
+
+    msgout_fifo_config(64);
+
+    PT_INIT(&pt1);
+    PT_INIT(&pt2);
+
+    for(;;)
+    {
+        PT_SCHEDULE(thread_1(&pt1));
+        //PT_SCHEDULE(thread_2(&pt2));
+        msgout_service();
+    }
     
 }
 
 void demo(void *pvParameters)
 {
-    uint16_t SpeechIndex = 0, VolumeIndex = 9, SpeechNum = 0, i = 0;
+    uint16_t SpeechIndex = 0, VolumeIndex = 9, SpeechNum = 0;
     uint16_t DAC_FIR_Type = C_DAC_FIR_Type0;
     uint16_t buff[4] = {1, 2, 3, 4}, reset = 1, Key = 0;
 
@@ -113,8 +137,8 @@ void demo(void *pvParameters)
     //sll_test();
     //rb_test();
 
-    h1 = timer_create(5000);
-    h2 = timer_create(10000);
+    h1 = timer_create(500);
+    //h2 = timer_create(10000);
     
     if(NULL == h1)
     	printf("h1 = NULL\n");
@@ -124,35 +148,18 @@ void demo(void *pvParameters)
 
     printf("start demo task.\n");
 
+    /* Read speech number */
     mtd_lseek(0);
     mtd_read((uint8_t *)&SpeechNum, 1, NULL);
 
-    if( (0 != SpeechNum) && (0xFF != SpeechNum)) {
-        if( 0x1 == SpeechNum )
-            printf("found 1 speech.\n");
-        else
-            printf("found %d speechs.\n", SpeechNum);
-
-        if(SpeechNum > MaxSpeechNum) {
-            printf("use %d of %d speechs.\n", MaxSpeechNum, SpeechNum);
-            SpeechNum = MaxSpeechNum;
-        }
-
-        for(i = 0 ; i < SpeechNum ; i++ ) {
-            mtd_lseek((uint32_t)(4 + 4*i));
-            mtd_read((uint8_t *)buff, 4, NULL);
-
-            speech_addr[i].addr_0 = buff[0];
-            speech_addr[i].addr_1 = buff[1];
-            speech_addr[i].addr_2 = buff[2];
-            speech_addr[i].addr_3 = buff[3];
-        }
-    } else {
+    if ((0 == SpeechNum) || 0xFF == SpeechNum)
         printf("no speech file.\n");
-        goto done;
-    }
+    else if( 0x1 == SpeechNum )
+        printf("found 1 speech.\n");
+    else
+        printf("found %d speechs.\n", SpeechNum);
 
-    if(NULL == msgout_fifo_config(36))
+    if(NULL == msgout_fifo_config(64))
         printf("fifo failed!\n");
 
     /* A1600 Initialization */
@@ -176,7 +183,15 @@ void demo(void *pvParameters)
         if((playing == 0) && (SpeechIndex < SpeechNum)) {
             playing = 1;
 
-            mtd_lseek(speech_addr[SpeechIndex].addr_32);
+            mtd_lseek((uint32_t)(4 + 4*SpeechIndex));
+            mtd_read((uint8_t *)buff, 4, NULL);
+
+            speech_addr.addr_0 = buff[0];
+            speech_addr.addr_1 = buff[1];
+            speech_addr.addr_2 = buff[2];
+            speech_addr.addr_3 = buff[3];
+
+            mtd_lseek(speech_addr.addr_32);
 
             printf("playing speech %d.\n", SpeechIndex);
 
@@ -197,6 +212,8 @@ void demo(void *pvParameters)
         case 0x0001:    // IOB0 + Vcc
             SACM_A1600_Stop();
             printf("K%d. next\n", 0);
+
+            SpeechIndex = (SpeechIndex % SpeechNum);
             break;
 
         case 0x0002:    // IOB1 + Vcc
@@ -255,23 +272,11 @@ void demo(void *pvParameters)
             break;
         } // end of switch
 
-        System_ServiceLoop();
-        msgout_service();
-
-        if(timer_expired(h1, 5000))
+        if(timer_expired(h1, 50))
         {
-            printf("t1 exp!\n");
+            msgout_service();
         }
-
-        if(timer_expired(h2, 10000))
-        {
-            printf("t2 exp!\n");
-        }
-    }
-
-done:
-
-    while(1) {
+        
         System_ServiceLoop();
     }
 }
@@ -423,6 +428,9 @@ static void platform_init(void)
     /* Timer */
     P_INT_Ctrl |= C_IRQ7_64Hz;
 
+    /* Kick Watch Dog */
+    P_INT_Ctrl |= C_IRQ7_2Hz;
+
     lcd7735_init();
     lcd7735_init_r(INITR_REDTAB);
     
@@ -446,8 +454,6 @@ static void platform_init(void)
     }
     #endif
 
-    _delay_ms(100);
-
     asm("INT FIQ, IRQ");
 }
 
@@ -459,8 +465,8 @@ int main(void)
     sflash_updater();
 #endif
 
-    //demo_20140428(NULL);
-    demo(NULL);
+    pt_demo(NULL);
+    //demo(NULL);
 
     return 0;
 }
