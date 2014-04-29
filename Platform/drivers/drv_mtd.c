@@ -118,10 +118,7 @@ MTD_RESULT mtd_write_enable(void)
 {
     MTD_RESULT rc = MTD_OK;
 
-    while(mtd_read_status_1(B_BUSY))
-    {
-        reset_watch_dog();
-    }
+    while(mtd_read_status_1(B_BUSY));
 
     /* Chip select go high to end a flash command */
     mtd_select(1);
@@ -142,10 +139,7 @@ MTD_RESULT mtd_write_disable(void)
 {
     MTD_RESULT rc = MTD_OK;
 
-    while(mtd_read_status_1(B_BUSY))
-    {
-        reset_watch_dog();
-    }
+    while(mtd_read_status_1(B_BUSY));
 
     /* Chip select go high to end a flash command */
     mtd_select(1);
@@ -167,10 +161,7 @@ MTD_RESULT mtd_write_status(uint8_t data)
 {
     MTD_RESULT rc = MTD_OK;
 
-    while(mtd_read_status_1(B_BUSY))
-    {
-        reset_watch_dog();
-    }
+    while(mtd_read_status_1(B_BUSY));
 
     /* Chip select go high to end a flash command */
     mtd_select(1);
@@ -212,10 +203,7 @@ MTD_RESULT mtd_read(uint8_t *buf, uint32_t btr, uint32_t *ptr)
 
     #if 0
     /* Is Flash in busy mode ? */
-    while(mtd_read_status_1(B_BUSY))
-    {
-        reset_watch_dog();
-    }
+    while(mtd_read_status_1(B_BUSY));
     #endif
 
     if(MTD_READ != status)
@@ -269,10 +257,7 @@ MTD_RESULT mtd_fast_read_data(uint32_t addr,uint8_t *buf, uint32_t size)
     uint32_t i = 0;
 
     /* Is Flash in busy mode ? */
-    while(mtd_read_status_1(B_BUSY))
-    {
-        reset_watch_dog();
-    }
+    while(mtd_read_status_1(B_BUSY));
 
     /* Chip select go low to start a flash command */
     mtd_select(0);
@@ -311,10 +296,7 @@ MTD_RESULT mtd_write(uint8_t *buf, uint32_t btw, uint32_t *ptr)
     mtd_select(1);
 
     /* Busy wait */
-    while(mtd_read_status_1(B_BUSY))
-    {
-        reset_watch_dog();
-    }
+    while(mtd_read_status_1(B_BUSY));
 
     mtd_write_enable();
 
@@ -334,10 +316,7 @@ MTD_RESULT mtd_write(uint8_t *buf, uint32_t btw, uint32_t *ptr)
             mtd_select(1);
 
             /* Is Flash in busy mode ? */
-            while(mtd_read_status_1(B_BUSY))
-            {
-                reset_watch_dog();
-            }
+            while(mtd_read_status_1(B_BUSY));
 
             mtd_select(0);
             spi_xmit(CMD_PP);
@@ -349,10 +328,7 @@ MTD_RESULT mtd_write(uint8_t *buf, uint32_t btw, uint32_t *ptr)
     mtd_select(1);
 
     /* Busy wait */
-    while(mtd_read_status_1(B_BUSY))
-    {
-        reset_watch_dog();
-    }
+    while(mtd_read_status_1(B_BUSY));
 
     if(ptr)
         *ptr = mtd_addr;

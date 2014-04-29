@@ -18,7 +18,6 @@ void spi_init(void)
     if(spi_init_mutex == true)
         return;
 
-    reset_watch_dog();
 #ifdef USE_BIT_BANGING_SPI
     MISO_INIT();
     MOSI_INIT();
@@ -69,7 +68,6 @@ void spi_init(void)
  */
 void spi_xmit(const uint8_t d)
 {
-    reset_watch_dog();
 #ifdef USE_BIT_BANGING_SPI
     if (d & 0x80) {MOSI_H();} else {MOSI_L();}  /* bit7 */
     CK_H(); CK_L();
@@ -100,7 +98,6 @@ uint8_t spi_rcvr(void)
 {
     uint8_t r;
 
-    reset_watch_dog();
 #ifdef USE_BIT_BANGING_SPI
     MOSI_H(); /* Send 0xFF */
 
@@ -131,7 +128,6 @@ void spi_skip_bytes (
     uint8_t n       /* Number of bytes to skip */
 )
 {
-    reset_watch_dog();
 #ifdef USE_BIT_BANGING_SPI
     MOSI_H(); /* Send 0xFF */
 
@@ -154,8 +150,6 @@ void spi_skip_bytes (
 
 void spi_select(uint8_t cs, uint8_t high)
 {
-    reset_watch_dog();
-
     switch(cs)
     {
 #ifndef USE_HW_CS_CTRL
@@ -211,7 +205,6 @@ void spi_select(uint8_t cs, uint8_t high)
 
 uint16_t spi_set_divisor(const uint16_t clkdiv)
 {
-    reset_watch_dog();
     return 0;
 }
 #endif

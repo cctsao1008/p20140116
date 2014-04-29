@@ -32,6 +32,8 @@ void IRQ6(void) __attribute__ ((ISR));
 void IRQ7(void) __attribute__ ((ISR));
 #endif
 
+uint32_t _count = 0, _sec = 0;
+
 sll* isr7_timer_list = NULL;
 sll* isr2_cbfun_list = NULL;
 
@@ -189,6 +191,11 @@ void IRQ7(void)
     if(tstb_m(P_INT_Status, C_IRQ7_2Hz))
     {
         sbi_m(P_INT_Status, C_IRQ7_2Hz);
+
+        if(_count++ % 2)
+            _sec++;
+
+        reset_watch_dog();
     }
 
     if(tstb_m(P_INT_Status, C_IRQ7_64Hz))

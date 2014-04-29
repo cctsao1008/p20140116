@@ -117,7 +117,6 @@ static void I2C_SendByte(uint8_t byte)
         I2C_delay();
     }
     SCL_L;
-    reset_watch_dog();
 }
 
 static uint8_t I2C_ReceiveByte(void)
@@ -137,7 +136,7 @@ static uint8_t I2C_ReceiveByte(void)
         }
     }
     SCL_L;
-    reset_watch_dog();
+
     return byte;
 }
 
