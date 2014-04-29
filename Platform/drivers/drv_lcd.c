@@ -1161,8 +1161,6 @@ void _xmit(const uint8_t tb)
         LCD_SCK_H();
     }
 #else
-    reset_watch_dog();
-
     if (tb & 0x80) {LCD_SDA_H();} else {LCD_SDA_L();}  /* bit7 */
     LCD_SCK_L(); LCD_SCK_H();
     if (tb & 0x40) {LCD_SDA_H();} else {LCD_SDA_L();}  /* bit6 */
@@ -1282,6 +1280,21 @@ static void _putch(uint8_t c)
 }
 
 // fill a rectangle
+void _putpixs(int16_t count, int16_t color)
+{
+    switch (count % 8)  /* count > 0 assumed */
+        {
+            case 0:    do {    putpix(color);
+            case 7:            putpix(color);
+            case 6:            putpix(color);
+            case 5:            putpix(color);
+            case 4:            putpix(color);
+            case 3:            putpix(color);
+            case 2:            putpix(color);
+            case 1:            putpix(color);
+                       } while (((int32_t)count -= 8) > 0);
+        }
+}
 void _fill_rect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color)
 {
     /* Use Duff's Device */
@@ -1295,26 +1308,20 @@ void _fill_rect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color)
     _set_sddr_window(x, y, x+w-1, y+h-1);
 
     LCD_A0_H();
-    for(y=h; y>0; y--) {
-        #if 0
-        for(x=w; x>0; x--) {
-            putpix(color);
-        }
-        #else /* Use Duff's Device */
-        count = w;
-        switch (count % 8)  /* count > 0 assumed */
-        {
-            case 0:    do {    putpix(color);
-            case 7:            putpix(color);
-            case 6:            putpix(color);
-            case 5:            putpix(color);
-            case 4:            putpix(color);
-            case 3:            putpix(color);
-            case 2:            putpix(color);
-            case 1:            putpix(color);
-                       } while (((int32_t)count -= 8) > 0);
-        }
-        #endif
+
+    count = h;
+
+    switch (count % 8)  /* count > 0 assumed */
+    {
+        case 0:    do {    _putpixs(w, color);
+        case 7:            _putpixs(w, color);
+        case 6:            _putpixs(w, color);
+        case 5:            _putpixs(w, color);
+        case 4:            _putpixs(w, color);
+        case 3:            _putpixs(w, color);
+        case 2:            _putpixs(w, color);
+        case 1:            _putpixs(w, color);
+                   } while (((int32_t)count -= 8) > 0);
     }
 
     _color = color;
@@ -1322,11 +1329,14 @@ void _fill_rect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color)
 
 static void _scroll_up()
 {
+    #ifdef LCD_USE_SCROLLUP
     int r,c;
+    #endif
+
     _screen.c.row = 0;
     _screen.c.col = 0;
 
-    #if 0
+    #ifdef LCD_USE_SCROLLUP
     for(r=1; r < _screen.nrow; r++)
         for(c=0; c < _screen.ncol; c++) {
             _putch(*_scr(r,c));
@@ -1347,6 +1357,15 @@ static void _scroll_up()
     #endif
 }
 
+void _delay_ms(uint32_t ms)
+{
+    uint32_t c = ms*20;
+
+    do{
+        asm("NOP");
+    }while(c--);
+}
+
 #if 0
 /* printf in "CLib" will call putchar.
    user can implement this function -- send a char to UART? */
@@ -1356,34 +1375,6 @@ int putchar (int c)
     return c;
 }
 #endif
-
-void delay_ms(uint32_t ms)
-{
-#if 1 // Use this will save 20 word in code.
-    uint32_t c = ms*50; // 49 ~= 1 us / ((1 / 49152000) * 10^6) us
-
-    /* Use Duff's Device */
-    switch (c % 8)  /* count > 0 assumed */
-    {
-        case 0:    do {    asm("NOP");reset_watch_dog();
-        case 7:            asm("NOP");
-        case 6:            asm("NOP");
-        case 5:            asm("NOP");
-        case 4:            asm("NOP");
-        case 3:            asm("NOP");
-        case 2:            asm("NOP");
-        case 1:            asm("NOP");
-                   } while (((int32_t)c -= 8) > 0);
-    }
-#else
-    unsigned long c = 0;
-
-    for(c = 0 ; c < ( 50*n ) ; c++ ) {
-        asm("NOP");
-    }
-#endif
-
-}
 
 // Companion code to the above tables.  Reads and issues
 // a series of LCD commands stored in PROGMEM byte array.
@@ -1405,7 +1396,7 @@ static void command_list(const uint8_t *addr)
         if(ms) {
             ms = *addr++; // Read post-command delay time (ms)
             if(ms == 255) ms = 500;     // If 255, delay for 500 ms
-            delay_ms(ms);
+            _delay_ms(ms);
         }
     }
 }
@@ -1417,14 +1408,14 @@ static void common_init(const uint8_t *cmdList)
     LCD_CS_L();
 #ifdef LCD_SOFT_RESET
     _send_cmd(ST7735_SWRESET);
-    delay_ms(500);
+    _delay_ms(500);
 #else
     LCD_RST_H();
-    delay_ms(500);
+    _delay_ms(500);
     LCD_RST_L();
-    delay_ms(500);
+    _delay_ms(500);
     LCD_RST_H();
-    delay_ms(500);
+    _delay_ms(500);
 #endif
     if(cmdList) command_list(cmdList);
 }
@@ -1432,7 +1423,7 @@ static void common_init(const uint8_t *cmdList)
 // Initialization for ST7735R screens (green or red tabs)
 void lcd7735_init_r(uint8_t options)
 {
-    delay_ms(50);
+    _delay_ms(50);
     common_init(Rcmd1);
     if(options == INITR_GREENTAB) {
         command_list(Rcmd2green);
@@ -1487,7 +1478,7 @@ static void _cursor_expose(int flg)
 }
 #endif
 
-static void cursor_nl()
+static void _cursor_nl()
 {
     _screen.c.col = 0;
     _screen.c.row++;
@@ -1496,16 +1487,16 @@ static void cursor_nl()
     }
 }
 
-static void cursor_fwd()
+static void _cursor_fwd()
 {
     _screen.c.col++;
     if( _screen.c.col == _screen.ncol ) {
-        cursor_nl();
+        _cursor_nl();
     }
 }
 
 
-static void cursor_init()
+static void _cursor_init()
 {
     _screen.c.row = 0;
     _screen.c.col = 0;
@@ -1534,21 +1525,21 @@ void lcd7735_init_screen(void *font,uint16_t fg, uint16_t bg, uint8_t orientatio
     if(NULL != _screen.scr)
         memset((void*)_screen.scr,' ',_screen.nrow * _screen.ncol);
 
-    cursor_init();
+    _cursor_init();
     #ifdef LCD_SHOW_CURSOR
     cursor_draw;
     #endif
-    delay_ms(100);
+    _delay_ms(100);
 }
 
 void lcd7735_putc(char c)
 {
     if( c != '\n' && c != '\r' ) {
         _putch(c);
-        cursor_fwd();
+        _cursor_fwd();
     } else {
         cursor_erase;
-        cursor_nl();
+        _cursor_nl();
     }
     cursor_draw;
 }
