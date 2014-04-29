@@ -13,6 +13,7 @@
 
 /* Project Configurations */
 #define USE_PROTOTHREADS
+//#define USE_PROTOTHREADS_EXTENDED
 //#define USE_FREERTOS
 //#define NO_DEBUG_MSG_OUTPUT
 //#define DEBUG_MSG_OUTPUT_UART
@@ -98,8 +99,11 @@ typedef void* HANDLE;
 #include "semphr.h"
 #endif
 
-#ifdef USE_PROTOTHREADS
+#if defined(USE_PROTOTHREADS)
 #include "pt.h"
+#include "pt-sem.h"
+#elif defined(USE_PROTOTHREADS_EXTENDED)
+#include "graham-pt.h"
 #include "pt-sem.h"
 #endif
 

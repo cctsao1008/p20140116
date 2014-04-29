@@ -66,8 +66,8 @@ static unsigned char    qout = 0;
 static char             flag_rx_waiting_for_stop_bit;
 static char             flag_rx_off;
 static char             rx_mask;
-static char             flag_rx_ready;
-static char             flag_tx_ready;
+static char             flag_rx_busy;
+static char             flag_tx_busy;
 static char             timer_rx_ctr;
 static char             timer_tx_ctr;
 static char             bits_left_in_rx;
@@ -129,7 +129,7 @@ void timer_isr(void)
     char mask, start_bit, flag_in;
 
 // Transmitter Section
-    if ( flag_tx_ready )
+    if ( flag_tx_busy )
     {
         if ( --timer_tx_ctr<=0 )
         {
@@ -146,7 +146,7 @@ void timer_isr(void)
             timer_tx_ctr = 3;
             if ( --bits_left_in_tx <= 0 )
             {
-                flag_tx_ready = FALSE;
+                flag_tx_busy = FALSE;
             }
         }
     }
@@ -158,7 +158,7 @@ void timer_isr(void)
             if ( --timer_rx_ctr<=0 )
             {
                 flag_rx_waiting_for_stop_bit = FALSE;
-                flag_rx_ready = FALSE;
+                flag_rx_busy = FALSE;
                 internal_rx_buffer &= 0xFF;
                 if ( internal_rx_buffer != 0xC2 )
                 {
@@ -172,13 +172,13 @@ void timer_isr(void)
         }
         else        // rx_test_busy
         {
-            if ( flag_rx_ready == FALSE )
+            if ( flag_rx_busy == FALSE )
             {
                 start_bit = get_rx_pin_status();
 // Test for Start Bit
                 if ( start_bit == 0 )
                 {
-                    flag_rx_ready = TRUE;
+                    flag_rx_busy = TRUE;
                     internal_rx_buffer = 0;
                     timer_rx_ctr = 4;
                     bits_left_in_rx = rx_num_of_bits;
@@ -208,8 +208,8 @@ void timer_isr(void)
 
 void soft_uart_init( unsigned char *buf, unsigned buf_size )
 {
-    flag_tx_ready = FALSE;
-    flag_rx_ready = FALSE;
+    flag_tx_busy = FALSE;
+    flag_rx_busy = FALSE;
     flag_rx_waiting_for_stop_bit = FALSE;
     flag_rx_off = TRUE;
     rx_num_of_bits = 10;
@@ -253,7 +253,7 @@ char soft_uart_getc( void )
 
 void soft_uart_putc( char c )
 {
-	while ( flag_tx_ready );
+	while ( flag_tx_busy );
     
     user_tx_buffer = c;
 
@@ -261,7 +261,12 @@ void soft_uart_putc( char c )
     timer_tx_ctr = 3;
     bits_left_in_tx = tx_num_of_bits;
     internal_tx_buffer = (user_tx_buffer << 1) | 0x200;
-    flag_tx_ready = TRUE;
+    flag_tx_busy = TRUE;
+}
+
+uint16_t soft_uart_tx_busy(void)
+{
+    return flag_tx_busy;
 }
 
 void flush_input_buffer( void )

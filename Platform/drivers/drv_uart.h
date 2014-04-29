@@ -14,5 +14,6 @@
 
 void soft_uart_init( unsigned char *buf, unsigned buf_size );
 void soft_uart_putc( char c );
+uint16_t soft_uart_tx_busy(void);
 
 #endif /* DRV_UART_H_ */
