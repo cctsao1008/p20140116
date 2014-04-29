@@ -69,8 +69,10 @@ rb_write(ringbuf* this, const uint16_t data){
     this->w_count = (this->w_count + 1) % this->size;
     
     //overwrite data if tail reaches head
+    #ifdef RB_OVER_WRITE_DATA
     if(this->head == this->tail)
         this->head = (this->head + 1) & this->size;
+    #endif
 }
 
 void
